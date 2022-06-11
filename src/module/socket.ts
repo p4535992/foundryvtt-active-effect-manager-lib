@@ -72,6 +72,22 @@ export function registerSocket() {
   activeEffectManagerSocket.register('updateActiveEffectFromNameOnToken', (...args) =>
     API.updateActiveEffectFromNameOnTokenArr(...args),
   );
+
+  // ON MANAGE
+
+  activeEffectManagerSocket.register('updateActiveEffectFromNameOnToken', (...args) =>
+    API.updateActiveEffectFromNameOnTokenArr(...args),
+  );
+  activeEffectManagerSocket.register('onManageActiveEffectFromEffectId', (...args) =>
+    API.onManageActiveEffectFromEffectIdArr(...args),
+  );
+  activeEffectManagerSocket.register('onManageActiveEffectFromEffect', (...args) =>
+    API.onManageActiveEffectFromEffectArr(...args),
+  );
+  activeEffectManagerSocket.register('onManageActiveEffectFromActiveEffect', (...args) =>
+    API.onManageActiveEffectFromActiveEffectArr(...args),
+  );
+
   setSocket(activeEffectManagerSocket);
   return activeEffectManagerSocket;
 }

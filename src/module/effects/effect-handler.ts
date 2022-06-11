@@ -1,4 +1,4 @@
-import { debug, error, i18n, isStringEquals, log, warn } from '../lib/lib';
+import { debugM, errorM, i18n, isStringEquals, logM, warnM } from '../lib/lib';
 import FoundryHelpers from './foundry-helpers';
 import Effect from './effect';
 import type EmbeddedCollection from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs';
@@ -40,7 +40,8 @@ export default class EffectHandler {
    * @param {string[]} params.uuids - UUIDS of the actors to toggle the effect on
    */
   async toggleEffect(effectName, { overlay, uuids, metadata = undefined }) {
-    debug(
+    debugM(
+      this.moduleName,
       `START Effect Handler 'toggleEffect' : [overlay=${overlay},uuids=${String(uuids)},metadata=${String(metadata)}]`,
     );
     const effectNames: string[] = [];
@@ -53,7 +54,8 @@ export default class EffectHandler {
         await this.addEffect({ effectName, effectData: null, uuid, origin, overlay, metadata });
       }
     }
-    debug(
+    debugM(
+      this.moduleName,
       `END Effect Handler 'toggleEffect' : [overlay=${overlay},effectNames=${String(effectNames)},metadata=${String(
         metadata,
       )}]`,
@@ -70,7 +72,7 @@ export default class EffectHandler {
    */
   async toggleEffectArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('toggleEffectArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'toggleEffectArr | inAttributes must be of type array');
     }
     const [effectName, params] = inAttributes;
     return this.toggleEffect(effectName, params);
@@ -86,7 +88,10 @@ export default class EffectHandler {
    * @returns {boolean} true if the effect is applied, false otherwise
    */
   hasEffectApplied(effectName: string, uuid: string): boolean {
-    debug(`START Effect Handler 'hasEffectApplied' : [effectName=${effectName},uuid=${String(uuid)}]`);
+    debugM(
+      this.moduleName,
+      `START Effect Handler 'hasEffectApplied' : [effectName=${effectName},uuid=${String(uuid)}]`,
+    );
     const actor = this._foundryHelpers.getActorByUuid(uuid);
     const isApplied = actor?.data?.effects?.some(
       // (activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect?.data?.label == effectName,
@@ -98,7 +103,10 @@ export default class EffectHandler {
         }
       },
     );
-    debug(`END Effect Handler 'hasEffectApplied' : [effectName=${effectName},actorName=${String(actor.name)}]`);
+    debugM(
+      this.moduleName,
+      `END Effect Handler 'hasEffectApplied' : [effectName=${effectName},actorName=${String(actor.name)}]`,
+    );
     return isApplied;
   }
 
@@ -113,7 +121,7 @@ export default class EffectHandler {
    */
   hasEffectAppliedArr(...inAttributes: any[]): boolean {
     if (!Array.isArray(inAttributes)) {
-      throw error('hasEffectAppliedArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'hasEffectAppliedArr | inAttributes must be of type array');
     }
     const [effectName, uuid] = inAttributes;
     return this.hasEffectApplied(effectName, uuid);
@@ -137,7 +145,7 @@ export default class EffectHandler {
     if (!effectToRemove) return;
 
     await actor.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemove.id]);
-    log(`Removed effect ${effectName} from ${actor.name} - ${actor.id}`);
+    logM(this.moduleName, `Removed effect ${effectName} from ${actor.name} - ${actor.id}`);
   }
 
   /**
@@ -149,7 +157,7 @@ export default class EffectHandler {
    */
   async removeEffectArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectArr | inAttributes must be of type array');
     }
     const [params] = inAttributes;
     return this.removeEffect(params);
@@ -207,7 +215,10 @@ export default class EffectHandler {
     effect.overlay = overlay;
     const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
     if (activeEffectFounded) {
-      warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`);
+      warnM(
+        this.moduleName,
+        `Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`,
+      );
       return;
     }
     const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
@@ -221,7 +232,7 @@ export default class EffectHandler {
     //   isSuppressed: effect.isSuppressed,
     //   isTemporary: effect.isTemporary,
     // });
-    log(`Added effect ${effect.name} to ${actor.name} - ${actor.id}`);
+    logM(this.moduleName, `Added effect ${effect.name} to ${actor.name} - ${actor.id}`);
   }
 
   // async _removeAllExhaustionEffects(uuid) {
@@ -244,7 +255,7 @@ export default class EffectHandler {
    */
   async addEffectArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addEffectArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'addEffectArr | inAttributes must be of type array');
     }
     const [params] = inAttributes;
     return this.addEffect(params);
@@ -358,7 +369,7 @@ export default class EffectHandler {
    */
   async findEffectByNameOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | null> {
     if (!Array.isArray(inAttributes)) {
-      throw error('findEffectByNameOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'findEffectByNameOnActorArr | inAttributes must be of type array');
     }
     const [effectName, uuid] = inAttributes;
     return this.findEffectByNameOnActor(effectName, uuid);
@@ -408,7 +419,7 @@ export default class EffectHandler {
    */
   hasEffectAppliedOnActorArr(...inAttributes: any[]): boolean {
     if (!Array.isArray(inAttributes)) {
-      throw error('hasEffectAppliedOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'hasEffectAppliedOnActorArr | inAttributes must be of type array');
     }
     const [effectName, uuid, includeDisabled] = inAttributes;
     return this.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
@@ -455,7 +466,7 @@ export default class EffectHandler {
    */
   hasEffectAppliedFromIdOnActorArr(...inAttributes: any[]): boolean {
     if (!Array.isArray(inAttributes)) {
-      throw error('hasEffectAppliedFromIdOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'hasEffectAppliedFromIdOnActorArr | inAttributes must be of type array');
     }
     const [effectId, uuid, includeDisabled] = inAttributes;
     return this.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
@@ -485,7 +496,7 @@ export default class EffectHandler {
     // await effectToRemove.update({ disabled: true });
     // await effectToRemove.delete();
     await actor.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemove.id]);
-    log(`Removed effect ${effectName} from ${actor.name} - ${actor.id}`);
+    logM(this.moduleName, `Removed effect ${effectName} from ${actor.name} - ${actor.id}`);
   }
 
   /**
@@ -497,7 +508,7 @@ export default class EffectHandler {
    */
   async removeEffectOnActorArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectOnActorArr | inAttributes must be of type array');
     }
     const [effectName, uuid] = inAttributes;
     return this.removeEffectOnActor(effectName, uuid);
@@ -520,7 +531,7 @@ export default class EffectHandler {
       // await effectToRemove.update({ disabled: true });
       // await effectToRemove.delete();
       await actor.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemove.id]);
-      log(`Removed effect ${effectToRemove?.data?.label} from ${actor.name} - ${actor.id}`);
+      logM(this.moduleName, `Removed effect ${effectToRemove?.data?.label} from ${actor.name} - ${actor.id}`);
     }
   }
 
@@ -533,7 +544,7 @@ export default class EffectHandler {
    */
   async removeEffectFromIdOnActorArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectFromIdOnActor | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectFromIdOnActor | inAttributes must be of type array');
     }
     const [effectId, uuid] = inAttributes;
     return this.removeEffectFromIdOnActor(effectId, uuid);
@@ -566,12 +577,15 @@ export default class EffectHandler {
       effect.overlay = overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
       if (activeEffectFounded) {
-        warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`);
+        warnM(
+          this.moduleName,
+          `Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`,
+        );
         return;
       }
       const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
       await actor.createEmbeddedDocuments('ActiveEffect', [activeEffectData]);
-      log(`Added effect ${effect.name ? effect.name : effectName} to ${actor.name} - ${actor.id}`);
+      logM(this.moduleName, `Added effect ${effect.name ? effect.name : effectName} to ${actor.name} - ${actor.id}`);
     }
   }
 
@@ -584,7 +598,7 @@ export default class EffectHandler {
    */
   async addEffectOnActorArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addEffectOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'addEffectOnActorArr | inAttributes must be of type array');
     }
     const [effectName, uuid, origin, overlay, effect] = inAttributes;
     return this.addEffectOnActor(effectName, uuid, origin, overlay, effect);
@@ -633,7 +647,7 @@ export default class EffectHandler {
 
   async toggleEffectFromIdOnActorArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('toggleEffectFromIdOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'toggleEffectFromIdOnActorArr | inAttributes must be of type array');
     }
     const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
     return this.toggleEffectFromIdOnActor(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled);
@@ -653,13 +667,13 @@ export default class EffectHandler {
         activeEffectData.origin = `Actor.${actor.id}`;
       }
       await actor.createEmbeddedDocuments('ActiveEffect', [<Record<string, any>>activeEffectData]);
-      log(`Added effect ${activeEffectData.label} to ${actor.name} - ${actor.id}`);
+      logM(this.moduleName, `Added effect ${activeEffectData.label} to ${actor.name} - ${actor.id}`);
     }
   }
 
   async addActiveEffectOnActorArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addActiveEffectOnActorArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'addActiveEffectOnActorArr | inAttributes must be of type array');
     }
     const [uuid, activeEffectData] = inAttributes;
     return this.addActiveEffectOnActor(uuid, activeEffectData);
@@ -709,7 +723,7 @@ export default class EffectHandler {
    */
   async findEffectByNameOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | null> {
     if (!Array.isArray(inAttributes)) {
-      throw error('findEffectByNameOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'findEffectByNameOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid] = inAttributes;
     return this.findEffectByNameOnToken(effectName, uuid);
@@ -759,7 +773,7 @@ export default class EffectHandler {
    */
   hasEffectAppliedOnTokenArr(...inAttributes: any[]): boolean {
     if (!Array.isArray(inAttributes)) {
-      throw error('hasEffectAppliedOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'hasEffectAppliedOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid, includeDisabled] = inAttributes;
     return this.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
@@ -806,7 +820,7 @@ export default class EffectHandler {
    */
   hasEffectAppliedFromIdOnTokenArr(...inAttributes: any[]): boolean {
     if (!Array.isArray(inAttributes)) {
-      throw error('hasEffectAppliedFromIdOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'hasEffectAppliedFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid, includeDisabled] = inAttributes;
     return this.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
@@ -836,7 +850,7 @@ export default class EffectHandler {
     // await effectToRemove.update({ disabled: true });
     // await effectToRemove.delete();
     await token.actor?.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemove.id]);
-    log(`Removed effect ${effectName} from ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Removed effect ${effectName} from ${token.name} - ${token.id}`);
   }
 
   /**
@@ -848,7 +862,7 @@ export default class EffectHandler {
    */
   async removeEffectOnTokenArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid] = inAttributes;
     return this.removeEffectOnToken(effectName, uuid);
@@ -873,7 +887,7 @@ export default class EffectHandler {
         // await effectToRemove.update({ disabled: true });
         // await effectToRemove.delete();
         await token.actor?.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemove.id]);
-        log(`Removed effect ${effectToRemove?.data?.label} from ${token.name} - ${token.id}`);
+        logM(this.moduleName, `Removed effect ${effectToRemove?.data?.label} from ${token.name} - ${token.id}`);
       }
     }
   }
@@ -887,7 +901,7 @@ export default class EffectHandler {
    */
   async removeEffectFromIdOnTokenArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectFromIdOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid] = inAttributes;
     return this.removeEffectFromIdOnToken(effectId, uuid);
@@ -921,7 +935,7 @@ export default class EffectHandler {
       // await effectToRemove.update({ disabled: true });
       // await effectToRemove.delete();
       await token.actor?.deleteEmbeddedDocuments('ActiveEffect', effectIdsTmp);
-      log(`Removed effect ${effectIds.join(',')} from ${token.name} - ${token.id}`);
+      logM(this.moduleName, `Removed effect ${effectIds.join(',')} from ${token.name} - ${token.id}`);
     }
   }
 
@@ -934,7 +948,7 @@ export default class EffectHandler {
    */
   async removeEffectFromIdOnTokenMultipleArr(...inAttributes: any[]) {
     if (!Array.isArray(inAttributes)) {
-      throw error('removeEffectFromIdOnTokenMultipleArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'removeEffectFromIdOnTokenMultipleArr | inAttributes must be of type array');
     }
     const [effectIds, uuid] = inAttributes;
     return this.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
@@ -969,12 +983,15 @@ export default class EffectHandler {
       effect.overlay = overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnToken(effectName, uuid);
       if (activeEffectFounded) {
-        warn(`Can't add the effect with name ${effectName} on token ${token.name}, because is alredy added`);
+        warnM(
+          this.moduleName,
+          `Can't add the effect with name ${effectName} on token ${token.name}, because is alredy added`,
+        );
         return;
       }
       const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
       await token.actor?.createEmbeddedDocuments('ActiveEffect', [activeEffectData]);
-      log(`Added effect ${effect.name ? effect.name : effectName} to ${token.name} - ${token.id}`);
+      logM(this.moduleName, `Added effect ${effect.name ? effect.name : effectName} to ${token.name} - ${token.id}`);
     }
   }
 
@@ -987,7 +1004,7 @@ export default class EffectHandler {
    */
   async addEffectOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addEffectOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'addEffectOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid, origin, overlay, effect] = inAttributes;
     return this.addEffectOnToken(effectName, uuid, origin, overlay, effect);
@@ -1003,7 +1020,8 @@ export default class EffectHandler {
     forceEnabled?: boolean,
     forceDisabled?: boolean,
   ) {
-    debug(
+    debugM(
+      this.moduleName,
       `START Effect Handler 'toggleEffectFromIdOnToken' : [effetcId=${effectId},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
@@ -1036,7 +1054,8 @@ export default class EffectHandler {
         disabled: !effect.data.disabled,
       });
     }
-    debug(
+    debugM(
+      this.moduleName,
       `END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${effect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
     );
     return !!updated;
@@ -1044,7 +1063,7 @@ export default class EffectHandler {
 
   async toggleEffectFromIdOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('toggleEffectFromIdOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'toggleEffectFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
     return this.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled);
@@ -1067,13 +1086,13 @@ export default class EffectHandler {
         activeEffectData.origin = origin;
       }
       await token.actor?.createEmbeddedDocuments('ActiveEffect', [<Record<string, any>>activeEffectData]);
-      log(`Added effect ${activeEffectData.label} to ${token.name} - ${token.id}`);
+      logM(this.moduleName, `Added effect ${activeEffectData.label} to ${token.name} - ${token.id}`);
     }
   }
 
   async addActiveEffectOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addActiveEffectOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'addActiveEffectOnTokenArr | inAttributes must be of type array');
     }
     const [uuid, activeEffectData] = inAttributes;
     return this.addActiveEffectOnToken(uuid, activeEffectData);
@@ -1100,13 +1119,13 @@ export default class EffectHandler {
     const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
     activeEffectDataUpdated._id = effect.id;
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    log(`Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
     return !!updated;
   }
 
   async updateEffectFromIdOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('updateEffectFromIdOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'updateEffectFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid, origin, overlay, effectUpdated] = inAttributes;
     return this.updateEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
@@ -1135,13 +1154,13 @@ export default class EffectHandler {
     const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
     activeEffectDataUpdated._id = effect.id;
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    log(`Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
     return !!updated;
   }
 
   async updateEffectFromNameOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('updateEffectFromNameOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'updateEffectFromNameOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid, origin, overlay, effectUpdated] = inAttributes;
     return this.updateEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
@@ -1171,13 +1190,13 @@ export default class EffectHandler {
     activeEffectDataUpdated._id = effect.id;
     //@ts-ignore
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    log(`Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
     return !!updated;
   }
 
   async updateActiveEffectFromIdOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('updateActiveEffectFromIdOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'updateActiveEffectFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid, origin, overlay, effectUpdated] = inAttributes;
     return this.updateActiveEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
@@ -1209,13 +1228,13 @@ export default class EffectHandler {
     activeEffectDataUpdated._id = effect.id;
     //@ts-ignore
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    log(`Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
     return !!updated;
   }
 
   async updateActiveEffectFromNameOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('updateActiveEffectFromNameOnTokenArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'updateActiveEffectFromNameOnTokenArr | inAttributes must be of type array');
     }
     const [effectName, uuid, origin, overlay, effectUpdated] = inAttributes;
     return this.updateEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
@@ -1254,7 +1273,7 @@ export default class EffectHandler {
 
   async onManageActiveEffectFromEffectIdArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('onManageActiveEffectFromEffectIdArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'onManageActiveEffectFromEffectIdArr | inAttributes must be of type array');
     }
     const [effectActions, owner, effectId, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
       inAttributes;
@@ -1301,7 +1320,7 @@ export default class EffectHandler {
 
   async onManageActiveEffectFromEffectArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('onManageActiveEffectFromEffectArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'onManageActiveEffectFromEffectArr | inAttributes must be of type array');
     }
     const [effectActions, owner, effect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
       inAttributes;
@@ -1336,7 +1355,7 @@ export default class EffectHandler {
     switch (effectActions) {
       case 'update': {
         if (!activeEffect) {
-          warn(`Can't retrieve effect to update`);
+          warnM(this.moduleName, `Can't retrieve effect to update`);
           return;
         }
         if (owner instanceof Actor) {
@@ -1356,7 +1375,7 @@ export default class EffectHandler {
       }
       case 'create': {
         if (!activeEffect) {
-          warn(`Can't retrieve effect to create`);
+          warnM(this.moduleName, `Can't retrieve effect to create`);
           return;
         }
         if (owner instanceof Actor) {
@@ -1387,21 +1406,21 @@ export default class EffectHandler {
       // }
       case 'edit': {
         if (!activeEffect) {
-          warn(`Can't retrieve effect to edit`);
+          warnM(this.moduleName, `Can't retrieve effect to edit`);
           return;
         }
         return activeEffect?.sheet?.render(true);
       }
       case 'delete': {
         if (!activeEffect) {
-          warn(`Can't retrieve effect to delete`);
+          warnM(this.moduleName, `Can't retrieve effect to delete`);
           return;
         }
         return activeEffect?.delete();
       }
       case 'toggle': {
         if (!activeEffect) {
-          warn(`Can't retrieve effect to toogle`);
+          warnM(this.moduleName, `Can't retrieve effect to toogle`);
         }
         if (activeEffect?.getFlag('core', 'statusId') || alwaysDelete) {
           const deleted = await activeEffect?.delete();
@@ -1430,7 +1449,7 @@ export default class EffectHandler {
 
   async onManageActiveEffectFromActiveEffectArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('onManageActiveEffectFromActiveEffectArr | inAttributes must be of type array');
+      throw errorM(this.moduleName, 'onManageActiveEffectFromActiveEffectArr | inAttributes must be of type array');
     }
     const [effectActions, owner, activeEffect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
       inAttributes;
