@@ -1,12 +1,7 @@
 import { registerSocket, activeEffectManagerSocket } from './socket';
 
 import CONSTANTS from './constants';
-import {
-  debug,
-  i18n,
-  i18nFormat,
-  warn,
-} from './lib/lib';
+import { debug, i18n, i18nFormat, warn } from './lib/lib';
 import API from './api';
 import EffectInterface from './effects/effect-interface';
 
