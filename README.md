@@ -16,6 +16,9 @@
 
 A library for leverage and synchronize the creation/update/delete of Active Effects .
 
+The library was born as a series of functions for integration with the "[DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)" module and utilities in a multi-system context outside Dnd5e.
+After extensively testing it with different modules to get better feedback from the community and in preparation for FVTT10 I decided to separate it from the projects to use it as a support library.
+
 ## Include as a dependency in your manifest
 
 ```json
@@ -25,6 +28,8 @@ A library for leverage and synchronize the creation/update/delete of Active Effe
     "manifest": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.json"
 }
 ```
+
+## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
 ## Installation
 
@@ -63,4 +68,25 @@ Invoke the polymorpher manager feature from macro
 | animationExternal | <code>{ sequence:Sequence, timeToWait:number }</code> | Advanced: Use your personal sequence animation and the time needed to wait before the polymorph action, checkout the [Sequencer module](https://github.com/fantasycalendar/FoundryVTT-Sequencer) for more information  | <code>undefined</code> |
 
 **NOTE:** If both 'random' and 'ordered' are false the standard dialog will be rendered.
+
+## [Changelog](./CHANGELOG.md)
+
+## Issues
+
+Any issues, bugs, or feature requests are always welcome to be reported directly to the [Issue Tracker](https://github.com/p4535992/environment-interactionenvironment-interaction-multisystem/issues ), or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
+
+## License
+
+- **[DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)**: [MIT](https://github.com/DFreds/dfreds-convenient-effects/blob/main/LICENSE)
+
+This package is under an [MIT](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+## Credits
+
+- [DFreds](https://github.com/DFreds) for the module [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)
+
+
+## Acknowledgements
+
+Bootstrapped with League of Extraordinary FoundryVTT Developers [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
 
