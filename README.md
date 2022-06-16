@@ -14,7 +14,7 @@
 
 # FoundryVTT Library: Active Effect Manager
 
-XXX
+A library for leverage and synchronize the creation/update/delete of Active Effects .
 
 ## Include as a dependency in your manifest
 
@@ -46,7 +46,7 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 This module uses the [socketlib](https://github.com/manuelVo/foundryvtt-socketlib) library for wrapping core methods. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
-# API
+# API (WORKING IN PROGRESS...)
 
 ###  async game.modules.get('active-effect-manager-lib').api.invokePolymorpherManagerFromActor(sourceActorIdOrName: string, removePolymorpher = false, ordered = false, random = false, animationExternal:{ sequence:Sequence, timeToWait:number }|undefined = undefined) ⇒ <code>Promise.&lt;void&gt;</code>
 
