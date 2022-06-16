@@ -3,6 +3,7 @@ import EffectInterface from './effects/effect-interface';
 import { error } from './lib/lib';
 import type { ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import type Effect from './effects/effect';
+import type { EffectActions } from './effects/effect-models';
 
 const API = {
   effectInterface: EffectInterface,
@@ -323,13 +324,21 @@ const API = {
     return result;
   },
 
-  async hasEffectAppliedOnActor(actorId: string, effectName: string, includeDisabled:boolean) {
-    const result = (<EffectInterface>this.effectInterface).hasEffectAppliedOnActor(effectName, <string>actorId, includeDisabled);
+  async hasEffectAppliedOnActor(actorId: string, effectName: string, includeDisabled: boolean) {
+    const result = (<EffectInterface>this.effectInterface).hasEffectAppliedOnActor(
+      effectName,
+      <string>actorId,
+      includeDisabled,
+    );
     return result;
   },
 
-  async hasEffectAppliedFromIdOnActor(actorId: string, effectId: string, includeDisabled:boolean) {
-    const result = (<EffectInterface>this.effectInterface).hasEffectAppliedFromIdOnActor(effectId, <string>actorId, includeDisabled);
+  async hasEffectAppliedFromIdOnActor(actorId: string, effectId: string, includeDisabled: boolean) {
+    const result = (<EffectInterface>this.effectInterface).hasEffectAppliedFromIdOnActor(
+      effectId,
+      <string>actorId,
+      includeDisabled,
+    );
     return result;
   },
 
@@ -492,6 +501,127 @@ const API = {
       origin,
       overlay,
       effectUpdated,
+    );
+    return result;
+  },
+
+  // ======================
+  // Effect Generic Management
+  // ======================
+
+  async onManageActiveEffectFromEffectId(
+    effectActions: EffectActions,
+    owner: Actor | Item,
+    effectId: string,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ) {
+    const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromEffectId(
+      effectActions,
+      owner,
+      effectId,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
+    );
+    return result;
+  },
+
+  async onManageActiveEffectFromEffectIdArr(...inAttributes) {
+    const [effectActions, owner, effectId, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
+      inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.onManageActiveEffectFromEffectId(
+      effectActions,
+      owner,
+      effectId,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
+    );
+    return result;
+  },
+
+  async onManageActiveEffectFromEffect(
+    effectActions: EffectActions,
+    owner: Actor | Item,
+    effect: Effect,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ) {
+    const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromEffect(
+      effectActions,
+      owner,
+      effect,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
+    );
+    return result;
+  },
+
+  async onManageActiveEffectFromEffectArr(...inAttributes) {
+    const [effectActions, owner, effect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
+      inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.onManageActiveEffectFromEffect(
+      effectActions,
+      owner,
+      effect,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
+    );
+    return result;
+  },
+
+  async onManageActiveEffectFromActiveEffect(
+    effectActions: EffectActions,
+    owner: Actor | Item,
+    activeEffect: ActiveEffect | null | undefined,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ) {
+    const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromActiveEffect(
+      effectActions,
+      owner,
+      activeEffect,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
+    );
+    return result;
+  },
+
+  async onManageActiveEffectFromActiveEffectArr(...inAttributes) {
+    const [effectActions, owner, activeEffect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
+      inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.onManageActiveEffectFromActiveEffect(
+      effectActions,
+      owner,
+      activeEffect,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+      isTemporary,
+      isDisabled,
     );
     return result;
   },

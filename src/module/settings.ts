@@ -2,13 +2,13 @@ import CONSTANTS from './constants';
 import { dialogWarning, i18n, warn } from './lib/lib';
 
 export const registerSettings = function (): void {
-  game.settings.registerMenu(CONSTANTS.MODULE_NAME, 'resetAllSettings', {
-    name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
-    hint: `${CONSTANTS.MODULE_NAME}.setting.reset.hint`,
-    icon: 'fas fa-coins',
-    type: ResetSettingsDialog,
-    restricted: true,
-  });
+  // game.settings.registerMenu(CONSTANTS.MODULE_NAME, 'resetAllSettings', {
+  //   name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
+  //   hint: `${CONSTANTS.MODULE_NAME}.setting.reset.hint`,
+  //   icon: 'fas fa-coins',
+  //   type: ResetSettingsDialog,
+  //   restricted: true,
+  // });
 
   // =====================================================================
 
@@ -81,7 +81,7 @@ async function applyDefaultSettings() {
 
 function defaultSettings(apply = false) {
   return {
-   //
+    //
   };
 }
 

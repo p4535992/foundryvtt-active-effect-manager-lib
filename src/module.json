@@ -1,8 +1,8 @@
 {
   "name": "active-effect-manager-lib",
-  "title": "",
-  "description": "",
-  "version": "0.6.10",
+  "title": "Active effect manager library",
+  "description": "Active effect manager library for leverage operation on active effects",
+  "version": "0.0.1",
   "author": "p4535992",
   "authors": [
     {

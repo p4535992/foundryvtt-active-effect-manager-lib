@@ -1,8 +1,8 @@
-import CONSTANTS from '../constants.js';
-
 // =============================
 // Module Generic function
 // =============================
+
+import CONSTANTS from '../constants';
 
 export async function getToken(documentUuid) {
   const document = await fromUuid(documentUuid);
@@ -158,6 +158,46 @@ export function warn(warning, notify = false) {
 
 export function error(error, notify = true) {
   error = `${CONSTANTS.MODULE_NAME} | ${error}`;
+  if (notify) ui.notifications?.error(error);
+  return new Error(error.replace('<br>', '\n'));
+}
+
+export function debugM(moduleName, msg, args = '') {
+  if (game.settings.get(CONSTANTS.MODULE_NAME, 'debug')) {
+    console.log(`DEBUG | ${moduleName} | ${msg}`, args);
+  }
+  return msg;
+}
+
+export function logM(moduleName, message) {
+  message = `${moduleName} | ${message}`;
+  console.log(message.replace('<br>', '\n'));
+  return message;
+}
+
+export function notifyM(moduleName, message) {
+  message = `${moduleName} | ${message}`;
+  ui.notifications?.notify(message);
+  console.log(message.replace('<br>', '\n'));
+  return message;
+}
+
+export function infoM(moduleName, info, notify = false) {
+  info = `${moduleName} | ${info}`;
+  if (notify) ui.notifications?.info(info);
+  console.log(info.replace('<br>', '\n'));
+  return info;
+}
+
+export function warnM(moduleName, warning, notify = false) {
+  warning = `${moduleName} | ${warning}`;
+  if (notify) ui.notifications?.warn(warning);
+  console.warn(warning.replace('<br>', '\n'));
+  return warning;
+}
+
+export function errorM(moduleName, error, notify = true) {
+  error = `${moduleName} | ${error}`;
   if (notify) ui.notifications?.error(error);
   return new Error(error.replace('<br>', '\n'));
 }
