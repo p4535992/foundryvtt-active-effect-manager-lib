@@ -11,21 +11,10 @@ import type { EffectChangeData } from '@league-of-foundry-developers/foundry-vtt
 import type { EffectActions } from './effect-models';
 
 export default class EffectHandler {
-  _customEffects: Effect[];
   moduleName: string;
   _foundryHelpers: FoundryHelpers;
 
   constructor(moduleName: string) {
-    // if (!game[moduleName]) {
-    //   game[moduleName] = {};
-    // }
-    // if (!game[moduleName]?.effects) {
-    //   game[moduleName].effects = {};
-    // }
-    // if (!game[moduleName].effects.customEffects) {
-    //   game[moduleName].effects.customEffects = [];
-    // }
-    this._customEffects = [];
     this.moduleName = moduleName;
     this._foundryHelpers = new FoundryHelpers();
   }
@@ -34,23 +23,23 @@ export default class EffectHandler {
    * Toggles an effect on or off by name on an actor by UUID
    *
    * @param {string} effectName - name of the effect to toggle
-   * @param {object} params - the effect parameters
-   * @param {string} params.overlay - name of the effect to toggle
-   * @param {object} params.metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
-   * @param {string[]} params.uuids - UUIDS of the actors to toggle the effect on
+   * @param {string} overlay - name of the effect to toggle
+   * @param {string[]} uuids - UUIDS of the actors to toggle the effect on
+   * @param {object} metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
+   * @param {string} effectData - data of the effect to toggle (in this case is the add)
    */
-  async toggleEffect(effectName, { overlay, uuids, metadata = undefined }) {
+  async toggleEffect(effectName, overlay, uuids, metadata = undefined, effectData = undefined) {
     debug(
       `START Effect Handler 'toggleEffect' : [overlay=${overlay},uuids=${String(uuids)},metadata=${String(metadata)}]`,
     );
     const effectNames: string[] = [];
     for (const uuid of uuids) {
       if (this.hasEffectApplied(effectName, uuid)) {
-        await this.removeEffect({ effectName, uuid });
+        await this.removeEffect(effectName, uuid);
       } else {
         const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
         const origin = `Actor.${actor.id}`;
-        await this.addEffect({ effectName, effectData: null, uuid, origin, overlay, metadata });
+        await this.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
       }
     }
     debug(
@@ -72,8 +61,8 @@ export default class EffectHandler {
     if (!Array.isArray(inAttributes)) {
       throw error('toggleEffectArr | inAttributes must be of type array');
     }
-    const [effectName, params] = inAttributes;
-    return this.toggleEffect(effectName, params);
+    const [effectName, overlay, uuids, metadata, effectData] = inAttributes;
+    return this.toggleEffect(effectName, overlay, uuids, metadata, effectData);
   }
 
   /**
@@ -123,11 +112,10 @@ export default class EffectHandler {
    * Removes the effect with the provided name from an actor matching the
    * provided UUID
    *
-   * @param {object} params - the effect parameters
-   * @param {string} params.effectName - the name of the effect to remove
-   * @param {string} params.uuid - the uuid of the actor to remove the effect from
+   * @param {string} effectName - the name of the effect to remove
+   * @param {string} uuid - the uuid of the actor to remove the effect from
    */
-  async removeEffect({ effectName, uuid }) {
+  async removeEffect(effectName, uuid) {
     const actor = this._foundryHelpers.getActorByUuid(uuid);
     const effectToRemove = actor.data.effects.find(
       //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && activeEffect?.data?.label == effectName,
@@ -151,23 +139,22 @@ export default class EffectHandler {
     if (!Array.isArray(inAttributes)) {
       throw error('removeEffectArr | inAttributes must be of type array');
     }
-    const [params] = inAttributes;
-    return this.removeEffect(params);
+    const [effectName, uuid] = inAttributes;
+    return this.removeEffect(effectName, uuid);
   }
 
   /**
    * Adds the effect with the provided name to an actor matching the provided
    * UUID
    *
-   * @param {object} params - the effect parameters
-   * @param {string} params.effectName - the name of the effect to add
-   * @param {object} params.effectData - the effect data to add if effectName is not provided
-   * @param {string} params.uuid - the uuid of the actor to add the effect to
-   * @param {string} params.origin - the origin of the effect
-   * @param {boolean} params.overlay - if the effect is an overlay or not
-   * @param {object} params.metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
+   * @param {string} effectName - the name of the effect to add
+   * @param {object} effectData - the effect data to add if effectName is not provided
+   * @param {string} uuid - the uuid of the actor to add the effect to
+   * @param {string} origin - the origin of the effect
+   * @param {boolean} overlay - if the effect is an overlay or not
+   * @param {object} metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
    */
-  async addEffect({ effectName, effectData, uuid, origin, overlay = false, metadata = undefined }) {
+  async addEffect(effectName, effectData, uuid, origin, overlay = false, metadata = undefined) {
     const actor = this._foundryHelpers.getActorByUuid(uuid);
     let effect = <Effect>this._findEffectByName(effectName, actor);
 
@@ -181,56 +168,19 @@ export default class EffectHandler {
     effect.origin = origin;
     effect.overlay = overlay;
 
-    // let effect = game.dfreds.effectInterface.findEffectByName(effectName);
-
-    // if (!effect && effectData) {
-    //   effect = new Effect(effectData);
-    // }
-
-    // const actor = this._foundryHelpers.getActorByUuid(uuid);
-
-    // if (effect.name.startsWith('Exhaustion')) {
-    //   await this._removeAllExhaustionEffects(uuid);
-    // }
-
-    // if (effect.isDynamic) {
-    //   await this._dynamicEffectsAdder.addDynamicEffects(effect, actor);
-    // }
-
     this._handleIntegrations(effect);
 
-    // const activeEffectData = effect.convertToActiveEffectData({
-    //   origin,
-    //   overlay,
-    // });
     effect.origin = origin;
     effect.overlay = overlay;
     const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
     if (activeEffectFounded) {
-      warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`);
+      warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is already added`);
       return;
     }
     const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
     await actor.createEmbeddedDocuments('ActiveEffect', [activeEffectData]);
-    // Update
-    // const nameToUpdated = activeEffectData.name;
-    // const effectUpdate = <ActiveEffect>actor.data.effects.find((entity: ActiveEffect) => {
-    //   return <string>entity.name == nameToUpdated || entity.data.label == nameToUpdated;
-    // });
-    // await effectUpdate.data?.document?.update({
-    //   isSuppressed: effect.isSuppressed,
-    //   isTemporary: effect.isTemporary,
-    // });
     log(`Added effect ${effect.name} to ${actor.name} - ${actor.id}`);
   }
-
-  // async _removeAllExhaustionEffects(uuid) {
-  //   await this.removeEffect({ effectName: 'Exhaustion 1', uuid });
-  //   await this.removeEffect({ effectName: 'Exhaustion 2', uuid });
-  //   await this.removeEffect({ effectName: 'Exhaustion 3', uuid });
-  //   await this.removeEffect({ effectName: 'Exhaustion 4', uuid });
-  //   await this.removeEffect({ effectName: 'Exhaustion 5', uuid });
-  // }
 
   /**
    * Adds the effect with the provided name to an actor matching the provided
@@ -246,8 +196,8 @@ export default class EffectHandler {
     if (!Array.isArray(inAttributes)) {
       throw error('addEffectArr | inAttributes must be of type array');
     }
-    const [params] = inAttributes;
-    return this.addEffect(params);
+    const [effectName, effectData, uuid, origin, overla, metadata] = inAttributes;
+    return this.addEffect(effectName, effectData, uuid, origin, overla, metadata);
   }
 
   _handleIntegrations(effect: Effect): EffectChangeData[] {
@@ -269,26 +219,19 @@ export default class EffectHandler {
     if (!effectName) {
       return null;
     }
-    // const effect = this._customEffectsHandler
-    //   .getCustomEffects()
-    //   .find((effect) => effect.name == effectName);
 
-    // if (effect) return effect;
-
-    // return game.dfreds.effects.all.find((effect) => effect.name == effectName);
-    let effect = <Effect>this._customEffects.find((effect: Effect) => effect.name == effectName);
-    if (!effect) {
-      const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.data.effects;
-      for (const effectEntity of actorEffects) {
-        const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
-        if (!effectNameToSet) {
-          continue;
-        }
-        if (isStringEquals(effectNameToSet, effectName)) {
-          effect = EffectSupport.convertActiveEffectToEffect(effectEntity);
-        }
+    let effect:Effect|undefined;
+    const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.data.effects;
+    for (const effectEntity of actorEffects) {
+      const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
+      if (!effectNameToSet) {
+        continue;
+      }
+      if (isStringEquals(effectNameToSet, effectName)) {
+        effect = EffectSupport.convertActiveEffectToEffect(effectEntity);
       }
     }
+
     return effect;
   }
 
@@ -566,7 +509,7 @@ export default class EffectHandler {
       effect.overlay = overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
       if (activeEffectFounded) {
-        warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is alredy added`);
+        warn(`Can't add the effect with name ${effectName} on actor ${actor.name}, because is already added`);
         return;
       }
       const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
@@ -969,7 +912,7 @@ export default class EffectHandler {
       effect.overlay = overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnToken(effectName, uuid);
       if (activeEffectFounded) {
-        warn(`Can't add the effect with name ${effectName} on token ${token.name}, because is alredy added`);
+        warn(`Can't add the effect with name ${effectName} on token ${token.name}, because is already added`);
         return;
       }
       const activeEffectData = EffectSupport.convertToActiveEffectData(effect);

@@ -1,3 +1,4 @@
+import API from './api';
 import CONSTANTS from './constants';
 import { dialogWarning, i18n, warn } from './lib/lib';
 
@@ -11,6 +12,14 @@ export const registerSettings = function (): void {
   // });
 
   // =====================================================================
+
+  game.settings.register(CONSTANTS.MODULE_NAME, 'statusEffectNames', {
+    name: 'Status Effect Names',
+    scope: 'world',
+    config: false,
+    default: API._defaultStatusEffectNames,
+    type: Array,
+  });
 
   // ========================================================================
 

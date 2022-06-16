@@ -4,9 +4,85 @@ import { error } from './lib/lib';
 import type { ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import type Effect from './effects/effect';
 import type { EffectActions } from './effects/effect-models';
+import StatusEffectsLib from './effects/status-effects';
 
 const API = {
   effectInterface: EffectInterface,
+  statusEffects: StatusEffectsLib,
+
+  get _defaultStatusEffectNames() {
+    return [
+     // add something here ???
+    ];
+  },
+
+  /**
+   * Returns the game setting for the status effect names
+   *
+   * @returns {String[]} the names of all the status effects
+   */
+  get statusEffectNames():string[] {
+    return <string[]>game.settings.get(CONSTANTS.MODULE_NAME, 'statusEffectNames');
+  },
+
+  /**
+   * Adds a given effect name to the saved status effect settings
+   *
+   * @param {string} name - the name of the effect to add to status effects
+   * @returns {Promise} a promise that resolves when the settings update is complete
+   */
+  async addStatusEffect(name) {
+    let statusEffectsArray = this.statusEffectNames;
+    statusEffectsArray.push(name);
+
+    statusEffectsArray = [...new Set(statusEffectsArray)]; // remove duplicates
+
+    return game.settings.set(
+      CONSTANTS.MODULE_NAME,
+      'statusEffectNames',
+      statusEffectsArray
+    );
+  },
+
+  /**
+   * Removes a given effect name from the saved status effect settings
+   *
+   * @param {string} name - the name of the effect to remove from status effects
+   * @returns {Promise} a promise that resolves when the settings update is complete
+   */
+  async removeStatusEffect(name) {
+    const statusEffectsArray = this.statusEffectNames.filter(
+      (statusEffect) => statusEffect !== name
+    );
+    return game.settings.set(
+      CONSTANTS.MODULE_NAME,
+      'statusEffectNames',
+      statusEffectsArray
+    );
+  },
+
+  /**
+   * Reset status effects back to the original defaults
+   *
+   * @returns {Promise} a promise that resolves when the settings update is complete
+   */
+  async resetStatusEffects() {
+    return game.settings.set(
+      CONSTANTS.MODULE_NAME,
+      'statusEffectNames',
+      this._defaultStatusEffectNames
+    );
+  },
+
+  /**
+   * Checks if the given effect name is a status effect
+   *
+   * @param {string} name - the effect name to search for
+   * @returns {boolean} true if the effect is a status effect, false otherwise
+   */
+  isStatusEffect(name) {
+    return this.statusEffectNames.includes(name);
+  },
 
   // ======================
   // Effect Management
@@ -16,8 +92,8 @@ const API = {
     if (!Array.isArray(inAttributes)) {
       throw error('removeEffectArr | inAttributes must be of type array');
     }
-    const [params] = inAttributes;
-    const result = await (<EffectInterface>this.effectInterface)._effectHandler.removeEffect(params);
+    const [effectName, uuid] = inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.removeEffect(effectName, uuid);
     return result;
   },
 
@@ -25,8 +101,13 @@ const API = {
     if (!Array.isArray(inAttributes)) {
       throw error('toggleEffectArr | inAttributes must be of type array');
     }
-    const [effectName, params] = inAttributes;
-    const result = await (<EffectInterface>this.effectInterface).toggleEffect(effectName, params);
+    const [effectName, overlay, uuids, metadata, effectData] = inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffect(
+      effectName,
+      overlay,
+      uuids,
+      metadata,
+      effectData);
     return result;
   },
 
@@ -34,8 +115,14 @@ const API = {
     if (!Array.isArray(inAttributes)) {
       throw error('addEffectArr | inAttributes must be of type array');
     }
-    const [params] = inAttributes;
-    const result = await (<EffectInterface>this.effectInterface)._effectHandler.addEffect(params);
+    const [effectName, effectData, uuid, origin, overlay, metadata] = inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.addEffect(
+      effectName,
+      effectData,
+      uuid,
+      origin,
+      overlay,
+      metadata);
     return result;
   },
 
