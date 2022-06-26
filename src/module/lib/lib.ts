@@ -162,45 +162,45 @@ export function error(error, notify = true) {
   return new Error(error.replace('<br>', '\n'));
 }
 
-export function debugM(moduleName, msg, args = '') {
-  if (game.settings.get(moduleName, 'debug')) {
-    console.log(`DEBUG | ${moduleName} | ${msg}`, args);
-  }
-  return msg;
-}
+// export function debugM(moduleName, msg, args = '') {
+//   if (game.settings.get(moduleName, 'debug')) {
+//     console.log(`DEBUG | ${moduleName} | ${msg}`, args);
+//   }
+//   return msg;
+// }
 
-export function logM(moduleName, message) {
-  message = `${moduleName} | ${message}`;
-  console.log(message.replace('<br>', '\n'));
-  return message;
-}
+// export function logM(moduleName, message) {
+//   message = `${moduleName} | ${message}`;
+//   console.log(message.replace('<br>', '\n'));
+//   return message;
+// }
 
-export function notifyM(moduleName, message) {
-  message = `${moduleName} | ${message}`;
-  ui.notifications?.notify(message);
-  console.log(message.replace('<br>', '\n'));
-  return message;
-}
+// export function notifyM(moduleName, message) {
+//   message = `${moduleName} | ${message}`;
+//   ui.notifications?.notify(message);
+//   console.log(message.replace('<br>', '\n'));
+//   return message;
+// }
 
-export function infoM(moduleName, info, notify = false) {
-  info = `${moduleName} | ${info}`;
-  if (notify) ui.notifications?.info(info);
-  console.log(info.replace('<br>', '\n'));
-  return info;
-}
+// export function infoM(moduleName, info, notify = false) {
+//   info = `${moduleName} | ${info}`;
+//   if (notify) ui.notifications?.info(info);
+//   console.log(info.replace('<br>', '\n'));
+//   return info;
+// }
 
-export function warnM(moduleName, warning, notify = false) {
-  warning = `${moduleName} | ${warning}`;
-  if (notify) ui.notifications?.warn(warning);
-  console.warn(warning.replace('<br>', '\n'));
-  return warning;
-}
+// export function warnM(moduleName, warning, notify = false) {
+//   warning = `${moduleName} | ${warning}`;
+//   if (notify) ui.notifications?.warn(warning);
+//   console.warn(warning.replace('<br>', '\n'));
+//   return warning;
+// }
 
-export function errorM(moduleName, error, notify = true) {
-  error = `${moduleName} | ${error}`;
-  if (notify) ui.notifications?.error(error);
-  return new Error(error.replace('<br>', '\n'));
-}
+// export function errorM(moduleName, error, notify = true) {
+//   error = `${moduleName} | ${error}`;
+//   if (notify) ui.notifications?.error(error);
+//   return new Error(error.replace('<br>', '\n'));
+// }
 
 export function timelog(message): void {
   warn(Date.now(), message);
