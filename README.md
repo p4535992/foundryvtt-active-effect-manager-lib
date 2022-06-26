@@ -12,12 +12,12 @@
 
 ### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
 
-# FoundryVTT Library: Active Effect Manager
+# [BETA] FoundryVTT Library: Active Effect Manager
 
 A library for leverage and synchronize the creation/update/delete of Active Effects .
 
 The library was born as a series of functions for integration with the "[DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)" module and utilities in a multi-system context outside Dnd5e.
-After extensively testing it with different modules to get better feedback from the community and in preparation for FVTT10 I decided to separate it from the projects to use it as a support library.
+After extensively testing it with different modules i decide to get better feedback from the community and in preparation for FVTT10 to separate it this part of the code from the projects to use it as a support library.
 
 ## Include as a dependency in your manifest
 

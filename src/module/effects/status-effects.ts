@@ -1,3 +1,5 @@
+import type { StatusEffect } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/token';
+import type { ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import API from '../api';
 import CONSTANTS from '../constants';
 import type Effect from './effect';
@@ -45,6 +47,9 @@ export default class StatusEffectsLib {
   }
 
   _fetchStatusEffects(statusEffectNames: string[]) {
+    if (!statusEffectNames) {
+      return [];
+    }
     return statusEffectNames
       .map((name) => {
         // Integration with DFred
@@ -68,26 +73,30 @@ export default class StatusEffectsLib {
    * here. Otherwise, the original wrapper function is used.
    *
    * @param {Token5e} token - the token to toggle the effect on
-   * @param {fn} wrapper - the original onToggleEffect function
+   * @param {fn} wrapped - the original onToggleEffect function
    * @param {any[]} args - any arguments provided with the original onToggleEffect function
    */
-  onToggleEffect(wrapper, ...args) {
-    const token = <Token>(<unknown>this);
-    const [event] = args;
+  async onToggleEffect(token: Token, wrapped, ...args) {
+    // const token = args[0]; //<Token>(<unknown>this);
+    const [eventArr] = args;
+    const event = eventArr[0];
+    const overlay = eventArr.length > 1 && eventArr[1]?.overlay;
     const statusEffectId = event.currentTarget.dataset.statusId;
     // Integration with DFred
-    if (statusEffectId.startsWith('Convenient Effect: ')) {
-      event.preventDefault();
-      event.stopPropagation();
-      const effectName = statusEffectId.replace('Convenient Effect: ', '');
-
-      const overlay = args.length > 1 && args[1]?.overlay;
-      const tokenId = token.actor?.uuid;
-      const uuids = <string[]>[tokenId];
-
-      (<EffectInterface>(<unknown>API.effectInterface)).toggleEffect(effectName, overlay, uuids);
+    // if (statusEffectId.startsWith('Convenient Effect: ')) {
+    event.preventDefault();
+    event.stopPropagation();
+    // const effectName = statusEffectId.replace('Convenient Effect: ', '');
+    // const overlay = args.length > 1 && args[1]?.overlay;
+    // const tokenId = <string>token.actor?.uuid;
+    const tokenId = token.id;
+    const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, statusEffectId);
+    if (result) {
+      // const uuids = <string[]>[tokenId];
+      const effectId = <string>result.id;
+      API.toggleEffectFromIdOnToken(tokenId, effectId, true);
     } else {
-      wrapper(...args);
+      wrapped(...args);
     }
   }
 
@@ -101,8 +110,8 @@ export default class StatusEffectsLib {
    * @param {any[]} args - any arguments provided with the original getStatusEffectChoices function
    * @returns {Object} object mapping for all the status effects
    */
-  getStatusEffectChoices(wrapper, ...args) {
-    const token = <Token>(<unknown>this);
+  getStatusEffectChoices(token: Token, wrapped, ...args) {
+    // const token = args[0]; //<Token>(<unknown>this);
 
     // NOTE: taken entirely from foundry.js, modified to remove the icon being the key
     // Get statuses which are active for the token actor
@@ -120,9 +129,13 @@ export default class StatusEffectsLib {
         }, {})
       : {};
 
+    const effectsArray: StatusEffect[] =
+      <StatusEffect[]>(<unknown>token.actor?.data.effects) || <StatusEffect[]>(<unknown>token.data.effects);
+
     // Prepare the list of effects from the configured defaults and any additional effects present on the Token
-    const tokenEffects = <any[]>foundry.utils.deepClone(token.data.effects) || [];
+    const tokenEffects = <StatusEffect[]>foundry.utils.deepClone(effectsArray) || [];
     if (token.data.overlayEffect) {
+      //@ts-ignore
       tokenEffects.push(token.data.overlayEffect);
     }
     return CONFIG.statusEffects.concat(tokenEffects).reduce((obj, e) => {
@@ -132,8 +145,18 @@ export default class StatusEffectsLib {
       if (id in obj) {
         return obj; // NOTE: changed from src to id
       }
+      let srcExt = false;
+      for (const ae of effectsArray) {
+        //@ts-ignore
+        if (ae.data.icon.includes(src)) {
+          srcExt = true;
+          break;
+        }
+      }
+
       const status = statuses[e.id] || {};
-      const isActive = !!status.id || token.data.effects.includes(src);
+      // const isActive = !!status.id || effectsArray.includes(src);
+      const isActive = !!status.id || srcExt;
       const isOverlay = !!status.overlay || token.data.overlayEffect === src;
 
       // NOTE: changed key from src to id

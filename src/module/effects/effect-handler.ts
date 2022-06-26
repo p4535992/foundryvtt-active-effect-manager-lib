@@ -28,7 +28,7 @@ export default class EffectHandler {
    * @param {object} metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
    * @param {string} effectData - data of the effect to toggle (in this case is the add)
    */
-  async toggleEffect(effectName, overlay, uuids, metadata = undefined, effectData = undefined) {
+  async toggleEffect(effectName, overlay, uuids, metadata = undefined, effectData: Effect | undefined = undefined) {
     debugM(
       this.moduleName,
       `START Effect Handler 'toggleEffect' : [overlay=${overlay},uuids=${String(uuids)},metadata=${String(metadata)}]`,
@@ -40,7 +40,7 @@ export default class EffectHandler {
       } else {
         const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
         const origin = `Actor.${actor.id}`;
-        await this.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
+        await this.addEffect(effectName, <Effect>effectData, uuid, origin, overlay, metadata);
       }
     }
     debugM(
@@ -162,7 +162,7 @@ export default class EffectHandler {
    * @param {boolean} overlay - if the effect is an overlay or not
    * @param {object} metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
    */
-  async addEffect(effectName, effectData, uuid, origin, overlay = false, metadata = undefined) {
+  async addEffect(effectName, effectData: Effect, uuid, origin, overlay = false, metadata = undefined) {
     const actor = this._foundryHelpers.getActorByUuid(uuid);
     let effect = <Effect>this._findEffectByName(effectName, actor);
 
@@ -173,13 +173,11 @@ export default class EffectHandler {
     if (!origin) {
       origin = `Actor.${actor.id}`;
     }
-    effect.origin = origin;
-    effect.overlay = overlay;
 
     this._handleIntegrations(effect);
 
-    effect.origin = origin;
-    effect.overlay = overlay;
+    effect.origin = effectData.origin ? effectData.origin : origin;
+    effect.overlay = effectData.overlay ? effectData.overlay : overlay;
     const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
     if (activeEffectFounded) {
       warnM(
@@ -516,8 +514,8 @@ export default class EffectHandler {
       //   origin,
       //   overlay,
       // });
-      effect.origin = origin;
-      effect.overlay = overlay;
+      effect.origin = effect.origin ? effect.origin : origin;
+      effect.overlay = effect.overlay ? effect.overlay : overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
       if (activeEffectFounded) {
         warnM(
@@ -922,8 +920,8 @@ export default class EffectHandler {
       //   origin,
       //   overlay,
       // });
-      effect.origin = origin;
-      effect.overlay = overlay;
+      effect.origin = effect.origin ? effect.origin : origin;
+      effect.overlay = effect.overlay ? effect.overlay : overlay;
       const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnToken(effectName, uuid);
       if (activeEffectFounded) {
         warnM(

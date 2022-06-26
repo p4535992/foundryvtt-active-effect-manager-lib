@@ -28,31 +28,40 @@ export const setupHooks = (): void => {
   window.activeEffectManager.API.effectInterface.initialize();
 
   //@ts-ignore
-  window.activeEffectManager.API.statusEffects = new StatusEffects().init();
+  window.activeEffectManager.API.statusEffects = new StatusEffects();
+  //@ts-ignore
+  window.activeEffectManager.API.statusEffects.init();
 
   //@ts-ignore
   setApi(window.activeEffectManager.API);
 
   //@ts-ignore
-  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapper, ...args) {
+  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapped, ...args) {
     const token = this.object;
-    (<StatusEffectsLib>(<unknown>API.statusEffects)).onToggleEffect(token, wrapper, args);
+    //@ts-ignore
+    (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect(token, wrapped, args);
   });
 
   //@ts-ignore
-  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._getStatusEffectChoices', function (wrapper, ...args) {
+  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._getStatusEffectChoices', function (wrapped, ...args) {
     const token = this.object;
-    return (<StatusEffectsLib>(<unknown>API.statusEffects)).getStatusEffectChoices(token, wrapper, args);
+    //@ts-ignore
+    return (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).getStatusEffectChoices(
+      token,
+      wrapped,
+      args,
+    );
   });
 
   //@ts-ignore
   libWrapper.register(
     CONSTANTS.MODULE_NAME,
     'TokenHUD.prototype.refreshStatusIcons',
-    function (wrapper, ...args) {
+    function (wrapped, ...args) {
       const tokenHud = <any>this;
-      (<StatusEffectsLib>(<unknown>API.statusEffects)).refreshStatusIcons(tokenHud);
-      wrapper(...args);
+      //@ts-ignore
+      (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).refreshStatusIcons(tokenHud);
+      wrapped(...args);
     },
     'WRAPPER',
   );

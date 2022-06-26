@@ -31,8 +31,11 @@ export default class EffectInterface {
   /**
    * Initializes the socket and registers the socket functions
    */
-  initialize() {
+  initialize(moduleName = '') {
     //this._socket = registerSocket();
+    if (moduleName) {
+      this.moduleName = moduleName;
+    }
   }
 
   /**

@@ -58,14 +58,17 @@ export class EffectSupport {
 
   static _handleIntegrations(effect: Effect): EffectChangeData[] {
     const arrChanges: EffectChangeData[] = [];
-    for (const change of effect?.changes) {
-      if (!change.value) {
-        change.value = '';
+
+    if (effect?.changes && effect?.changes.length > 0) {
+      for (const change of effect?.changes) {
+        if (!change.value) {
+          change.value = '';
+        }
+        arrChanges.push(change);
       }
-      arrChanges.push(change);
     }
 
-    if (effect.atlChanges.length > 0) {
+    if (effect.atlChanges && effect.atlChanges.length > 0) {
       for (const atlChange of effect.atlChanges) {
         if (arrChanges.filter((e) => e.key === atlChange.key).length <= 0) {
           if (!EffectSupport.isDuplicateEffectChange(atlChange.key, arrChanges)) {
@@ -78,7 +81,7 @@ export class EffectSupport {
       }
     }
 
-    if (effect.tokenMagicChanges.length > 0) {
+    if (effect.tokenMagicChanges && effect.tokenMagicChanges.length > 0) {
       for (const tokenMagicChange of effect.tokenMagicChanges) {
         if (arrChanges.filter((e) => e.key === tokenMagicChange.key).length <= 0) {
           if (!EffectSupport.isDuplicateEffectChange(tokenMagicChange.key, arrChanges)) {
@@ -91,7 +94,7 @@ export class EffectSupport {
       }
     }
 
-    if (effect.atcvChanges.length > 0) {
+    if (effect.atcvChanges && effect.atcvChanges.length > 0) {
       for (const atcvChange of effect.atcvChanges) {
         if (arrChanges.filter((e) => e.key === atcvChange.key).length <= 0) {
           if (!EffectSupport.isDuplicateEffectChange(atcvChange.key, arrChanges)) {
@@ -305,7 +308,12 @@ export class EffectSupport {
     const isPassive = !effect.isTemporary;
     const myid = effect._id ? effect._id : effect.flags?.core?.statusId ? effect.flags.core.statusId : undefined;
     const myoverlay = effect.overlay ? effect.overlay : effect.flags?.core?.overlay ? effect.flags.core.overlay : false;
-    const currentDae = EffectSupport._isEmptyObject(effect.dae) ? effect.flags.dae : effect.dae;
+    const currentDae = EffectSupport._isEmptyObject(effect.dae)
+      ? effect.flags?.dae
+        ? effect.flags?.dae
+        : {}
+      : effect.dae;
+    const currentFlags = effect.flags ? effect.flags : {};
     return {
       id: myid,
       name: i18n(effect.name),
@@ -314,7 +322,7 @@ export class EffectSupport {
       icon: effect.icon,
       tint: effect.tint,
       duration: EffectSupport._getDurationData(effect.seconds, effect.rounds, effect.turns, effect.isTemporary),
-      flags: foundry.utils.mergeObject(effect.flags, {
+      flags: foundry.utils.mergeObject(currentFlags, {
         core: {
           statusId: isPassive ? undefined : myid,
           overlay: myoverlay,
