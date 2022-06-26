@@ -6,6 +6,7 @@ import API from './api';
 import EffectInterface from './effects/effect-interface';
 import StatusEffects from './effects/status-effects';
 import type StatusEffectsLib from './effects/status-effects';
+import { setApi } from '../active-effect-manager-lib';
 
 export const initHooks = (): void => {
   // registerSettings();
@@ -33,32 +34,16 @@ export const setupHooks = (): void => {
   setApi(window.activeEffectManager.API);
 
   //@ts-ignore
-  libWrapper.register(
-    CONSTANTS.MODULE_NAME,
-    'TokenHUD.prototype._onToggleEffect',
-    function (wrapper, ...args) {
-      const token = this.object;
-      (<StatusEffectsLib><unknown>API.statusEffects).onToggleEffect(
-        token,
-        wrapper,
-        args,
-      );
-    }
-  );
+  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapper, ...args) {
+    const token = this.object;
+    (<StatusEffectsLib>(<unknown>API.statusEffects)).onToggleEffect(token, wrapper, args);
+  });
 
   //@ts-ignore
-  libWrapper.register(
-    CONSTANTS.MODULE_NAME,
-    'TokenHUD.prototype._getStatusEffectChoices',
-    function (wrapper, ...args) {
-      const token = this.object;
-      return (<StatusEffectsLib><unknown>API.statusEffects).getStatusEffectChoices(
-        token,
-        wrapper,
-        args,
-      );
-    }
-  );
+  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._getStatusEffectChoices', function (wrapper, ...args) {
+    const token = this.object;
+    return (<StatusEffectsLib>(<unknown>API.statusEffects)).getStatusEffectChoices(token, wrapper, args);
+  });
 
   //@ts-ignore
   libWrapper.register(
@@ -66,10 +51,10 @@ export const setupHooks = (): void => {
     'TokenHUD.prototype.refreshStatusIcons',
     function (wrapper, ...args) {
       const tokenHud = <any>this;
-      (<StatusEffectsLib><unknown>API.statusEffects).refreshStatusIcons(tokenHud);
+      (<StatusEffectsLib>(<unknown>API.statusEffects)).refreshStatusIcons(tokenHud);
       wrapper(...args);
     },
-    'WRAPPER'
+    'WRAPPER',
   );
 };
 
@@ -77,6 +62,4 @@ export const readyHooks = (): void => {
   // checkSystem();
   // registerHotkeys();
   // Hooks.callAll(HOOKS.READY);
-
-
 };

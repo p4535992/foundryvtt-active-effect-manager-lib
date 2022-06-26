@@ -163,7 +163,7 @@ export function error(error, notify = true) {
 }
 
 export function debugM(moduleName, msg, args = '') {
-  if (game.settings.get(CONSTANTS.MODULE_NAME, 'debug')) {
+  if (game.settings.get(moduleName, 'debug')) {
     console.log(`DEBUG | ${moduleName} | ${msg}`, args);
   }
   return msg;

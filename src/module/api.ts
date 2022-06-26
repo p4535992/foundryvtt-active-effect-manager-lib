@@ -12,7 +12,7 @@ const API = {
 
   get _defaultStatusEffectNames() {
     return [
-     // add something here ???
+      // add something here ???
     ];
   },
 
@@ -21,7 +21,7 @@ const API = {
    *
    * @returns {String[]} the names of all the status effects
    */
-  get statusEffectNames():string[] {
+  get statusEffectNames(): string[] {
     return <string[]>game.settings.get(CONSTANTS.MODULE_NAME, 'statusEffectNames');
   },
 
@@ -37,11 +37,7 @@ const API = {
 
     statusEffectsArray = [...new Set(statusEffectsArray)]; // remove duplicates
 
-    return game.settings.set(
-      CONSTANTS.MODULE_NAME,
-      'statusEffectNames',
-      statusEffectsArray
-    );
+    return game.settings.set(CONSTANTS.MODULE_NAME, 'statusEffectNames', statusEffectsArray);
   },
 
   /**
@@ -51,14 +47,8 @@ const API = {
    * @returns {Promise} a promise that resolves when the settings update is complete
    */
   async removeStatusEffect(name) {
-    const statusEffectsArray = this.statusEffectNames.filter(
-      (statusEffect) => statusEffect !== name
-    );
-    return game.settings.set(
-      CONSTANTS.MODULE_NAME,
-      'statusEffectNames',
-      statusEffectsArray
-    );
+    const statusEffectsArray = this.statusEffectNames.filter((statusEffect) => statusEffect !== name);
+    return game.settings.set(CONSTANTS.MODULE_NAME, 'statusEffectNames', statusEffectsArray);
   },
 
   /**
@@ -67,11 +57,7 @@ const API = {
    * @returns {Promise} a promise that resolves when the settings update is complete
    */
   async resetStatusEffects() {
-    return game.settings.set(
-      CONSTANTS.MODULE_NAME,
-      'statusEffectNames',
-      this._defaultStatusEffectNames
-    );
+    return game.settings.set(CONSTANTS.MODULE_NAME, 'statusEffectNames', this._defaultStatusEffectNames);
   },
 
   /**
@@ -107,7 +93,8 @@ const API = {
       overlay,
       uuids,
       metadata,
-      effectData);
+      effectData,
+    );
     return result;
   },
 
@@ -122,7 +109,8 @@ const API = {
       uuid,
       origin,
       overlay,
-      metadata);
+      metadata,
+    );
     return result;
   },
 
