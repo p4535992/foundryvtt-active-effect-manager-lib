@@ -35,6 +35,7 @@ export default class EffectInterface {
     //this._socket = registerSocket();
     if (moduleName) {
       this.moduleName = moduleName;
+      this._effectHandler = new EffectHandler(moduleName);
     }
   }
 
