@@ -39,7 +39,12 @@ export const setupHooks = (): void => {
   libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapped, ...args) {
     const token = this.object;
     //@ts-ignore
-    (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect(token, wrapped, args);
+    (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect(
+      token, 
+      wrapped, 
+      args
+    )
+    // 'MIXED'
   });
 
   //@ts-ignore
@@ -50,7 +55,8 @@ export const setupHooks = (): void => {
       token,
       wrapped,
       args,
-    );
+    )
+    // 'MIXED'
   });
 
   //@ts-ignore

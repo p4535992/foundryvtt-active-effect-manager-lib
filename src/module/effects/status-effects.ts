@@ -4,6 +4,7 @@ import API from '../api';
 import CONSTANTS from '../constants';
 import type Effect from './effect';
 import type EffectInterface from './effect-interface';
+import { isEmptyObject, isStringEquals } from './effect-log';
 
 /**
  * Handles the status effects present on the token HUD
@@ -96,7 +97,9 @@ export default class StatusEffectsLib {
       const effectId = <string>result.id;
       API.toggleEffectFromIdOnToken(tokenId, effectId, true);
     } else {
-      wrapped(...args);
+      if(statusEffectId){
+        wrapped(...args);
+      }
     }
   }
 
@@ -129,22 +132,116 @@ export default class StatusEffectsLib {
         }, {})
       : {};
 
-    const effectsArray: StatusEffect[] =
-      <StatusEffect[]>(<unknown>token.actor?.data.effects) || <StatusEffect[]>(<unknown>token.data.effects);
+    const effectsArray: ActiveEffect[] =
+      <ActiveEffect[]>(<unknown>token.actor?.data.effects) || <ActiveEffect[]>(<unknown>token.data.effects);
 
     // Prepare the list of effects from the configured defaults and any additional effects present on the Token
-    const tokenEffects = <StatusEffect[]>foundry.utils.deepClone(effectsArray) || [];
+    const tokenEffects = <any>foundry.utils.deepClone(effectsArray) || [];
     if (token.data.overlayEffect) {
       //@ts-ignore
       tokenEffects.push(token.data.overlayEffect);
     }
-    return CONFIG.statusEffects.concat(tokenEffects).reduce((obj, e) => {
+
+    if(tokenEffects.size <= 0){
+      return CONFIG.statusEffects.reduce((obj, e:{icon:string,id:string,label:string}) => {
+        const id = e.id; // NOTE: added this
+  
+        const src = <string>e.icon ?? e;
+        // if (!obj && Array.isArray(obj) && id in obj) {
+        //   return obj; // NOTE: changed from src to id
+        // }
+        if (id in obj) {
+          return obj; // NOTE: changed from src to id
+        }
+  
+        const status = statuses[e.id] || {};
+  
+        let srcExt = false;
+        for (const ae of effectsArray) {
+          //@ts-ignore
+          if (ae.data.icon.includes(src)) {
+            srcExt = true;
+            break;
+          }
+        }
+  
+        // const isActive = !!status.id || effectsArray.includes(src);
+        const isActive = !!status.id || srcExt;
+        const isOverlay = !!status.overlay || token.data.overlayEffect === src;
+  
+        // if(!id || id === 'undefined' || id === 'null'){
+        //   return obj;
+        // }
+  
+        // NOTE: changed key from src to id
+        obj[id] = {
+          id: e.id ?? '',
+          title: e.label ? game.i18n.localize(e.label) : null,
+          src: src,
+          isActive,
+          isOverlay,
+          cssClass: [isActive ? 'active' : null, isOverlay ? 'overlay' : null].filterJoin(' '),
+        };
+        return obj;
+      }, {});
+    }
+
+    const newTokenEffects = <ActiveEffect[]>[];
+    for (const tokenEffect of tokenEffects) {
+      newTokenEffects.push(tokenEffect);
+    }
+
+    return CONFIG.statusEffects.concat(<any>tokenEffects).reduce((obj, e:{icon:string,id:string,label:string}) => {
       const id = e.id; // NOTE: added this
 
       const src = <string>e.icon ?? e;
+      // if (!obj && Array.isArray(obj) && id in obj) {
+      //   return obj; // NOTE: changed from src to id
+      // }
       if (id in obj) {
         return obj; // NOTE: changed from src to id
       }
+
+      const status = statuses[e.id] || {};
+      if((!status || isEmptyObject(status)) && e.id){
+        // const activeEffect = <ActiveEffect>tokenEffects.find((ae) =>{
+        //   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.data.label,e.label);
+        // });
+
+        const activeEffect = <ActiveEffect>newTokenEffects.find((ae) =>{
+          return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.data.label,e.label);
+        });
+        if(activeEffect){
+          const labelEffect = <string>activeEffect.data.label || '';
+          const iconEffect = <string>activeEffect.data.icon || '';
+          const isActive = !activeEffect.data.disabled;
+          //@ts-ignore
+          const statusId = activeEffect.data.flags.core.statusId ?? e.id;
+          //@ts-ignore
+          const isOverlay = activeEffect.data.flags.core.overlay;
+          if(id === statusId){
+            obj[id] = {
+              id: id ?? '',
+              title: labelEffect ? game.i18n.localize(labelEffect) : null,
+              src: iconEffect,
+              isActive,
+              isOverlay,
+              cssClass: [isActive ? 'active' : null, isOverlay ? 'overlay' : null].filterJoin(' '),
+            };
+          }else{
+            obj[statusId] = {
+              id: statusId ?? '',
+              title: labelEffect ? game.i18n.localize(labelEffect) : null,
+              src: iconEffect,
+              isActive,
+              isOverlay,
+              cssClass: [isActive ? 'active' : null, isOverlay ? 'overlay' : null].filterJoin(' '),
+            };
+          }
+          return obj;
+        }
+      }
+
       let srcExt = false;
       for (const ae of effectsArray) {
         //@ts-ignore
@@ -154,16 +251,19 @@ export default class StatusEffectsLib {
         }
       }
 
-      const status = statuses[e.id] || {};
       // const isActive = !!status.id || effectsArray.includes(src);
       const isActive = !!status.id || srcExt;
       const isOverlay = !!status.overlay || token.data.overlayEffect === src;
+
+      // if(!id || id === 'undefined' || id === 'null'){
+      //   return obj;
+      // }
 
       // NOTE: changed key from src to id
       obj[id] = {
         id: e.id ?? '',
         title: e.label ? game.i18n.localize(e.label) : null,
-        src,
+        src: src,
         isActive,
         isOverlay,
         cssClass: [isActive ? 'active' : null, isOverlay ? 'overlay' : null].filterJoin(' '),

@@ -99,3 +99,15 @@ export function isGMConnected() {
 export function isGMConnectedAndSocketLibEnable() {
   return isGMConnected(); // && !game.settings.get(CONSTANTS.MODULE_NAME, 'doNotUseSocketLibFeature');
 }
+
+export function isEmptyObject(obj: any) {
+  // because Object.keys(new Date()).length === 0;
+  // we have to do some additional check
+  if (obj == null || obj == undefined) {
+    return true;
+  }
+  const result =
+    obj && // null and undefined check
+    (Object.keys(obj).length === 0 || Object.getPrototypeOf(obj) === Object.prototype);
+  return result;
+}
