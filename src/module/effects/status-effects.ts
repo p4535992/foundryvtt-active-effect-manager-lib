@@ -5,6 +5,7 @@ import CONSTANTS from '../constants';
 import type Effect from './effect';
 import type EffectInterface from './effect-interface';
 import { isEmptyObject, isStringEquals } from './effect-log';
+import { EffectSupport } from './effect-support';
 
 /**
  * Handles the status effects present on the token HUD
@@ -99,7 +100,13 @@ export default class StatusEffectsLib {
     if (result) {
       // const uuids = <string[]>[tokenId];
       const effectId = <string>result.id;
-      API.toggleEffectFromIdOnToken(tokenId, effectId, true);
+      // TODO add moduel settings for manage this
+
+      const effect = EffectSupport.convertActiveEffectToEffect(result);
+      effect.customId = effectId;
+      effect.name = effectName;
+      effect.overlay = overlay;
+      API.toggleEffectFromDataOnToken(tokenId, effect, false);
     } else {
       if (statusEffectId) {
         wrapped(...args);
@@ -207,7 +214,7 @@ export default class StatusEffectsLib {
             statusId = statusId.replace(/\s/g, '');
             statusId = statusId.trim().toLowerCase();
             //@ts-ignore
-            const isOverlay = activeEffect.data.flags.core.overlay;
+            const isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
             obj[statusId] = {
               id: statusId ?? '',
               title: labelEffect ? game.i18n.localize(labelEffect) : null,

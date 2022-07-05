@@ -454,24 +454,13 @@ export default class EffectInterface {
     }
 
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
-    // const tokenEffects = <PropertiesToSource<ActiveEffectDataProperties>[]>token?.data.actorData.effects ?? [];
-    // const effects = <PropertiesToSource<ActiveEffectDataProperties>[]>tokenEffects.map(
-    //   //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
-    //   (activeEffect) => {
-    //     if (<string>activeEffect?._id == effectId) {
-    //       return activeEffect;
-    //     }
-    //   },
-    // );
-    // if (!effects) return;
-    // const effect = <ActiveEffect>await fromUuid(<string>effects[0]._id);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
     const effect = <ActiveEffect>actorEffects.find(
       //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
       (activeEffect) => <string>activeEffect?.data?._id == effectId,
     );
 
-    if (!effect) return;
+    // if (!effect) return;
 
     if (!effect) {
       errorM(this.moduleName, `Effect ${effectId} was not found`, true);
@@ -489,6 +478,33 @@ export default class EffectInterface {
       );
     } else {
       return this._effectHandler.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled);
+    }
+  }
+
+  async toggleEffectFromDataOnToken(
+    effect: Effect,
+    uuid: string,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    withSocket = true,
+  ) {
+    if (!effect) {
+      errorM(this.moduleName, `Effect ${effect} was not found`, true);
+      return;
+    }
+
+    if (isGMConnectedAndSocketLibEnable()) {
+      return this._socket.executeAsGM(
+        'toggleEffectFromIdOnToken',
+        effect,
+        uuid,
+        alwaysDelete,
+        forceEnabled,
+        forceDisabled,
+      );
+    } else {
+      return this._effectHandler.toggleEffectFromDataOnToken(effect, uuid, alwaysDelete, forceEnabled, forceDisabled);
     }
   }
 

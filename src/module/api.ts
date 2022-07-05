@@ -498,6 +498,23 @@ const API = {
     return result;
   },
 
+  async toggleEffectFromDataOnToken(
+    tokenId: string,
+    effect: Effect,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+  ) {
+    const result = await (<EffectInterface>this.effectInterface).toggleEffectFromDataOnToken(
+      effect,
+      <string>tokenId,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+    );
+    return result;
+  },
+
   async addActiveEffectOnToken(tokenId: string, activeEffectData: ActiveEffectData) {
     const result = await (<EffectInterface>this.effectInterface).addActiveEffectOnToken(
       <string>tokenId,

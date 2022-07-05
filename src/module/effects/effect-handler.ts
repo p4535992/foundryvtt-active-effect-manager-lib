@@ -557,29 +557,29 @@ export default class EffectHandler {
   ) {
     const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.data.effects;
-    const effect = <ActiveEffect>actorEffects.find((entity: ActiveEffect) => {
+    const activeEffect = <ActiveEffect>actorEffects.find((entity: ActiveEffect) => {
       return <string>entity.id == effectId;
     });
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
-    if (effect.getFlag('core', 'statusId') || alwaysDelete) {
-      const deleted = await effect.delete();
+    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+      const deleted = await activeEffect.delete();
       return !!deleted;
     }
     let updated;
-    if (forceEnabled && effect.data.disabled) {
-      updated = await effect.update({
+    if (forceEnabled && activeEffect.data.disabled) {
+      updated = await activeEffect.update({
         disabled: false,
       });
-    } else if (forceDisabled && !effect.data.disabled) {
-      updated = await effect.update({
+    } else if (forceDisabled && !activeEffect.data.disabled) {
+      updated = await activeEffect.update({
         disabled: true,
       });
     } else {
       // otherwise toggle its disabled status
-      updated = await effect.update({
-        disabled: !effect.data.disabled,
+      updated = await activeEffect.update({
+        disabled: !activeEffect.data.disabled,
       });
     }
 
@@ -963,41 +963,95 @@ export default class EffectHandler {
   ) {
     debugM(
       this.moduleName,
-      `START Effect Handler 'toggleEffectFromIdOnToken' : [effetcId=${effectId},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
+      `START Effect Handler 'toggleEffectFromIdOnToken' : [effectId=${effectId},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
-    const effect = <ActiveEffect>actorEffects.find(
+    const activeEffect = <ActiveEffect>actorEffects.find(
       //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
       (activeEffect) => <string>activeEffect?.data?._id == effectId,
     );
 
-    if (!effect) return;
+    if (!activeEffect) return;
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
-    if (effect.getFlag('core', 'statusId') || alwaysDelete) {
-      const deleted = await effect.delete();
+    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+      const deleted = await activeEffect.delete();
       return !!deleted;
     }
     let updated;
-    if (forceEnabled && effect.data.disabled) {
-      updated = await effect.update({
+    if (forceEnabled && activeEffect.data.disabled) {
+      updated = await activeEffect.update({
         disabled: false,
       });
-    } else if (forceDisabled && !effect.data.disabled) {
-      updated = await effect.update({
+    } else if (forceDisabled && !activeEffect.data.disabled) {
+      updated = await activeEffect.update({
         disabled: true,
       });
     } else {
       // otherwise toggle its disabled status
-      updated = await effect.update({
-        disabled: !effect.data.disabled,
+      updated = await activeEffect.update({
+        disabled: !activeEffect.data.disabled,
       });
     }
     debugM(
       this.moduleName,
-      `END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${effect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
+      `END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
+    );
+    return !!updated;
+  }
+
+  /**
+   * @href https://github.com/ElfFriend-DnD/foundryvtt-temp-effects-as-statuses/blob/main/scripts/temp-effects-as-statuses.js
+   */
+  async toggleEffectFromDataOnToken(
+    effect: Effect,
+    uuid: string,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+  ) {
+    debugM(
+      this.moduleName,
+      `START Effect Handler 'toggleEffectFromIdOnToken' : [effect=${effect},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
+    );
+    const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
+    const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
+    const activeEffect = <ActiveEffect>actorEffects.find(
+      //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
+      (activeEffect) => {
+        return isStringEquals(<string>activeEffect?.data?._id, effect.customId) || 
+          isStringEquals(<string>activeEffect?.data?.label, effect.name);
+      },
+    );
+
+    if (!activeEffect) return;
+    // nuke it if it has a statusId
+    // brittle assumption
+    // provides an option to always do this
+    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+      const deleted = await activeEffect.delete();
+      return !!deleted;
+    }
+    let updated;
+    if (forceEnabled && activeEffect.data.disabled) {
+      updated = await activeEffect.update({
+        disabled: false,
+      });
+    } else if (forceDisabled && !activeEffect.data.disabled) {
+      updated = await activeEffect.update({
+        disabled: true,
+      });
+    } else {
+      // otherwise toggle its disabled status
+      updated = await activeEffect.update({
+        disabled: !activeEffect.data.disabled,
+      });
+    }
+    debugM(
+      this.moduleName,
+      `END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`,
     );
     return !!updated;
   }
@@ -1054,9 +1108,9 @@ export default class EffectHandler {
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
-    const effect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
+    const activeEffect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
 
-    if (!effect) return;
+    if (!activeEffect) return;
 
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
@@ -1070,9 +1124,9 @@ export default class EffectHandler {
     effectUpdated.origin = origin;
     effectUpdated.overlay = overlay;
     const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
-    activeEffectDataUpdated._id = effect.id;
+    activeEffectDataUpdated._id = activeEffect.id;
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${activeEffect.data.label} to ${token.name} - ${token.id}`);
     debugM(
       this.moduleName,
       `END Effect Handler 'updateEffectFromIdOnToken' : [effectId=${effectId}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1095,11 +1149,11 @@ export default class EffectHandler {
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
-    const effect = <ActiveEffect>(
+    const activeEffect = <ActiveEffect>(
       actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.data?.label, effectName))
     );
 
-    if (!effect) return;
+    if (!activeEffect) return;
 
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
@@ -1113,9 +1167,9 @@ export default class EffectHandler {
     effectUpdated.origin = origin;
     effectUpdated.overlay = overlay;
     const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
-    activeEffectDataUpdated._id = effect.id;
+    activeEffectDataUpdated._id = activeEffect.id;
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${activeEffect.data.label} to ${token.name} - ${token.id}`);
     debugM(
       this.moduleName,
       `END Effect Handler 'updateEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1144,9 +1198,9 @@ export default class EffectHandler {
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
-    const effect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
+    const activeEffect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
 
-    if (!effect) return;
+    if (!activeEffect) return;
 
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
@@ -1156,10 +1210,10 @@ export default class EffectHandler {
     const activeEffectDataUpdated = effectUpdated;
     // if(origin) activeEffectDataUpdated.origin = origin;
     // if(overlay) activeEffectDataUpdated.overlay = overlay;
-    activeEffectDataUpdated._id = effect.id;
+    activeEffectDataUpdated._id = activeEffect.id;
     //@ts-ignore
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${activeEffect.data.label} to ${token.name} - ${token.id}`);
     debugM(
       this.moduleName,
       `END Effect Handler 'updateActiveEffectFromIdOnToken' : [effectId=${effectId}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1188,11 +1242,11 @@ export default class EffectHandler {
     );
     const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
-    const effect = <ActiveEffect>(
+    const activeEffect = <ActiveEffect>(
       actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.data?.label, effectName))
     );
 
-    if (!effect) return;
+    if (!activeEffect) return;
 
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
@@ -1202,10 +1256,10 @@ export default class EffectHandler {
     const activeEffectDataUpdated = effectUpdated;
     // if(origin) activeEffectDataUpdated.origin = origin;
     // if(overlay) activeEffectDataUpdated.overlay = overlay;
-    activeEffectDataUpdated._id = effect.id;
+    activeEffectDataUpdated._id = activeEffect.id;
     //@ts-ignore
     const updated = await token.actor?.updateEmbeddedDocuments('ActiveEffect', [activeEffectDataUpdated]);
-    logM(this.moduleName, `Updated effect ${effect.data.label} to ${token.name} - ${token.id}`);
+    logM(this.moduleName, `Updated effect ${activeEffect.data.label} to ${token.name} - ${token.id}`);
     debugM(
       this.moduleName,
       `END Effect Handler 'updateActiveEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
