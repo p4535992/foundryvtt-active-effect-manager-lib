@@ -202,7 +202,7 @@ export default class StatusEffectsLib {
             const iconEffect = <string>activeEffect.data.icon || '';
             const isActive = !activeEffect.data.disabled;
             //@ts-ignore
-            let statusId = activeEffect.data.flags.core.statusId ?? activeEffect.data.label;
+            let statusId = activeEffect.data.flags?.core?.statusId ?? activeEffect.data.label;
             statusId = statusId.replace('Convenient Effect:', '');
             statusId = statusId.replace(/\s/g, '');
             statusId = statusId.trim().toLowerCase();
