@@ -55,7 +55,7 @@ This module uses the [socketlib](https://github.com/manuelVo/foundryvtt-socketli
 
 ## Feature: Enable the extended status effect name hud interaction 
 
-_Custom integration for multysistem of [Adding and Removing Status Effects of Dfreds convinient effect](https://github.com/DFreds/dfreds-convenient-effects/wiki/User-Guide#adding-and-removing-status-effects)_
+_Custom integration for multysistem of [Adding and Removing Status Effects of Dfreds convinient effect](https://github.com/DFreds/dfreds-convenient-effects/wiki/User-Guide#adding-and-removing-status-effects) any credits for this feature is given to [DFreds](https://github.com/DFreds)_
 
 This will extend the funcionality of the standard status effect name.
 
@@ -65,19 +65,17 @@ Conflict: You should not use this and Combat Utility Belt's "Enhanced Conditions
 
 ## Feature: Shy Effects 
 
-_Custom integration of [Shy Effects](https://github.com/kandashi/shy-effect-icons)_
+_Custom integration for multysistem of [Shy Effects](https://github.com/kandashi/shy-effect-icons) any credits for this feature is given to [Kandashi](https://github.com/kandashi)_
 
 This module will disable any active effect icons that do not come from an "Owned source". This level of control can be configured from the module settings. A user requires X permissions on a source item/actor to view the active effects created by that item.
 
 ## Feature: Fathomless
 
-_Custom integration of [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)_
+_Custom integration for multysistem of [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless) any credits for this feature is given to [schultzcole](https://github.com/schultzcole/)_
 
-Fathomless is a FoundryVTT module that allow active effect changes to depend on actor data, even actor data that is modified by other active effects, so long as there are no cyclical dependencies.
+This feature allow active effect changes to depend on actor data, even actor data that is modified by other active effects, so long as there are no cyclical dependencies.
 
-### Functionality
-
-Fathomless allows active effect changes to depend on other actor data, even actor data that is modified by other active effects. This is accomplished by constructing a directed graph that encapsulates the dependency relationships between actor properties, then using that graph to perform a Topological Sort in order to apply the effect changes in the correct order so that all dependencies are taken into account.
+This feature allows active effect changes to depend on other actor data, even actor data that is modified by other active effects. This is accomplished by constructing a directed graph that encapsulates the dependency relationships between actor properties, then using that graph to perform a Topological Sort in order to apply the effect changes in the correct order so that all dependencies are taken into account.
 
 The nature of this implementation is such that any changes "downstream" of an actor property that is involved in a dependency cycle are ignored.
 
