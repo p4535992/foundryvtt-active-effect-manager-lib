@@ -496,7 +496,7 @@ export default class EffectInterface {
 
     if (isGMConnectedAndSocketLibEnable()) {
       return this._socket.executeAsGM(
-        'toggleEffectFromIdOnToken',
+        'toggleEffectFromDataOnToken',
         effect,
         uuid,
         alwaysDelete,

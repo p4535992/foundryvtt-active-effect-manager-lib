@@ -47,6 +47,10 @@ export function registerSocket() {
   activeEffectManagerSocket.register('toggleEffectFromIdOnToken', (...args) =>
     API.toggleEffectFromIdOnTokenArr(...args),
   );
+  activeEffectManagerSocket.register('toggleEffectFromDataOnToken', (...args) =>
+    API.toggleEffectFromDataOnTokenArr(...args),
+  );
+
   activeEffectManagerSocket.register('hasEffectAppliedFromIdOnToken', (...args) =>
     API.hasEffectAppliedFromIdOnTokenArr(...args),
   );

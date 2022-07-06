@@ -1,1 +1,11 @@
-{}
+{
+  "active-effect-manager-lib.setting.statusEffectNames.name": "Status Effect Names",
+  "active-effect-manager-lib.setting.statusEffectNames.hint": " ",
+  "active-effect-manager-lib.setting.enableStatusEffectNames.name": "Feature: Enable the extended status effect name hud interaction",
+  "active-effect-manager-lib.setting.enableStatusEffectNames.hint": "This will extend the funcionality of the standard status effect name",
+  "active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",
+  "active-effect-manager-lib.setting.enableShyEffectIcons.hint": "Hide active effect icons from unknown sources",
+
+  "active-effect-manager-lib.setting.permLevel.name": "[Only with 'Shy Effects' enabled] Permission Level",
+  "active-effect-manager-lib.setting.permLevel.hint": "Minimum permission level required to see an active effect"
+}

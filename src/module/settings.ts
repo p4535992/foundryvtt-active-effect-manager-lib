@@ -14,11 +14,54 @@ export const registerSettings = function (): void {
   // =====================================================================
 
   game.settings.register(CONSTANTS.MODULE_NAME, 'statusEffectNames', {
-    name: 'Status Effect Names',
+    name: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.hint`,
     scope: 'world',
     config: false,
     default: API._defaultStatusEffectNames,
     type: Array,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_NAME, 'enableStatusEffectNames', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.enableStatusEffectNames.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.enableStatusEffectNames.hint`,
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_NAME, 'enableShyEffectIcons', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.hint`,
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_NAME, 'permLevel', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.permLevel.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.permLevel.hint`,
+    scope: 'world',
+    config: true,
+    default: 'None',
+    type: String,
+    choices: <any>{
+      NONE: 'None',
+      LIMITED: 'Limited',
+      OBSERVER: 'Observer',
+      OWNER: 'Owner',
+    },
+  });
+
+  game.settings.register(CONSTANTS.MODULE_NAME, 'enableShyEffectIcons', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.hint`,
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean,
   });
 
   // ========================================================================
@@ -96,6 +139,24 @@ function defaultSettings(apply = false) {
 
 function otherSettings(apply = false) {
   return {
+    statusEffectNames: {
+      name: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.name`,
+      hint: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.hint`,
+      scope: 'world',
+      config: false,
+      default: API._defaultStatusEffectNames,
+      type: Array,
+    },
+
+    enableStatusEffectNames: {
+      name: `${CONSTANTS.MODULE_NAME}.setting.enableStatusEffectNames.name`,
+      hint: `${CONSTANTS.MODULE_NAME}.setting.enableStatusEffectNames.hint`,
+      scope: 'world',
+      config: true,
+      default: false,
+      type: Boolean,
+    },
+
     debug: {
       name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,
       hint: `${CONSTANTS.MODULE_NAME}.setting.debug.hint`,

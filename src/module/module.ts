@@ -1,7 +1,7 @@
 import { registerSocket, activeEffectManagerSocket } from './socket';
 
 import CONSTANTS from './constants';
-import { debug, i18n, i18nFormat, warn } from './lib/lib';
+import { debug, drawShyEffects, i18n, i18nFormat, warn } from './lib/lib';
 import API from './api';
 import EffectInterface from './effects/effect-interface';
 import StatusEffects from './effects/status-effects';
@@ -19,6 +19,11 @@ export const initHooks = (): void => {
   window.activeEffectManager = {
     API,
   };
+
+  if (game.settings.get(CONSTANTS.MODULE_NAME, 'enableShyEffectIcons')) {
+    //@ts-ignore
+    libWrapper.register(CONSTANTS.MODULE_NAME, 'Token.prototype.drawEffects', drawShyEffects, 'OVERRIDE');
+  }
 };
 
 export const setupHooks = (): void => {
@@ -35,38 +40,53 @@ export const setupHooks = (): void => {
   //@ts-ignore
   setApi(window.activeEffectManager.API);
 
-  //@ts-ignore
-  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapped, ...args) {
-    const token = this.object;
+  if (game.settings.get(CONSTANTS.MODULE_NAME, 'enableStatusEffectNames')) {
     //@ts-ignore
-    (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect(token, wrapped, args);
-    // 'MIXED'
-  });
+    // libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapped, ...args) {
+    //   const token = this.object;
+    //   //@ts-ignore
+    //   (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect(token, wrapped, args);
+    //   // 'MIXED'
+    // });
 
-  //@ts-ignore
-  libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._getStatusEffectChoices', function (wrapped, ...args) {
-    const token = this.object;
-    //@ts-ignore
-    return (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).getStatusEffectChoices(
-      token,
-      wrapped,
-      args,
-    );
-    // 'MIXED'
-  });
-
-  //@ts-ignore
-  libWrapper.register(
-    CONSTANTS.MODULE_NAME,
-    'TokenHUD.prototype.refreshStatusIcons',
-    function (wrapped, ...args) {
-      const tokenHud = <any>this;
+    libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapper, ...args) {
       //@ts-ignore
-      (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).refreshStatusIcons(tokenHud);
-      wrapped(...args);
-    },
-    'WRAPPER',
-  );
+      (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect({
+        token: this.object,
+        wrapper,
+        args,
+      });
+    });
+
+    //@ts-ignore
+    libWrapper.register(
+      CONSTANTS.MODULE_NAME,
+      'TokenHUD.prototype._getStatusEffectChoices',
+      function (wrapped, ...args) {
+        const token = this.object;
+        //@ts-ignore
+        return (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).getStatusEffectChoices(
+          token,
+          wrapped,
+          args,
+        );
+        // 'MIXED'
+      },
+    );
+
+    //@ts-ignore
+    libWrapper.register(
+      CONSTANTS.MODULE_NAME,
+      'TokenHUD.prototype.refreshStatusIcons',
+      function (wrapped, ...args) {
+        const tokenHud = <any>this;
+        //@ts-ignore
+        (<StatusEffectsLib>window.activeEffectManager.API.statusEffects).refreshStatusIcons(tokenHud);
+        wrapped(...args);
+      },
+      'WRAPPER',
+    );
+  }
 };
 
 export const readyHooks = (): void => {

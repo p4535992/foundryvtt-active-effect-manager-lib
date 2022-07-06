@@ -2,6 +2,7 @@
 // Module Generic function
 // =============================
 
+import type { CONST } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/module.mjs';
 import CONSTANTS from '../constants';
 
 export async function getToken(documentUuid) {
@@ -387,3 +388,49 @@ function getElevationPlaceableObject(placeableObject: any): number {
 // =============================
 // Module specific function
 // =============================
+
+export async function drawShyEffects() {
+  this.hud.effects.removeChildren().forEach((c) => c.destroy());
+  const tokenEffects = this.data.effects;
+  const actorEffects = this.actor?.temporaryEffects || [];
+  let overlay = {
+    src: this.data.overlayEffect,
+    tint: <number | null>null,
+  };
+  const minPerm = <CONST.DOCUMENT_PERMISSION_LEVELS>game.settings.get(CONSTANTS.MODULE_NAME, 'permLevel');
+  // Draw status effects
+  if (tokenEffects.length || actorEffects.length) {
+    const promises = <any[]>[];
+    const w = <number>Math.round(<number>canvas.dimensions?.size / 2 / 5) * 2;
+    const bg = <string>this.hud.effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.4).lineStyle(1.0, 0x000000);
+    let i = 0;
+
+    // Draw actor effects first
+    for (const f of actorEffects) {
+      if (!f.data.icon) {
+        continue;
+      }
+      const source = <ActiveEffect>await fromUuid(f.data.origin);
+      if (!source.testUserPermission(<User>game.user, minPerm, {})) {
+        continue;
+      }
+      const tint = f.data.tint ? foundry.utils.colorStringToHex(f.data.tint) : null;
+      if (f.getFlag('core', 'overlay')) {
+        overlay = { src: f.data.icon, tint: tint };
+        continue;
+      }
+      promises.push(this._drawEffect(f.data.icon, i, bg, w, tint));
+      i++;
+    }
+
+    // Next draw token effects
+    for (const f of tokenEffects) {
+      promises.push(this._drawEffect(f, i, bg, w, null));
+      i++;
+    }
+    await Promise.all(promises);
+  }
+
+  // Draw overlay effect
+  return this._drawOverlay(overlay);
+}

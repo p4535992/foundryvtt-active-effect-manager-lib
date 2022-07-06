@@ -1021,8 +1021,10 @@ export default class EffectHandler {
     const activeEffect = <ActiveEffect>actorEffects.find(
       //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
       (activeEffect) => {
-        return isStringEquals(<string>activeEffect?.data?._id, effect.customId) || 
-          isStringEquals(<string>activeEffect?.data?.label, effect.name);
+        return (
+          isStringEquals(<string>activeEffect?.data?._id, effect.customId) ||
+          isStringEquals(<string>activeEffect?.data?.label, effect.name)
+        );
       },
     );
 

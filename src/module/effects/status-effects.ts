@@ -69,6 +69,44 @@ export default class StatusEffectsLib {
       .map((effect) => effect.convertToActiveEffectData());
   }
 
+  // /**
+  //  * This function is called when a token status effect is toggled. If the
+  //  * status effect is one added by the convenient effect module, it is handled
+  //  * here. Otherwise, the original wrapper function is used.
+  //  *
+  //  * @param {Token5e} token - the token to toggle the effect on
+  //  * @param {fn} wrapper - the original onToggleEffect function
+  //  * @param {any[]} args - any arguments provided with the original onToggleEffect function
+  //  */
+  // async onToggleEffectOld({ token, wrapper, args }) {
+  //   const [event] = args;
+  //   const statusEffectId = event.currentTarget.dataset.statusId;
+  //   if (statusEffectId.startsWith('Convenient Effect: ')) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+
+  //     const effectName = statusEffectId;
+  //     const tokenId = token.id;
+  //     const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
+  //     if (result) {
+  //       // const uuids = <string[]>[tokenId];
+  //       const effectId = <string>result.id;
+  //       // TODO add moduel settings for manage this
+
+  //       const effect = EffectSupport.convertActiveEffectToEffect(result);
+  //       effect.customId = effectId;
+  //       effect.name = effectName;
+  //       effect.overlay = args.length > 1 && args[1]?.overlay;
+  //       API.toggleEffectFromDataOnToken(tokenId, effect, false);
+  //     }else{
+  //       wrapper(...args);
+  //     }
+
+  //   } else {
+  //     wrapper(...args);
+  //   }
+  // }
+
   /**
    * This function is called when a token status effect is toggled. If the
    * status effect is one added by the convenient effect module, it is handled
@@ -78,39 +116,51 @@ export default class StatusEffectsLib {
    * @param {fn} wrapped - the original onToggleEffect function
    * @param {any[]} args - any arguments provided with the original onToggleEffect function
    */
-  async onToggleEffect(token: Token, wrapped, ...args) {
+  async onToggleEffect({ token, wrapper, args }) {
     // const token = args[0]; //<Token>(<unknown>this);
-    const [eventArr] = args;
-    const event = eventArr[0];
-    const overlay = eventArr.length > 1 && eventArr[1]?.overlay;
-    const statusEffectId = event.currentTarget.dataset.statusId;
-    // Integration with DFred
-    // if (statusEffectId.startsWith('Convenient Effect: ')) {
-    event.preventDefault();
-    event.stopPropagation();
-    // const effectName = statusEffectId.replace('Convenient Effect: ', '');
-    // const overlay = args.length > 1 && args[1]?.overlay;
-    // const tokenId = <string>token.actor?.uuid;+
-    let statusId = statusEffectId.replace('Convenient Effect:', '');
-    statusId = statusId.replace(/\s/g, '');
-    statusId = statusId.trim().toLowerCase();
-    const effectName = statusId;
-    const tokenId = token.id;
-    const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
-    if (result) {
-      // const uuids = <string[]>[tokenId];
-      const effectId = <string>result.id;
-      // TODO add moduel settings for manage this
+    // const [eventArr] = args;
+    // const event = eventArr[0];
+    // const overlay = eventArr.length > 1 && eventArr[1]?.overlay;
+    const [event] = args;
+    const overlay = args.length > 1 && args[1]?.overlay;
+    const statusEffectId = event.currentTarget.dataset?.statusId;
+    if (statusEffectId) {
+      // Integration with DFred
+      // if (statusEffectId.startsWith('Convenient Effect: ')) {
+      event.preventDefault();
+      event.stopPropagation();
+      // const effectName = statusEffectId.replace('Convenient Effect: ', '');
+      // const overlay = args.length > 1 && args[1]?.overlay;
+      // const tokenId = <string>token.actor?.uuid;+
+      // if (statusEffectId.startsWith('Convenient Effect: ')) {
+      const img = event.currentTarget;
+      const effect =
+        img.dataset.statusId && token.actor
+          ? CONFIG.statusEffects.find((e) => e.id === img.dataset.statusId)
+          : img.getAttribute('src');
+      if (!effect) {
+        let statusId = statusEffectId.replace('Convenient Effect:', '');
+        statusId = statusId.replace(/\s/g, '');
+        statusId = statusId.trim().toLowerCase();
+        const effectName = statusId;
+        const tokenId = token.id;
+        const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
+        if (result) {
+          // const uuids = <string[]>[tokenId];
+          const effectId = <string>result.id;
+          // TODO add moduel settings for manage this
 
-      const effect = EffectSupport.convertActiveEffectToEffect(result);
-      effect.customId = effectId;
-      effect.name = effectName;
-      effect.overlay = overlay;
-      API.toggleEffectFromDataOnToken(tokenId, effect, false);
-    } else {
-      if (statusEffectId) {
-        wrapped(...args);
+          const effect = EffectSupport.convertActiveEffectToEffect(result);
+          effect.customId = effectId;
+          effect.name = effectName;
+          effect.overlay = overlay;
+          API.toggleEffectFromDataOnToken(tokenId, effect, false);
+        }
+      } else {
+        wrapper(...args);
       }
+    } else {
+      wrapper(...args);
     }
   }
 

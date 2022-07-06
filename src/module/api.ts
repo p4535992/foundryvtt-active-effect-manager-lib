@@ -288,11 +288,26 @@ const API = {
 
   async toggleEffectFromIdOnTokenArr(...inAttributes) {
     if (!Array.isArray(inAttributes)) {
-      throw error('addEffectOnTokenArr | inAttributes must be of type array');
+      throw error('toggleEffectFromIdOnTokenArr | inAttributes must be of type array');
     }
     const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
     const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffectFromIdOnToken(
       effectId,
+      uuid,
+      alwaysDelete,
+      forceEnabled,
+      forceDisabled,
+    );
+    return result;
+  },
+
+  async toggleEffectFromDataOnTokenArr(...inAttributes) {
+    if (!Array.isArray(inAttributes)) {
+      throw error('toggleEffectFromDataOnTokenArr | inAttributes must be of type array');
+    }
+    const [effect, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
+    const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffectFromDataOnToken(
+      effect,
       uuid,
       alwaysDelete,
       forceEnabled,
