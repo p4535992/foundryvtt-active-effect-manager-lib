@@ -556,11 +556,11 @@ export default class EffectInterface {
   async updateEffectFromNameOnToken(
     effectName: string,
     uuid: string,
-    origin,
-    overlay,
+    origin: string,
+    overlay: boolean,
     effectUpdated: Effect,
     withSocket = true,
-  ) {
+  ):Promise<boolean> {
     if (withSocket && isGMConnectedAndSocketLibEnable()) {
       return this._socket.executeAsGM('updateEffectFromNameOnToken', effectName, uuid, origin, overlay, effectUpdated);
     } else {
@@ -571,11 +571,11 @@ export default class EffectInterface {
   async updateActiveEffectFromIdOnToken(
     effectId: string,
     uuid: string,
-    origin,
-    overlay,
+    origin: string,
+    overlay: boolean,
     effectUpdated: ActiveEffectData,
     withSocket = true,
-  ) {
+  ): Promise<boolean> {
     if (withSocket && isGMConnectedAndSocketLibEnable()) {
       return this._socket.executeAsGM(
         'updateActiveEffectFromIdOnToken',
@@ -597,7 +597,7 @@ export default class EffectInterface {
     overlay,
     effectUpdated: ActiveEffectData,
     withSocket = true,
-  ) {
+  ): Promise<boolean> {
     if (withSocket && isGMConnectedAndSocketLibEnable()) {
       return this._socket.executeAsGM(
         'updateActiveEffectFromNameOnToken',

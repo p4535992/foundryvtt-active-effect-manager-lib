@@ -972,7 +972,9 @@ export default class EffectHandler {
       (activeEffect) => <string>activeEffect?.data?._id == effectId,
     );
 
-    if (!activeEffect) return;
+    if (!activeEffect) {
+      return;
+    }
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
@@ -1028,7 +1030,9 @@ export default class EffectHandler {
       },
     );
 
-    if (!activeEffect) return;
+    if (!activeEffect) {
+      return;
+    }
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
@@ -1112,8 +1116,9 @@ export default class EffectHandler {
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
     const activeEffect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
 
-    if (!activeEffect) return;
-
+    if (!activeEffect) {
+      return;
+    }
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
       // origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1144,7 +1149,13 @@ export default class EffectHandler {
     return this.updateEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
   }
 
-  async updateEffectFromNameOnToken(effectName: string, uuid: string, origin, overlay, effectUpdated: Effect) {
+  async updateEffectFromNameOnToken(
+    effectName: string,
+    uuid: string,
+    origin: string,
+    overlay: boolean,
+    effectUpdated: Effect,
+  ): Promise<boolean> {
     debugM(
       this.moduleName,
       `START Effect Handler 'updateEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1155,8 +1166,9 @@ export default class EffectHandler {
       actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.data?.label, effectName))
     );
 
-    if (!activeEffect) return;
-
+    if (!activeEffect) {
+      return false;
+    }
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
       // origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1190,10 +1202,10 @@ export default class EffectHandler {
   async updateActiveEffectFromIdOnToken(
     effectId: string,
     uuid: string,
-    origin,
-    overlay,
+    origin: string,
+    overlay: boolean,
     effectUpdated: ActiveEffectData,
-  ) {
+  ): Promise<boolean> {
     debugM(
       this.moduleName,
       `START Effect Handler 'updateActiveEffectFromIdOnToken' : [effectId=${effectId}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1202,8 +1214,9 @@ export default class EffectHandler {
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
     const activeEffect = <ActiveEffect>actorEffects.find((activeEffect) => <string>activeEffect?.data?._id == effectId);
 
-    if (!activeEffect) return;
-
+    if (!activeEffect) {
+      return false;
+    }
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
       // origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1234,10 +1247,10 @@ export default class EffectHandler {
   async updateActiveEffectFromNameOnToken(
     effectName: string,
     uuid: string,
-    origin,
-    overlay,
+    origin: string,
+    overlay: boolean,
     effectUpdated: ActiveEffectData,
-  ) {
+  ): Promise<boolean> {
     debugM(
       this.moduleName,
       `START Effect Handler 'updateActiveEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`,
@@ -1248,8 +1261,9 @@ export default class EffectHandler {
       actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.data?.label, effectName))
     );
 
-    if (!activeEffect) return;
-
+    if (!activeEffect) {
+      return false;
+    }
     if (!origin) {
       const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
       // origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1269,7 +1283,7 @@ export default class EffectHandler {
     return !!updated;
   }
 
-  async updateActiveEffectFromNameOnTokenArr(...inAttributes) {
+  async updateActiveEffectFromNameOnTokenArr(...inAttributes): Promise<boolean> {
     if (!Array.isArray(inAttributes)) {
       throw errorM(this.moduleName, 'updateActiveEffectFromNameOnTokenArr | inAttributes must be of type array');
     }
