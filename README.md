@@ -83,7 +83,7 @@ Referencing an actor property in an effect change is done with the syntax &my.ac
 
 # API (WORKING IN PROGRESS...)
 
-###  async game.modules.get('active-effect-manager-lib').api.invokePolymorpherManagerFromActor(sourceActorIdOrName: string, removePolymorpher = false, ordered = false, random = false, animationExternal:{ sequence:Sequence, timeToWait:number }|undefined = undefined) ⇒ <code>Promise.&lt;void&gt;</code>
+###  async game.modules.get('active-effect-manager-lib').api.invokePolymorpherManagerFromActor(sourceActorIdOrName: string, removePolymorpher: boolean ordered: boolean random: boolean animationExternal:{ sequence:Sequence, timeToWait:number }|undefined = undefined) ⇒ <code>Promise.&lt;void&gt;</code>
 
 Invoke the polymorpher manager feature from macro
 
@@ -97,7 +97,34 @@ Invoke the polymorpher manager feature from macro
 | random | <code>boolean</code> | The 'random' feature is enabled for this polymorphing | <code>0</code> |
 | animationExternal | <code>{ sequence:Sequence, timeToWait:number }</code> | Advanced: Use your personal sequence animation and the time needed to wait before the polymorph action, checkout the [Sequencer module](https://github.com/fantasycalendar/FoundryVTT-Sequencer) for more information  | <code>undefined</code> |
 
-**NOTE:** If both 'random' and 'ordered' are false the standard dialog will be rendered.
+The effect object structer is the following:
+
+```
+{
+    customId: string
+    name: string
+    description: string
+    icon: string
+    tint: string
+    seconds: number
+    rounds: number
+    turns: number
+    isDynamic: boolean
+    isViewable: boolean
+    isDisabled: boolean
+    isTemporary: boolean
+    isSuppressed: boolean
+    flags = {},
+    changes = ActiveEffectChangeData[],
+    atlChanges = ActiveEffectChangeData[],
+    tokenMagicChanges = ActiveEffectChangeData[],
+    nestedEffects = Effect[],
+    transfer: boolean
+    atcvChanges = ActiveEffectChangeData[],
+    dae = {},
+    overlay: boolean
+}
+```
 
 ## [Changelog](./CHANGELOG.md)
 
@@ -111,7 +138,7 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 - **[Shy Effects](https://github.com/kandashi/shy-effect-icons)**: [MIT](https://github.com/kandashi/shy-effect-icons/blob/master/LICENSE)
 - **[Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)**: [GPLv3](https://github.com/schultzcole/FVTT-Fathomless/blob/master/LICENSE)
 
-This package is under an [MIT](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
 ## Credits
 
