@@ -83,6 +83,186 @@ Referencing an actor property in an effect change is done with the syntax &my.ac
 
 # API (WORKING IN PROGRESS...)
 
+## API Index
+
+```
+  addEffectOnActor(
+    actorId: string,
+    effectName: string,
+    effect: Effect,
+  ): Promise<Item | ActiveEffect | boolean | undefined>;
+
+  findEffectByNameOnActor(
+    actorId: string, 
+    effectName: string): Promise<ActiveEffect | undefined>;
+
+  hasEffectAppliedOnActor(
+    actorId: string, 
+    effectName: string, 
+    includeDisabled: boolean): Promise<boolean | undefined>;
+
+  hasEffectAppliedFromIdOnActor(
+    actorId: string,
+    effectId: string,
+    includeDisabled: boolean,
+  ): Promise<boolean | undefined>;
+
+  toggleEffectFromIdOnActor(
+    actorId: string,
+    effectId: string,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+  ): Promise<boolean | undefined>;
+
+  addActiveEffectOnActor(
+    actorId: string, 
+    activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
+
+  removeEffectOnActor(
+    actorId: string, 
+    effectName: string): Promise<ActiveEffect | undefined>;
+
+  removeEffectFromIdOnActor(
+    actorId: string, 
+    effectId: string): Promise<ActiveEffect | undefined>;
+
+  addEffectOnToken(
+    tokenId: string, 
+    effectName: string, 
+    effect: Effect): Promise<ActiveEffect | undefined>;
+
+  findEffectByNameOnToken(
+    tokenId: string, 
+    effectName: string): Promise<ActiveEffect | undefined>;
+
+  hasEffectAppliedOnToken(
+    tokenId: string, 
+    effectName: string, 
+    includeDisabled: boolean): Promise<boolean | undefined>;
+
+  hasEffectAppliedFromIdOnToken(
+    tokenId: string,
+    effectId: string,
+    includeDisabled: boolean,
+  ): Promise<boolean | undefined>;
+
+  toggleEffectFromIdOnToken(
+    tokenId: string,
+    effectId: string,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+  ): Promise<boolean | undefined>;
+
+  toggleEffectFromDataOnToken(
+    tokenId: string,
+    effect: Effect,
+    alwaysDelete: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+  ): Promise<boolean | undefined>;
+
+  addActiveEffectOnToken(
+    tokenId: string, 
+    activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
+
+  removeEffectOnToken(
+    tokenId: string, 
+    effectName: string): Promise<ActiveEffect | undefined>;
+
+  removeEffectFromIdOnToken(
+    tokenId: string, 
+    effectId: string): Promise<ActiveEffect | undefined>;
+
+  removeEffectFromIdOnTokenMultiple(
+    tokenId: string, 
+    effectIds: string[]): Promise<ActiveEffect | undefined>;
+
+  updateEffectFromIdOnToken(
+    tokenId: string,
+    effectId: string,
+    origin: string,
+    overlay: boolean,
+    effectUpdated: Effect,
+  ): Promise<boolean | undefined>;
+
+  updateEffectFromNameOnToken(
+    tokenId: string,
+    effectName: string,
+    origin: string,
+    overlay: boolean,
+    effectUpdated: Effect,
+  ): Promise<boolean | undefined>;
+
+  updateActiveEffectFromIdOnToken(
+    tokenId: string,
+    effectId: string,
+    origin: string,
+    overlay: boolean,
+    effectUpdated: ActiveEffectData,
+  ): Promise<boolean | undefined>;
+
+  updateActiveEffectFromNameOnToken(
+    tokenId: string,
+    effectName: string,
+    origin: string,
+    overlay: boolean,
+    effectUpdated: ActiveEffectData,
+  ): Promise<boolean | undefined>;
+
+  onManageActiveEffectFromEffectId(
+    effectActions: {
+      create: 'create';
+      edit: 'edit';
+      delete: 'delete';
+      toogle: 'toggle';
+      update: 'update';
+    },
+    owner: Actor | Item,
+    effectId: string,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ): Promise<Item | ActiveEffect | boolean | undefined>;
+
+  onManageActiveEffectFromEffect(
+    effectActions: {
+      create: 'create';
+      edit: 'edit';
+      delete: 'delete';
+      toogle: 'toggle';
+      update: 'update';
+    },
+    owner: Actor | Item,
+    effect: Effect,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ): Promise<Item | ActiveEffect | boolean | undefined>;
+
+  onManageActiveEffectFromActiveEffect(
+    effectActions: {
+      create: 'create';
+      edit: 'edit';
+      delete: 'delete';
+      toogle: 'toggle';
+      update: 'update';
+    },
+    owner: Actor | Item,
+    activeEffect: ActiveEffect | null | undefined,
+    alwaysDelete?: boolean,
+    forceEnabled?: boolean,
+    forceDisabled?: boolean,
+    isTemporary?: boolean,
+    isDisabled?: boolean,
+  ): Promise<Item | ActiveEffect | boolean | undefined>;
+```
+
 ###  async game.modules.get('active-effect-manager-lib').api.invokePolymorpherManagerFromActor(sourceActorIdOrName: string, removePolymorpher: boolean ordered: boolean random: boolean animationExternal:{ sequence:Sequence, timeToWait:number }|undefined = undefined) ⇒ <code>Promise.&lt;void&gt;</code>
 
 Invoke the polymorpher manager feature from macro
