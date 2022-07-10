@@ -31,6 +31,15 @@ export const registerSettings = function (): void {
     type: Boolean,
   });
 
+  game.settings.register(CONSTANTS.MODULE_NAME, 'showOnlyTemporaryStatusEffectNames', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.showOnlyTemporaryStatusEffectNames.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.showOnlyTemporaryStatusEffectNames.hint`,
+    scope: 'world',
+    config: true,
+    default: true,
+    type: Boolean,
+  });
+
   game.settings.register(CONSTANTS.MODULE_NAME, 'enableShyEffectIcons', {
     name: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.name`,
     hint: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.hint`,

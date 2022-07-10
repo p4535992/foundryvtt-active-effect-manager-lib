@@ -611,7 +611,8 @@ export default class EffectHandler {
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
-    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    // if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    if (alwaysDelete) {
       const deleted = await activeEffect.delete();
       return !!deleted;
     }
@@ -1051,7 +1052,8 @@ export default class EffectHandler {
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
-    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    // if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    if (alwaysDelete) {
       const deleted = await activeEffect.delete();
       return !!deleted;
     }
@@ -1109,7 +1111,8 @@ export default class EffectHandler {
     // nuke it if it has a statusId
     // brittle assumption
     // provides an option to always do this
-    if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    // if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
+    if (alwaysDelete) {
       const deleted = await activeEffect.delete();
       return !!deleted;
     }

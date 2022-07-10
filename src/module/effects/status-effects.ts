@@ -69,44 +69,6 @@ export default class StatusEffectsLib {
       .map((effect) => effect.convertToActiveEffectData());
   }
 
-  // /**
-  //  * This function is called when a token status effect is toggled. If the
-  //  * status effect is one added by the convenient effect module, it is handled
-  //  * here. Otherwise, the original wrapper function is used.
-  //  *
-  //  * @param {Token5e} token - the token to toggle the effect on
-  //  * @param {fn} wrapper - the original onToggleEffect function
-  //  * @param {any[]} args - any arguments provided with the original onToggleEffect function
-  //  */
-  // async onToggleEffectOld({ token, wrapper, args }) {
-  //   const [event] = args;
-  //   const statusEffectId = event.currentTarget.dataset.statusId;
-  //   if (statusEffectId.startsWith('Convenient Effect: ')) {
-  //     event.preventDefault();
-  //     event.stopPropagation();
-
-  //     const effectName = statusEffectId;
-  //     const tokenId = token.id;
-  //     const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
-  //     if (result) {
-  //       // const uuids = <string[]>[tokenId];
-  //       const effectId = <string>result.id;
-  //       // TODO add moduel settings for manage this
-
-  //       const effect = EffectSupport.convertActiveEffectToEffect(result);
-  //       effect.customId = effectId;
-  //       effect.name = effectName;
-  //       effect.overlay = args.length > 1 && args[1]?.overlay;
-  //       API.toggleEffectFromDataOnToken(tokenId, effect, false);
-  //     }else{
-  //       wrapper(...args);
-  //     }
-
-  //   } else {
-  //     wrapper(...args);
-  //   }
-  // }
-
   /**
    * This function is called when a token status effect is toggled. If the
    * status effect is one added by the convenient effect module, it is handled
@@ -193,8 +155,13 @@ export default class StatusEffectsLib {
         }, {})
       : {};
 
-    const effectsArray: ActiveEffect[] =
+    let effectsArray: ActiveEffect[] =
       <ActiveEffect[]>(<unknown>token.actor?.data.effects) || <ActiveEffect[]>(<unknown>token.data.effects);
+    if (game.settings.get(CONSTANTS.MODULE_NAME, 'showOnlyTemporaryStatusEffectNames')) {
+      effectsArray = effectsArray.filter((ae) => {
+        return ae.isTemporary;
+      });
+    }
 
     // Prepare the list of effects from the configured defaults and any additional effects present on the Token
     const tokenEffects = <any>foundry.utils.deepClone(effectsArray) || [];
@@ -203,7 +170,7 @@ export default class StatusEffectsLib {
       tokenEffects.push(token.data.overlayEffect);
     }
 
-    if (tokenEffects.size <= 0) {
+    if ((tokenEffects.size && tokenEffects.size <= 0) || (tokenEffects.length && tokenEffects.length <= 0)) {
       return CONFIG.statusEffects.reduce((obj, e: { icon: string; id: string; label: string }) => {
         const id = e.id; // NOTE: added this
 
@@ -215,17 +182,25 @@ export default class StatusEffectsLib {
         const status = statuses[e.id] || {};
 
         let srcExt = false;
+        let isDisabled = false;
         for (const ae of effectsArray) {
           //@ts-ignore
           if (ae.data.icon.includes(src)) {
             srcExt = true;
+            isDisabled = ae.data.disabled;
             break;
           }
         }
 
         // const isActive = !!status.id || effectsArray.includes(src);
-        const isActive = !!status.id || srcExt;
-        const isOverlay = !!status.overlay || token.data.overlayEffect === src;
+        let isActive = !!status.id || srcExt;
+        let isOverlay = !!status.overlay || token.data.overlayEffect === src;
+        if (isOverlay && isDisabled) {
+          isOverlay = false;
+        }
+        if (!isActive && !isDisabled) {
+          isActive = true;
+        }
 
         // NOTE: changed key from src to id
         obj[id] = {
@@ -251,20 +226,35 @@ export default class StatusEffectsLib {
 
     return CONFIG.statusEffects.concat(<any>tokenEffects).reduce((obj, e: any) => {
       if (e.contents) {
-        const activeEffects = <ActiveEffect[]>e.contents;
+        let activeEffects = <ActiveEffect[]>e.contents;
+        if (game.settings.get(CONSTANTS.MODULE_NAME, 'showOnlyTemporaryStatusEffectNames')) {
+          activeEffects = activeEffects.filter((ae) => {
+            return ae.isTemporary;
+          });
+        }
         for (const activeEffect of activeEffects) {
           if (activeEffect) {
             let labelEffect = <string>activeEffect.data.label || '';
             labelEffect = labelEffect.replace('Convenient Effect:', '').trim();
             const iconEffect = <string>activeEffect.data.icon || '';
-            const isActive = !activeEffect.data.disabled;
+
+            const isDisabled = activeEffect.data.disabled;
+            let isActive = !activeEffect.data.disabled;
+            //@ts-ignore
+            let isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
+            if (isOverlay && isDisabled) {
+              isOverlay = false;
+            }
+            if (!isActive && !isDisabled) {
+              isActive = true;
+            }
+
             //@ts-ignore
             let statusId = activeEffect.data.flags?.core?.statusId ?? activeEffect.data.label;
             statusId = statusId.replace('Convenient Effect:', '');
             statusId = statusId.replace(/\s/g, '');
             statusId = statusId.trim().toLowerCase();
-            //@ts-ignore
-            const isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
+
             obj[statusId] = {
               id: statusId ?? '',
               title: labelEffect ? game.i18n.localize(labelEffect) : null,
@@ -275,6 +265,37 @@ export default class StatusEffectsLib {
             };
           }
         }
+      } else if (e instanceof ActiveEffect) {
+        const activeEffect = <ActiveEffect>e;
+        let labelEffect = <string>activeEffect.data.label || '';
+        labelEffect = labelEffect.replace('Convenient Effect:', '').trim();
+        const iconEffect = <string>activeEffect.data.icon || '';
+
+        const isDisabled = activeEffect.data.disabled;
+        let isActive = !activeEffect.data.disabled;
+        //@ts-ignore
+        let isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
+        if (isOverlay && isDisabled) {
+          isOverlay = false;
+        }
+        if (!isActive && !isDisabled) {
+          isActive = true;
+        }
+
+        //@ts-ignore
+        let statusId = activeEffect.data.flags?.core?.statusId ?? activeEffect.data.label;
+        statusId = statusId.replace('Convenient Effect:', '');
+        statusId = statusId.replace(/\s/g, '');
+        statusId = statusId.trim().toLowerCase();
+
+        obj[statusId] = {
+          id: statusId ?? '',
+          title: labelEffect ? game.i18n.localize(labelEffect) : null,
+          src: iconEffect,
+          isActive,
+          isOverlay,
+          cssClass: [isActive ? 'active' : null, isOverlay ? 'overlay' : null].filterJoin(' '),
+        };
       } else {
         const id = e.id; // NOTE: added this
         const src = <string>e.icon ?? e;

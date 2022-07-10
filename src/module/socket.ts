@@ -79,9 +79,6 @@ export function registerSocket() {
 
   // ON MANAGE
 
-  activeEffectManagerSocket.register('updateActiveEffectFromNameOnToken', (...args) =>
-    API.updateActiveEffectFromNameOnTokenArr(...args),
-  );
   activeEffectManagerSocket.register('onManageActiveEffectFromEffectId', (...args) =>
     API.onManageActiveEffectFromEffectIdArr(...args),
   );

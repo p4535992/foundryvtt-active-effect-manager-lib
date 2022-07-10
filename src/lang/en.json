@@ -3,9 +3,18 @@
   "active-effect-manager-lib.setting.statusEffectNames.hint": " ",
   "active-effect-manager-lib.setting.enableStatusEffectNames.name": "Feature: Enable the extended status effect name hud interaction",
   "active-effect-manager-lib.setting.enableStatusEffectNames.hint": "This will extend the funcionality of the standard status effect name",
+  "active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.name": "Show only temporary effect on the status effects panel",
+  "active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.hint": "If this module setting is enabled, it will show only temporary effect on the status effects panel, if disabled you will see all the active effect temporary and passive.",
   "active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",
   "active-effect-manager-lib.setting.enableShyEffectIcons.hint": "Hide active effect icons from unknown sources",
 
   "active-effect-manager-lib.setting.permLevel.name": "[Only with 'Shy Effects' enabled] Permission Level",
-  "active-effect-manager-lib.setting.permLevel.hint": "Minimum permission level required to see an active effect"
+  "active-effect-manager-lib.setting.permLevel.hint": "Minimum permission level required to see an active effect",
+
+  "active-effect-manager-lib.setting.reset.name": "Reset settings to default",
+  "active-effect-manager-lib.setting.reset.label": "Reset Settings To Default",
+  "active-effect-manager-lib.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
+  "active-effect-manager-lib.setting.debug.name": "Enable debugging",
+  "active-effect-manager-lib.setting.debug.label": "Prints debug messages to the console",
+  "active-effect-manager-lib.setting.debug.hint": " "
 }
