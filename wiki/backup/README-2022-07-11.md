@@ -51,6 +51,36 @@ This module uses the [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) li
 
 This module uses the [socketlib](https://github.com/manuelVo/foundryvtt-socketlib) library for wrapping core methods. It is a hard dependency and it is recommended for the best experience and compatibility with other modules.
 
+# Features
+
+## Feature: Enable the extended status effect name hud interaction 
+
+_Custom integration for multysistem of [Adding and Removing Status Effects of Dfreds convinient effect](https://github.com/DFreds/dfreds-convenient-effects/wiki/User-Guide#adding-and-removing-status-effects) any credits for this feature is given to [DFreds](https://github.com/DFreds)_
+
+This will extend the funcionality of the standard status effect name.
+
+Once enabled, right click on any effect in the status effect panel application and select Toggle Status Effect to add or remove the effect from the list. 
+
+Conflict: You should not use this and Combat Utility Belt's "Enhanced Conditions" at the same time, as multiple modules replacing/adding to the available status effects can cause conflicts.
+
+## Feature: Shy Effects 
+
+_Custom integration for multysistem of [Shy Effects](https://github.com/kandashi/shy-effect-icons) any credits for this feature is given to [Kandashi](https://github.com/kandashi)_
+
+This module will disable any active effect icons that do not come from an "Owned source". This level of control can be configured from the module settings. A user requires X permissions on a source item/actor to view the active effects created by that item.
+
+## Feature: Fathomless
+
+_Custom integration for multysistem of [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless) any credits for this feature is given to [schultzcole](https://github.com/schultzcole/)_
+
+This feature allow active effect changes to depend on actor data, even actor data that is modified by other active effects, so long as there are no cyclical dependencies.
+
+This feature allows active effect changes to depend on other actor data, even actor data that is modified by other active effects. This is accomplished by constructing a directed graph that encapsulates the dependency relationships between actor properties, then using that graph to perform a Topological Sort in order to apply the effect changes in the correct order so that all dependencies are taken into account.
+
+The nature of this implementation is such that any changes "downstream" of an actor property that is involved in a dependency cycle are ignored.
+
+Referencing an actor property in an effect change is done with the syntax &my.actor.property.path. Note the use of & rather than @, which is deliberate (see the related caveat below).
+
 # API (WORKING IN PROGRESS...)
 
 ## API Index
