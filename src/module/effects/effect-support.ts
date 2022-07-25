@@ -125,7 +125,7 @@ export class EffectSupport {
   static _isEmptyObject(obj: any) {
     // because Object.keys(new Date()).length === 0;
     // we have to do some additional check
-    if (obj == null || obj == undefined) {
+    if (obj === null || obj === undefined) {
       return true;
     }
     const result =
@@ -385,7 +385,7 @@ export class EffectSupport {
     let token: Token;
     if (typeof tokenOrTokenId === 'string' || tokenOrTokenId instanceof String) {
       const tokens = <Token[]>canvas.tokens?.placeables;
-      token = <Token>tokens.find((token) => token.id == <string>tokenOrTokenId);
+      token = <Token>tokens.find((token) => token.id === <string>tokenOrTokenId);
     } else {
       token = tokenOrTokenId;
     }
@@ -411,7 +411,7 @@ export class EffectSupport {
     //@ts-ignore
     const version = (game.version ?? game.data.version).charAt(0);
 
-    if (version == '9') {
+    if (version === '9') {
       switch (key) {
         case 'ATL.preset':
           break;
@@ -583,7 +583,7 @@ export class EffectSupport {
       description: ``,
       // seconds: Constants.SECONDS.IN_EIGHT_HOURS,
       transfer: true,
-      seconds: duration != null ? <number>duration * 60 : undefined, // minutes to seconds
+      seconds: duration !== null ? <number>duration * 60 : undefined, // minutes to seconds
       atlChanges: atlChanges,
     });
     return efffectAtlToApply;

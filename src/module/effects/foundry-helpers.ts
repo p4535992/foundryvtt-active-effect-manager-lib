@@ -13,7 +13,7 @@ export default class FoundryHelpers {
    * @returns {string[]} actor uuids for selected or targeted tokens
    */
   getActorUuidsFromCanvas(): string[] {
-    if (canvas.tokens?.controlled.length == 0 && game.user?.targets.size == 0) {
+    if (canvas.tokens?.controlled.length === 0 && game.user?.targets.size === 0) {
       return [];
     }
 
@@ -90,7 +90,7 @@ export default class FoundryHelpers {
    */
   getTokenByUuid(uuid: string): Token {
     const tokens = <Token[]>canvas.tokens?.placeables;
-    const token = <Token>tokens.find((token) => token.id == uuid);
+    const token = <Token>tokens.find((token) => token.id === uuid);
     return token;
   }
 }

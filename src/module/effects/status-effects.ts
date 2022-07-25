@@ -57,13 +57,13 @@ export default class StatusEffectsLib {
         // Integration with DFred
         // TODO check this
         //@ts-ignore
-        const effect = game.dfreds._customEffectsHandler.getCustomEffects().find((effect) => effect.name == name);
+        const effect = game.dfreds._customEffectsHandler.getCustomEffects().find((effect) => effect.name === name);
 
         if (effect) {
           return effect;
         }
         //@ts-ignore
-        return game.dfreds.effects.all.find((effect) => effect.name == name);
+        return game.dfreds.effects.all.find((effect) => effect.name === name);
       })
       .filter((effect) => effect)
       .map((effect) => effect.convertToActiveEffectData());

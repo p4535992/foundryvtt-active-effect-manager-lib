@@ -54,11 +54,11 @@ export default class EffectInterface {
     uuids = <string[]>[],
     withSocket = true,
   ): Promise<boolean | undefined> {
-    if (uuids.length == 0) {
+    if (uuids.length === 0) {
       uuids = this._foundryHelpers.getActorUuidsFromCanvas();
     }
 
-    if (uuids.length == 0) {
+    if (uuids.length === 0) {
       errorM(this.moduleName, `Please select or target a token to toggle ${effectName}`, true);
       return undefined;
     }
@@ -169,7 +169,7 @@ export default class EffectInterface {
     const actor = this._foundryHelpers.getActorByUuid(uuid);
 
     if (!actor) {
-      errorM(`Actor ${uuid} could not be found`, true);
+      errorM(this.moduleName, `Actor ${uuid} could not be found`, true);
       return undefined;
     }
 
@@ -299,14 +299,14 @@ export default class EffectInterface {
     forceDisabled?: boolean,
     withSocket = true,
   ): Promise<boolean | undefined> {
-    if (effectId.length == 0) {
+    if (effectId.length === 0) {
       errorM(this.moduleName, `Please select or target a active effect to toggle ${effectId}`, true);
       return undefined;
     }
 
     const actor = <Actor>game.actors?.get(uuid);
     const effect = <ActiveEffect>actor.effects.find((entity: ActiveEffect) => {
-      return <string>entity.id == effectId;
+      return <string>entity.id === effectId;
     });
 
     if (!effect) {
@@ -498,7 +498,7 @@ export default class EffectInterface {
     forceDisabled?: boolean,
     withSocket = true,
   ): Promise<boolean | undefined> {
-    if (effectId.length == 0) {
+    if (effectId.length === 0) {
       errorM(this.moduleName, `Please select or target a active effect to toggle ${effectId}`, true);
       return undefined;
     }
@@ -507,7 +507,7 @@ export default class EffectInterface {
     const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
     const effect = <ActiveEffect>actorEffects.find(
       //(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
-      (activeEffect) => <string>activeEffect?.data?._id == effectId,
+      (activeEffect) => <string>activeEffect?.data?._id === effectId,
     );
 
     // if (!effect) return undefined;
