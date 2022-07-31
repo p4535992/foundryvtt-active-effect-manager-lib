@@ -64,15 +64,6 @@ export const registerSettings = function (): void {
     },
   });
 
-  game.settings.register(CONSTANTS.MODULE_NAME, 'enableShyEffectIcons', {
-    name: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.name`,
-    hint: `${CONSTANTS.MODULE_NAME}.setting.enableShyEffectIcons.hint`,
-    scope: 'world',
-    config: true,
-    default: false,
-    type: Boolean,
-  });
-
   // ========================================================================
 
   game.settings.register(CONSTANTS.MODULE_NAME, 'debug', {
