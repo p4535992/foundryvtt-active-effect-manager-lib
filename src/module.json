@@ -5,17 +5,17 @@
 	"version": "0.0.10",
 	"library": "true",
 	"authors": [
-	  {
-		"name": "p4535992",
-		"url": "https://github.com/p4535992",
-		"discord": "",
-		"twitter": "",
-		"patreon": "",
-		"github": "p4535992",
-		"ko-fi": "",
-		"reddit": "",
-		"email": ""
-	  }
+		{
+			"name": "p4535992",
+			"url": "https://github.com/p4535992",
+			"discord": "",
+			"twitter": "",
+			"patreon": "",
+			"github": "p4535992",
+			"ko-fi": "",
+			"reddit": "",
+			"email": ""
+		}
 	],
 	"type": "module",
 	"socket": true,

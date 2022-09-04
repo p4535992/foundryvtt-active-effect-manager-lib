@@ -10,70 +10,70 @@
  * 					 determines how others may use and modify your module
  */
 // Import TypeScript modules
-import { registerSettings } from './module/settings';
-import CONSTANTS from './module/constants';
-import { dialogWarning, error, log } from './module/lib/lib';
-import { initHooks, readyHooks, setupHooks } from './module/module';
-import type API from './module/api';
+import { registerSettings } from "./module/settings";
+import CONSTANTS from "./module/constants";
+import { dialogWarning, error, log } from "./module/lib/lib";
+import { initHooks, readyHooks, setupHooks } from "./module/module";
+import type API from "./module/api";
 
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
-Hooks.once('init', function () {
-  log(' init ' + CONSTANTS.MODULE_NAME);
-  // Assign custom classes and constants here
+Hooks.once("init", function () {
+	log(" init " + CONSTANTS.MODULE_NAME);
+	// Assign custom classes and constants here
 
-  // Register custom module settings
-  registerSettings();
+	// Register custom module settings
+	registerSettings();
 
-  // Preload Handlebars templates
-  // preloadTemplates();
+	// Preload Handlebars templates
+	// preloadTemplates();
 
-  // Register custom sheets (if any)
-  initHooks();
+	// Register custom sheets (if any)
+	initHooks();
 });
 
 /* ------------------------------------ */
 /* Setup module							*/
 /* ------------------------------------ */
-Hooks.once('setup', function () {
-  setupHooks();
+Hooks.once("setup", function () {
+	setupHooks();
 });
 
 /* ------------------------------------ */
 /* When ready							*/
 /* ------------------------------------ */
-Hooks.once('ready', function () {
-  if (!game.modules.get('lib-wrapper')?.active && game.user?.isGM) {
-    let word = 'install and activate';
-    if (game.modules.get('lib-wrapper')) word = 'activate';
-    throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
-  }
-  if (!game.modules.get('socketlib')?.active && game.user?.isGM) {
-    let word = 'install and activate';
-    if (game.modules.get('socketlib')) word = 'activate';
-    throw error(`Requires the 'socketlib' module. Please ${word} it.`);
-  }
+Hooks.once("ready", function () {
+	if (!game.modules.get("lib-wrapper")?.active && game.user?.isGM) {
+		let word = "install and activate";
+		if (game.modules.get("lib-wrapper")) word = "activate";
+		throw error(`Requires the 'libWrapper' module. Please ${word} it.`);
+	}
+	if (!game.modules.get("socketlib")?.active && game.user?.isGM) {
+		let word = "install and activate";
+		if (game.modules.get("socketlib")) word = "activate";
+		throw error(`Requires the 'socketlib' module. Please ${word} it.`);
+	}
 
-  // if (!isGMConnected()) {
-  //   warn(`Requires a GM to be connected for players to be able to loot item piles.`, true);
-  // }
+	// if (!isGMConnected()) {
+	//   warn(`Requires a GM to be connected for players to be able to loot item piles.`, true);
+	// }
 
-  // Do anything once the module is ready
-  readyHooks();
+	// Do anything once the module is ready
+	readyHooks();
 });
 
 /* ------------------------------------ */
 /* Other Hooks							*/
 /* ------------------------------------ */
 
-Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
-  registerPackageDebugFlag(CONSTANTS.MODULE_NAME);
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
+	registerPackageDebugFlag(CONSTANTS.MODULE_NAME);
 });
 
 export interface ActiveEffectManagerModuleData {
-  api: typeof API;
-  socket: any;
+	api: typeof API;
+	socket: any;
 }
 
 /**
@@ -81,8 +81,8 @@ export interface ActiveEffectManagerModuleData {
  * @param api to set to game module.
  */
 export function setApi(api: typeof API): void {
-  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
-  data.api = api;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
+	data.api = api;
 }
 
 /**
@@ -90,8 +90,8 @@ export function setApi(api: typeof API): void {
  * @returns Api from games module.
  */
 export function getApi(): typeof API {
-  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
-  return data.api;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
+	return data.api;
 }
 
 /**
@@ -99,8 +99,8 @@ export function getApi(): typeof API {
  * @param socket to set to game module.
  */
 export function setSocket(socket: any): void {
-  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
-  data.socket = socket;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
+	data.socket = socket;
 }
 
 /*
@@ -108,6 +108,6 @@ export function setSocket(socket: any): void {
  * @returns Socket from games module.
  */
 export function getSocket() {
-  const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
-  return data.socket;
+	const data = game.modules.get(CONSTANTS.MODULE_NAME) as unknown as ActiveEffectManagerModuleData;
+	return data.socket;
 }
