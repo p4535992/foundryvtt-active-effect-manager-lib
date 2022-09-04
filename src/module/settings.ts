@@ -157,7 +157,6 @@ function defaultSettings(apply = false) {
 
 function otherSettings(apply = false) {
 	return {
-
 		enableDropEffectsOnActors: {
 			name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.name`,
 			hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.hint`,
@@ -166,7 +165,7 @@ function otherSettings(apply = false) {
 			default: false,
 			type: Boolean,
 		},
-	
+
 		enableDropEffectsOnItems: {
 			name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.name`,
 			hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.hint`,

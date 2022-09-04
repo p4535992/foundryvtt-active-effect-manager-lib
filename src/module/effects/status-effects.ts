@@ -43,9 +43,9 @@ export default class StatusEffectsLib {
 			if (CONFIG.specialStatusEffects) {
 				//@ts-ignore
 				CONFIG.specialStatusEffects = {
-				    DEFEATED: 'Convenient Effect: Dead',
-				    INVISIBLE: 'Convenient Effect: Invisible',
-				    BLIND: 'Convenient Effect: Blinded',
+					DEFEATED: "Convenient Effect: Dead",
+					INVISIBLE: "Convenient Effect: Invisible",
+					BLIND: "Convenient Effect: Blinded",
 				};
 			}
 		} else if (modifyStatusEffects === "add") {
@@ -54,9 +54,9 @@ export default class StatusEffectsLib {
 			if (CONFIG.specialStatusEffects) {
 				//@ts-ignore
 				CONFIG.specialStatusEffects = {
-				    DEFEATED: 'Convenient Effect: Dead',
-				    INVISIBLE: 'Convenient Effect: Invisible',
-				    BLIND: 'Convenient Effect: Blinded',
+					DEFEATED: "Convenient Effect: Dead",
+					INVISIBLE: "Convenient Effect: Invisible",
+					BLIND: "Convenient Effect: Blinded",
 				};
 			}
 		}
@@ -174,7 +174,7 @@ export default class StatusEffectsLib {
 
 		let effectsArray: ActiveEffect[] =
 			//@ts-ignore
-			<ActiveEffect[]>(token.actor?.system?.effects) || <ActiveEffect[]>(doc.effects);
+			<ActiveEffect[]>token.actor?.system?.effects || <ActiveEffect[]>doc.effects;
 		if (game.settings.get(CONSTANTS.MODULE_NAME, "showOnlyTemporaryStatusEffectNames")) {
 			effectsArray = effectsArray.filter((ae) => {
 				return ae.isTemporary;

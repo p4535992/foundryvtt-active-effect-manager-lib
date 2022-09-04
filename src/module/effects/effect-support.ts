@@ -34,7 +34,7 @@ export class EffectSupport {
 					},
 					isConvenient: true,
 					isCustomConvenient: true,
-					convenientDescription: 'Applies custom effects',
+					convenientDescription: "Applies custom effects",
 				}
 			),
 			changes: changes,
@@ -292,7 +292,7 @@ export class EffectSupport {
 				isConvenient: true,
 				isCustomConvenient: true,
 				//@ts-ignore
-				convenientDescription: p.description ? i18n(p.description) : 'Applies custom effects',
+				convenientDescription: p.description ? i18n(p.description) : "Applies custom effects",
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? { stackable: false, specialDuration: [], transfer: true }
 					: currentDae,
@@ -350,7 +350,7 @@ export class EffectSupport {
 				},
 				isConvenient: true,
 				isCustomConvenient: true,
-				convenientDescription: i18n(effect.description) ?? 'Applies custom effects',
+				convenientDescription: i18n(effect.description) ?? "Applies custom effects",
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? isPassive
 						? { stackable: false, specialDuration: [], transfer: true }
