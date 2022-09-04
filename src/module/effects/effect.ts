@@ -117,7 +117,8 @@ export default class Effect {
 					overlay: overlay ? overlay : this.overlay ? this.overlay : false, // MOD 4535992
 				},
 				isConvenient: true,
-				convenientDescription: i18n(this.description),
+				isCustomConvenient: true,
+				convenientDescription: i18n(this.description) ?? 'Applies custom effects',
 				dae: this._isEmptyObject(currentDae)
 					? isPassive
 						? { stackable: false, specialDuration: [], transfer: true }

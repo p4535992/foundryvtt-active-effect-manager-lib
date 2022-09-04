@@ -13,6 +13,15 @@ export const registerSettings = function (): void {
 
 	// =====================================================================
 
+	game.settings.register(CONSTANTS.MODULE_NAME, "enableDropEffectsOnActors", {
+		name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.hint`,
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean,
+	});
+
 	game.settings.register(CONSTANTS.MODULE_NAME, "enableDropEffectsOnItems", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.hint`,
@@ -148,6 +157,25 @@ function defaultSettings(apply = false) {
 
 function otherSettings(apply = false) {
 	return {
+
+		enableDropEffectsOnActors: {
+			name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.name`,
+			hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.hint`,
+			scope: "world",
+			config: true,
+			default: true,
+			type: Boolean,
+		},
+	
+		enableDropEffectsOnItems: {
+			name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.name`,
+			hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.hint`,
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean,
+		},
+
 		statusEffectNames: {
 			name: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.name`,
 			hint: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.hint`,

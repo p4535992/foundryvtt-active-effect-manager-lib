@@ -520,10 +520,12 @@ export default class EffectInterface {
 		}
 
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
+		//@ts-ignore
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
 		const effect = <ActiveEffect>actorEffects.find(
-			//(activeEffect) => <boolean>activeEffect?.data?.flags?.isConvenient && <string>activeEffect.id == effectId,
-			(activeEffect) => <string>activeEffect?.data?._id === effectId
+			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
+			//@ts-ignore
+			(activeEffect) => <string>activeEffect?._id === effectId
 		);
 
 		// if (!effect) return undefined;

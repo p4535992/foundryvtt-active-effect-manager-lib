@@ -9,6 +9,8 @@
 	"active-effect-manager-lib.setting.enableShyEffectIcons.hint": "Hide active effect icons from unknown sources",
 	"active-effect-manager-lib.setting.enableDropEffectsOnItems.name": "Feature: Drop Effects on Items",
 	"active-effect-manager-lib.setting.enableDropEffectsOnItems.hint": "With it enabled, creating duplicate effects between different items (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next. It also allows the application of item effects onto actors from the item sheet directly.",
+	"active-effect-manager-lib.setting.enableDropEffectsOnActors.name": "Feature: Drop Effects on Actors",
+	"active-effect-manager-lib.setting.enableDropEffectsOnActors.hint": "With it enabled, creating duplicate effects between different actors (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next.",
 
 	"active-effect-manager-lib.setting.permLevel.name": "[Only with 'Shy Effects' enabled] Permission Level",
 	"active-effect-manager-lib.setting.permLevel.hint": "Minimum permission level required to see an active effect",

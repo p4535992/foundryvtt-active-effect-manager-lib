@@ -87,6 +87,29 @@ export const setupHooks = (): void => {
 			},
 			"WRAPPER"
 		);
+
+	}
+
+	if (game.settings.get(CONSTANTS.MODULE_NAME, "enableDropEffectsOnActors")) {
+		//@ts-ignore
+		libWrapper.register(
+			CONSTANTS.MODULE_NAME,
+			'ActorSheet.prototype._onDropActiveEffect',
+			async function (wrapper, ...args) {
+			  const [, data] = args;
+			  if (!data.effectName) {
+				wrapper(...args);
+				return;
+			  } else {
+				// NOTE: taken from _onDropActiveEffect
+				//@ts-ignore
+				const effect = await ActiveEffect.implementation.fromDropData(data);
+				if (!this.actor.isOwner || !effect) return false;
+				if (this.actor.uuid === effect.parent?.uuid) return false; // NOTE: Modified to include optional
+				return ActiveEffect.create(effect.toObject(), { parent: this.actor });
+			  }
+			}
+		);
 	}
 };
 

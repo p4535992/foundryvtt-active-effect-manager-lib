@@ -38,8 +38,27 @@ export default class StatusEffectsLib {
 		//@ts-ignore
 		if (modifyStatusEffects === "replace") {
 			CONFIG.statusEffects = this._fetchStatusEffects(statusEffectNames);
+
+			//@ts-ignore
+			if (CONFIG.specialStatusEffects) {
+				//@ts-ignore
+				CONFIG.specialStatusEffects = {
+				    DEFEATED: 'Convenient Effect: Dead',
+				    INVISIBLE: 'Convenient Effect: Invisible',
+				    BLIND: 'Convenient Effect: Blinded',
+				};
+			}
 		} else if (modifyStatusEffects === "add") {
 			CONFIG.statusEffects = CONFIG.statusEffects.concat(this._fetchStatusEffects(statusEffectNames));
+			//@ts-ignore
+			if (CONFIG.specialStatusEffects) {
+				//@ts-ignore
+				CONFIG.specialStatusEffects = {
+				    DEFEATED: 'Convenient Effect: Dead',
+				    INVISIBLE: 'Convenient Effect: Invisible',
+				    BLIND: 'Convenient Effect: Blinded',
+				};
+			}
 		}
 	}
 
@@ -136,7 +155,8 @@ export default class StatusEffectsLib {
 	getStatusEffectChoices(token: Token, wrapped, ...args) {
 		// const token = args[0]; //<Token>(<unknown>this);
 
-		// NOTE: taken entirely from foundry.js, modified to remove the icon being the key
+		const doc = token.document;
+
 		// Get statuses which are active for the token actor
 		const actor = token.actor || null;
 		const statuses = actor
@@ -153,7 +173,8 @@ export default class StatusEffectsLib {
 			: {};
 
 		let effectsArray: ActiveEffect[] =
-			<ActiveEffect[]>(<unknown>token.actor?.data.effects) || <ActiveEffect[]>(<unknown>token.data.effects);
+			//@ts-ignore
+			<ActiveEffect[]>(token.actor?.system?.effects) || <ActiveEffect[]>(doc.effects);
 		if (game.settings.get(CONSTANTS.MODULE_NAME, "showOnlyTemporaryStatusEffectNames")) {
 			effectsArray = effectsArray.filter((ae) => {
 				return ae.isTemporary;
@@ -162,9 +183,10 @@ export default class StatusEffectsLib {
 
 		// Prepare the list of effects from the configured defaults and any additional effects present on the Token
 		const tokenEffects = <any>foundry.utils.deepClone(effectsArray) || [];
-		if (token.data.overlayEffect) {
+		//@ts-ignore
+		if (doc.overlayEffect) {
 			//@ts-ignore
-			tokenEffects.push(token.data.overlayEffect);
+			tokenEffects.push(doc.overlayEffect);
 		}
 
 		if ((tokenEffects.size && tokenEffects.size <= 0) || (tokenEffects.length && tokenEffects.length <= 0)) {
@@ -192,7 +214,8 @@ export default class StatusEffectsLib {
 
 				// const isActive = !!status.id || effectsArray.includes(src);
 				let isActive = !!status.id || srcExt;
-				let isOverlay = !!status.overlay || token.data.overlayEffect === src;
+				//@ts-ignore
+				let isOverlay = !!status.overlay || doc.overlayEffect === src;
 				if (isOverlay && isDisabled) {
 					isOverlay = false;
 				}
@@ -232,14 +255,17 @@ export default class StatusEffectsLib {
 				}
 				for (const activeEffect of activeEffects) {
 					if (activeEffect) {
-						let labelEffect = <string>activeEffect.data.label || "";
-						labelEffect = labelEffect.replace("Convenient Effect:", "").trim();
-						const iconEffect = <string>activeEffect.data.icon || "";
-
-						const isDisabled = activeEffect.data.disabled;
-						let isActive = !activeEffect.data.disabled;
 						//@ts-ignore
-						let isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
+						let labelEffect = <string>activeEffect.label || "";
+						labelEffect = labelEffect.replace("Convenient Effect:", "").trim();
+						//@ts-ignore
+						const iconEffect = <string>activeEffect.icon || "";
+						//@ts-ignore
+						const isDisabled = activeEffect.disabled;
+						//@ts-ignore
+						let isActive = !activeEffect.disabled;
+						//@ts-ignore
+						let isOverlay = activeEffect.flags?.core?.overlay ?? false;
 						if (isOverlay && isDisabled) {
 							isOverlay = false;
 						}
@@ -248,7 +274,7 @@ export default class StatusEffectsLib {
 						}
 
 						//@ts-ignore
-						let statusId = activeEffect.data.flags?.core?.statusId ?? activeEffect.data.label;
+						let statusId = activeEffect.flags?.core?.statusId ?? activeEffect.label;
 						statusId = statusId.replace("Convenient Effect:", "");
 						statusId = statusId.replace(/\s/g, "");
 						statusId = statusId.trim().toLowerCase();
@@ -265,14 +291,17 @@ export default class StatusEffectsLib {
 				}
 			} else if (e instanceof ActiveEffect) {
 				const activeEffect = <ActiveEffect>e;
-				let labelEffect = <string>activeEffect.data.label || "";
-				labelEffect = labelEffect.replace("Convenient Effect:", "").trim();
-				const iconEffect = <string>activeEffect.data.icon || "";
-
-				const isDisabled = activeEffect.data.disabled;
-				let isActive = !activeEffect.data.disabled;
 				//@ts-ignore
-				let isOverlay = activeEffect.data.flags?.core?.overlay ?? false;
+				let labelEffect = <string>activeEffect.label || "";
+				labelEffect = labelEffect.replace("Convenient Effect:", "").trim();
+				//@ts-ignore
+				const iconEffect = <string>activeEffect.icon || "";
+				//@ts-ignore
+				const isDisabled = activeEffect.disabled;
+				//@ts-ignore
+				let isActive = !activeEffect.disabled;
+				//@ts-ignore
+				let isOverlay = activeEffect.flags?.core?.overlay ?? false;
 				if (isOverlay && isDisabled) {
 					isOverlay = false;
 				}
@@ -281,7 +310,7 @@ export default class StatusEffectsLib {
 				}
 
 				//@ts-ignore
-				let statusId = activeEffect.data.flags?.core?.statusId ?? activeEffect.data.label;
+				let statusId = activeEffect.flags?.core?.statusId ?? activeEffect.label;
 				statusId = statusId.replace("Convenient Effect:", "");
 				statusId = statusId.replace(/\s/g, "");
 				statusId = statusId.trim().toLowerCase();
@@ -318,7 +347,8 @@ export default class StatusEffectsLib {
 
 				// const isActive = !!status.id || effectsArray.includes(src);
 				const isActive = !!status.id || srcExt;
-				const isOverlay = !!status.overlay || token.data.overlayEffect === src;
+				//@ts-ignore
+				const isOverlay = !!status.overlay || doc.overlayEffect === src;
 
 				// NOTE: changed key from src to id
 				obj[id] = {

@@ -33,6 +33,8 @@ export class EffectSupport {
 						overlay: false,
 					},
 					isConvenient: true,
+					isCustomConvenient: true,
+					convenientDescription: 'Applies custom effects',
 				}
 			),
 			changes: changes,
@@ -205,29 +207,42 @@ export class EffectSupport {
 	}
 
 	static convertActiveEffectToEffect(effect: ActiveEffect): Effect {
-		const atlChanges = effect.data.changes.filter((changes) => changes.key.startsWith("ATL"));
-		const tokenMagicChanges = effect.data.changes.filter((changes) => changes.key === "macro.tokenMagic");
-		const atcvChanges = effect.data.changes.filter((changes) => changes.key.startsWith("ATCV"));
-		const changes = effect.data.changes.filter(
+		//@ts-ignore
+		const atlChanges = effect.changes.filter((changes) => changes.key.startsWith("ATL"));
+		//@ts-ignore
+		const tokenMagicChanges = effect.changes.filter((changes) => changes.key === "macro.tokenMagic");
+		//@ts-ignore
+		const atcvChanges = effect.changes.filter((changes) => changes.key.startsWith("ATCV"));
+		//@ts-ignore
+		const changes = effect.changes.filter(
 			(change) =>
 				!change.key.startsWith("ATL") && change.key !== "macro.tokenMagic" && !change.key.startsWith("ATCV")
 		);
-		const isDisabled = effect.data.disabled || false;
 		//@ts-ignore
-		const isSuppressed = effect.data.document.isSuppressed || false;
+		const isDisabled = effect.disabled || false;
+		//@ts-ignore
+		const isSuppressed = effect.document.isSuppressed || false;
 		const isTemporary = effect.isTemporary || false;
 		const isPassive = !isTemporary;
 
 		return new Effect({
 			customId: <string>effect.id,
-			name: i18n(effect.data.label),
-			description: i18n(<string>effect.data.flags.customEffectDescription),
-			icon: <string>effect.data.icon,
-			tint: <string>effect.data.tint,
-			seconds: effect.data.duration.seconds,
-			rounds: effect.data.duration.rounds,
-			turns: effect.data.duration.turns,
-			flags: effect.data.flags,
+			//@ts-ignore
+			name: i18n(effect.label),
+			//@ts-ignore
+			description: i18n(<string>effect.flags.customEffectDescription),
+			//@ts-ignore
+			icon: <string>effect.icon,
+			//@ts-ignore
+			tint: <string>effect.tint,
+			//@ts-ignore
+			seconds: effect.duration.seconds,
+			//@ts-ignore
+			rounds: effect.duration.rounds,
+			//@ts-ignore
+			turns: effect.duration.turns,
+			//@ts-ignore
+			flags: effect.flags,
 			changes,
 			atlChanges,
 			tokenMagicChanges,
@@ -275,8 +290,9 @@ export class EffectSupport {
 					overlay: p.overlay ? p.overlay : false, // MOD 4535992
 				},
 				isConvenient: true,
+				isCustomConvenient: true,
 				//@ts-ignore
-				convenientDescription: p.description ? i18n(p.description) : "",
+				convenientDescription: p.description ? i18n(p.description) : 'Applies custom effects',
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? { stackable: false, specialDuration: [], transfer: true }
 					: currentDae,
@@ -333,7 +349,8 @@ export class EffectSupport {
 					overlay: myoverlay,
 				},
 				isConvenient: true,
-				convenientDescription: i18n(effect.description),
+				isCustomConvenient: true,
+				convenientDescription: i18n(effect.description) ?? 'Applies custom effects',
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? isPassive
 						? { stackable: false, specialDuration: [], transfer: true }
