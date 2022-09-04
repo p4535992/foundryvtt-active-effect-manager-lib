@@ -123,18 +123,32 @@ export function isFirstOwner(doc) {
 // export let debugEnabled = 0;
 // 0 = none, warnings = 1, debug = 2, all = 3
 
-export function debug(msg, args = '') {
+export function debug(msg:string, args:any = '') {
   if (game.settings.get(CONSTANTS.MODULE_NAME, 'debug')) {
     console.log(`DEBUG | ${CONSTANTS.MODULE_NAME} | ${msg}`, args);
+    //@ts-ignore
+    if (game.modules.get('_dev-mode')?.api?.getPackageDebugValue(CONSTANTS.MODULE_NAME)) {
+      console.log(CONSTANTS.MODULE_NAME, '|', ...args);
+    }
   }
   return msg;
 }
 
-export function log(message) {
+export function log(message, args:any = '') {
   message = `${CONSTANTS.MODULE_NAME} | ${message}`;
   console.log(message.replace('<br>', '\n'));
+  //@ts-ignore
+  if (game.modules.get('_dev-mode')?.api?.getPackageDebugValue(CONSTANTS.MODULE_NAME)) {
+    console.log(CONSTANTS.MODULE_NAME, '|', ...args);
+  }
   return message;
 }
+
+// export function log(message) {
+//   message = `${CONSTANTS.MODULE_NAME} | ${message}`;
+//   console.log(message.replace('<br>', '\n'));
+//   return message;
+// }
 
 export function notify(message) {
   message = `${CONSTANTS.MODULE_NAME} | ${message}`;

@@ -1,10 +1,5 @@
-import type { StatusEffect } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/token';
-import type { ActiveEffectData } from '@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs';
 import API from '../api';
 import CONSTANTS from '../constants';
-import type Effect from './effect';
-import type EffectInterface from './effect-interface';
-import { isEmptyObject, isStringEquals } from './effect-log';
 import { EffectSupport } from './effect-support';
 
 /**
@@ -171,6 +166,7 @@ export default class StatusEffectsLib {
     }
 
     if ((tokenEffects.size && tokenEffects.size <= 0) || (tokenEffects.length && tokenEffects.length <= 0)) {
+      //@ts-ignore
       return CONFIG.statusEffects.reduce((obj, e: { icon: string; id: string; label: string }) => {
         const id = e.id; // NOTE: added this
 

@@ -7,6 +7,8 @@
   "active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.hint": "If this module setting is enabled, it will show only temporary effect on the status effects panel, if disabled you will see all the active effect temporary and passive.",
   "active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",
   "active-effect-manager-lib.setting.enableShyEffectIcons.hint": "Hide active effect icons from unknown sources",
+  "active-effect-manager-lib.setting.enableDropEffectsOnItems.name": "Feature: Drop Effects on Items",
+  "active-effect-manager-lib.setting.enableDropEffectsOnItems.hint": "With it enabled, creating duplicate effects between different items (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next. It also allows the application of item effects onto actors from the item sheet directly.",
 
   "active-effect-manager-lib.setting.permLevel.name": "[Only with 'Shy Effects' enabled] Permission Level",
   "active-effect-manager-lib.setting.permLevel.hint": "Minimum permission level required to see an active effect",

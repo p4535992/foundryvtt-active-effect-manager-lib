@@ -325,6 +325,7 @@ This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limi
 - [DFreds](https://github.com/DFreds) for the module [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)
 - [Kandashi](https://github.com/kandashi) for the module [Shy Effects](https://github.com/kandashi/shy-effect-icons)
 - [schultzcole](https://github.com/schultzcole/) for the module [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)
+- 
 
 ## Acknowledgements
 

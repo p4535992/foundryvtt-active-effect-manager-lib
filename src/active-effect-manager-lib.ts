@@ -67,6 +67,10 @@ Hooks.once('ready', function () {
 /* Other Hooks							*/
 /* ------------------------------------ */
 
+Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
+  registerPackageDebugFlag(CONSTANTS.MODULE_NAME);
+});
+
 export interface ActiveEffectManagerModuleData {
   api: typeof API;
   socket: any;

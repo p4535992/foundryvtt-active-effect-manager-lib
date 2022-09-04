@@ -13,6 +13,15 @@ export const registerSettings = function (): void {
 
   // =====================================================================
 
+  game.settings.register(CONSTANTS.MODULE_NAME, 'enableDropEffectsOnItems', {
+    name: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnItems.hint`,
+    scope: 'world',
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
   game.settings.register(CONSTANTS.MODULE_NAME, 'statusEffectNames', {
     name: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.name`,
     hint: `${CONSTANTS.MODULE_NAME}.setting.statusEffectNames.hint`,

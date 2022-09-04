@@ -30,7 +30,7 @@ export class EffectOwnedItem extends ActiveEffect {
 
     try {
       await this._preCreate(dataToCreate, context, <User>game.user); // game.userId
-    } catch (error) {
+    } catch (error:any) {
       error(error);
     }
 
@@ -58,7 +58,7 @@ export class EffectOwnedItem extends ActiveEffect {
 
     try {
       await this._preDelete(context, <User>game.user);
-    } catch (error) {
+    } catch (error:any) {
       error(error);
     }
 

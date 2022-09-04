@@ -7,6 +7,7 @@ import EffectInterface from './effects/effect-interface';
 import StatusEffects from './effects/status-effects';
 import type StatusEffectsLib from './effects/status-effects';
 import { setApi } from '../active-effect-manager-lib';
+import { DropEffectsOnItems } from './effects/effect-drop-on-item';
 
 export const initHooks = (): void => {
   // registerSettings();
@@ -93,4 +94,8 @@ export const readyHooks = (): void => {
   // checkSystem();
   // registerHotkeys();
   // Hooks.callAll(HOOKS.READY);
+  
+  if (game.settings.get(CONSTANTS.MODULE_NAME, 'enableDropEffectsOnItems')) {
+    DropEffectsOnItems.init();
+  }
 };

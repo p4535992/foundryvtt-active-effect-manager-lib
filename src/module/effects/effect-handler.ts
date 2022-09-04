@@ -547,6 +547,10 @@ export default class EffectHandler {
     overlay: boolean,
     effect: Effect | null | undefined,
   ): Promise<ActiveEffect | undefined> {
+    debugM(
+      this.moduleName,
+      `START Effect Handler 'addEffectOnActor' : [effectName=${effectName},uuid=${uuid},origin=${origin},overlay=${overlay},effect=${effect}]`,
+    );
     if (effectName) {
       effectName = i18n(effectName);
     }
@@ -576,6 +580,8 @@ export default class EffectHandler {
       logM(this.moduleName, `Added effect ${effect.name ? effect.name : effectName} to ${actor.name} - ${actor.id}`);
       return activeEffectsAdded[0];
     }
+    warnM(this.moduleName, `No effect object is been passed`);
+    return undefined;
   }
 
   /**
@@ -876,6 +882,10 @@ export default class EffectHandler {
    * @param {string} uuid - the uuid of the token to remove the effect from
    */
   async removeEffectFromIdOnToken(effectId: string, uuid: string): Promise<ActiveEffect | undefined> {
+    debugM(
+      this.moduleName,
+      `START Effect Handler 'removeEffectFromIdOnToken' : [effectId=${effectId},uuid=${uuid}]`,
+    );
     if (effectId) {
       const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
       const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.data.effects;
@@ -893,6 +903,8 @@ export default class EffectHandler {
         return activeEffectsRemoved[0];
       }
     }
+    warnM(this.moduleName, `No effect id is been passed`);
+    return undefined;
   }
 
   /**
@@ -943,6 +955,8 @@ export default class EffectHandler {
       logM(this.moduleName, `Removed effect ${effectIds.join(',')} from ${token.name} - ${token.id}`);
       return activeEffectsRemoved[0];
     }
+    warnM(this.moduleName, `No array of effect id is been passed`);
+    return undefined;
   }
 
   /**
@@ -977,6 +991,10 @@ export default class EffectHandler {
     overlay: boolean,
     effect: Effect | null | undefined,
   ): Promise<ActiveEffect | undefined> {
+    debugM(
+      this.moduleName,
+      `START Effect Handler 'addEffectOnActor' : [effectName=${effectName},uuid=${uuid},origin=${origin},overlay=${overlay},effect=${effect}]`,
+    );
     if (effectName) {
       effectName = i18n(effectName);
     }
@@ -1008,6 +1026,8 @@ export default class EffectHandler {
       logM(this.moduleName, `Added effect ${effect.name ? effect.name : effectName} to ${token.name} - ${token.id}`);
       return activeEffectsAdded[0];
     }
+    warnM(this.moduleName, `No effect object is been passed`);
+    return undefined;
   }
 
   /**
@@ -1170,12 +1190,14 @@ export default class EffectHandler {
         await token.actor?.createEmbeddedDocuments('ActiveEffect', [<Record<string, any>>activeEffectData])
       );
       logM(this.moduleName, `Added effect ${activeEffectData.label} to ${token.name} - ${token.id}`);
+      debugM(
+        this.moduleName,
+        `END Effect Handler 'addActiveEffectOnToken' : [uuid=${uuid},activeEffectData=${activeEffectData}]`,
+      );
       return activeEffetsAdded[0];
     }
-    debugM(
-      this.moduleName,
-      `END Effect Handler 'addActiveEffectOnToken' : [uuid=${uuid},activeEffectData=${activeEffectData}]`,
-    );
+    warnM(this.moduleName, `No active effect data is been passed`);
+    return undefined;
   }
 
   async addActiveEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
@@ -1629,6 +1651,9 @@ export default class EffectHandler {
         }
         return updated;
         // return activeEffect?.update({disabled: !activeEffect.data.disabled});
+      }
+      default: {
+        return undefined;
       }
     }
   }
