@@ -18,7 +18,7 @@ export const registerSettings = function (): void {
 		hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.hint`,
 		scope: "world",
 		config: true,
-		default: true,
+		default: false,
 		type: Boolean,
 	});
 
@@ -163,7 +163,7 @@ function otherSettings(apply = false) {
 			hint: `${CONSTANTS.MODULE_NAME}.setting.enableDropEffectsOnActors.hint`,
 			scope: "world",
 			config: true,
-			default: true,
+			default: false,
 			type: Boolean,
 		},
 	

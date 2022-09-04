@@ -31,6 +31,12 @@ After extensively testing it with different modules i decide to get better feedb
 
 ## NOTE: If you are a javascript developer and not a typescript developer, you can just use the javascript files under the dist folder
 
+### NOTE
+
+In compliance with the licenses, some piece of code of some feature has been inserted by other projects that I describe in detail in the "Credits" department of this README, **I invite you to support these developers**.
+
+My aim is not to take credit for their work, I just don't want to install 100 modules for 100 features which then collide with each other, every single external feature can be disabled in the settings of this module to allow the use of modules between them .
+
 ## Installation
 
 It's always easiest to install modules from the in game add-on browser.
@@ -80,6 +86,20 @@ This feature allows active effect changes to depend on other actor data, even ac
 The nature of this implementation is such that any changes "downstream" of an actor property that is involved in a dependency cycle are ignored.
 
 Referencing an actor property in an effect change is done with the syntax &my.actor.property.path. Note the use of & rather than @, which is deliberate (see the related caveat below).
+
+
+## Feature: Drop Effects on Items
+
+_Custom integration from [Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)_
+
+With it enabled, creating duplicate effects between different items (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next. It also allows the application of item effects onto actors from the item sheet directly.
+
+## Feature: Drop Effects on Actors
+
+_Custom integration from [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)_
+
+With it enabled, creating duplicate effects between different actors (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next.",
+
 
 # API (WORKING IN PROGRESS...)
 
@@ -317,6 +337,7 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 - **[DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)**: [MIT](https://github.com/DFreds/dfreds-convenient-effects/blob/main/LICENSE)
 - **[Shy Effects](https://github.com/kandashi/shy-effect-icons)**: [MIT](https://github.com/kandashi/shy-effect-icons/blob/master/LICENSE)
 - **[Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)**: [GPLv3](https://github.com/schultzcole/FVTT-Fathomless/blob/master/LICENSE)
+- **[Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)**: [MIT](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items/blob/main/LICENSE)
 
 This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
@@ -325,7 +346,7 @@ This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limi
 - [DFreds](https://github.com/DFreds) for the module [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)
 - [Kandashi](https://github.com/kandashi) for the module [Shy Effects](https://github.com/kandashi/shy-effect-icons)
 - [schultzcole](https://github.com/schultzcole/) for the module [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)
-- 
+- [ElfFriend-DnD](https://github.com/ElfFriend-DnD)  for the module [Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)
 
 ## Acknowledgements
 
