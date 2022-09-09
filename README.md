@@ -1,6 +1,6 @@
-![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-active-effect-manager-lib/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge) 
+![Latest Release Download Count](https://img.shields.io/github/downloads/p4535992/foundryvtt-active-effect-manager-lib/latest/module.zip?color=2b82fc&label=DOWNLOADS&style=for-the-badge)
 
-[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Factive-effect-manager-lib&colorB=006400&style=for-the-badge)](https://forge-vtt.com/bazaar#package=active-effect-manager-lib) 
+[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Factive-effect-manager-lib&colorB=006400&style=for-the-badge)](https://forge-vtt.com/bazaar#package=active-effect-manager-lib)
 
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2Fp4535992%2Ffoundryvtt-active-effect-manager-lib%2Fmaster%2Fsrc%2Fmodule.json&label=Foundry%20Version&query=$.compatibility.verified&colorB=orange&style=for-the-badge)
 
@@ -59,17 +59,17 @@ This module uses the [socketlib](https://github.com/manuelVo/foundryvtt-socketli
 
 # Features
 
-## Feature: Enable the extended status effect name hud interaction 
+## Feature: Enable the extended status effect name hud interaction
 
 _Custom integration for multysistem of [Adding and Removing Status Effects of Dfreds convinient effect](https://github.com/DFreds/dfreds-convenient-effects/wiki/User-Guide#adding-and-removing-status-effects) any credits for this feature is given to [DFreds](https://github.com/DFreds)_
 
 This will extend the funcionality of the standard status effect name.
 
-Once enabled, right click on any effect in the status effect panel application and select Toggle Status Effect to add or remove the effect from the list. 
+Once enabled, right click on any effect in the status effect panel application and select Toggle Status Effect to add or remove the effect from the list.
 
 Conflict: You should not use this and Combat Utility Belt's "Enhanced Conditions" at the same time, as multiple modules replacing/adding to the available status effects can cause conflicts.
 
-## Feature: Shy Effects 
+## Feature: Shy Effects
 
 _Custom integration for multysistem of [Shy Effects](https://github.com/kandashi/shy-effect-icons) any credits for this feature is given to [Kandashi](https://github.com/kandashi)_
 
@@ -98,7 +98,15 @@ With it enabled, creating duplicate effects between different items (e.g. \"Pois
 
 _Custom integration from [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects)_
 
-With it enabled, creating duplicate effects between different actors (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next.",
+With it enabled, creating duplicate effects between different actors (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next.
+
+## Feature: Quick status effect
+
+_Custom integration from [Quick status effect](https://github.com/jeremiahverba/qss)_
+
+Quickly select effects for a token or tokens by replacing the built-in status effect selector with an auto-complete-esque search box and filtered list.
+
+
 
 
 # API (WORKING IN PROGRESS...)
@@ -113,12 +121,12 @@ With it enabled, creating duplicate effects between different actors (e.g. \"Poi
   ): Promise<Item | ActiveEffect | boolean | undefined>;
 
   findEffectByNameOnActor(
-    actorId: string, 
+    actorId: string,
     effectName: string): Promise<ActiveEffect | undefined>;
 
   hasEffectAppliedOnActor(
-    actorId: string, 
-    effectName: string, 
+    actorId: string,
+    effectName: string,
     includeDisabled: boolean): Promise<boolean | undefined>;
 
   hasEffectAppliedFromIdOnActor(
@@ -136,29 +144,29 @@ With it enabled, creating duplicate effects between different actors (e.g. \"Poi
   ): Promise<boolean | undefined>;
 
   addActiveEffectOnActor(
-    actorId: string, 
+    actorId: string,
     activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
 
   removeEffectOnActor(
-    actorId: string, 
+    actorId: string,
     effectName: string): Promise<ActiveEffect | undefined>;
 
   removeEffectFromIdOnActor(
-    actorId: string, 
+    actorId: string,
     effectId: string): Promise<ActiveEffect | undefined>;
 
   addEffectOnToken(
-    tokenId: string, 
-    effectName: string, 
+    tokenId: string,
+    effectName: string,
     effect: Effect): Promise<ActiveEffect | undefined>;
 
   findEffectByNameOnToken(
-    tokenId: string, 
+    tokenId: string,
     effectName: string): Promise<ActiveEffect | undefined>;
 
   hasEffectAppliedOnToken(
-    tokenId: string, 
-    effectName: string, 
+    tokenId: string,
+    effectName: string,
     includeDisabled: boolean): Promise<boolean | undefined>;
 
   hasEffectAppliedFromIdOnToken(
@@ -184,19 +192,19 @@ With it enabled, creating duplicate effects between different actors (e.g. \"Poi
   ): Promise<boolean | undefined>;
 
   addActiveEffectOnToken(
-    tokenId: string, 
+    tokenId: string,
     activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
 
   removeEffectOnToken(
-    tokenId: string, 
+    tokenId: string,
     effectName: string): Promise<ActiveEffect | undefined>;
 
   removeEffectFromIdOnToken(
-    tokenId: string, 
+    tokenId: string,
     effectId: string): Promise<ActiveEffect | undefined>;
 
   removeEffectFromIdOnTokenMultiple(
-    tokenId: string, 
+    tokenId: string,
     effectIds: string[]): Promise<ActiveEffect | undefined>;
 
   updateEffectFromIdOnToken(
@@ -338,6 +346,7 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 - **[Shy Effects](https://github.com/kandashi/shy-effect-icons)**: [MIT](https://github.com/kandashi/shy-effect-icons/blob/master/LICENSE)
 - **[Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)**: [GPLv3](https://github.com/schultzcole/FVTT-Fathomless/blob/master/LICENSE)
 - **[Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)**: [MIT](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items/blob/main/LICENSE)
+- **[Quick status effect](https://github.com/jeremiahverba/qss)**: [MIT](https://github.com/jeremiahverba/qss/blob/main/src/LICENSE)
 
 This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
@@ -347,6 +356,7 @@ This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limi
 - [Kandashi](https://github.com/kandashi) for the module [Shy Effects](https://github.com/kandashi/shy-effect-icons)
 - [schultzcole](https://github.com/schultzcole/) for the module [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)
 - [ElfFriend-DnD](https://github.com/ElfFriend-DnD)  for the module [Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)
+- [jeremiahverba](https://github.com/jeremiahverba) for the module [Quick status effect](https://github.com/jeremiahverba/qss)
 
 ## Acknowledgements
 

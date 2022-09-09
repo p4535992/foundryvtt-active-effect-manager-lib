@@ -9,6 +9,7 @@ import StatusEffectsLib from "./effects/status-effects";
 const API = {
 	effectInterface: EffectInterface,
 	statusEffects: StatusEffectsLib,
+    statusSearchTerm: "",
 
 	get _defaultStatusEffectNames() {
 		return [

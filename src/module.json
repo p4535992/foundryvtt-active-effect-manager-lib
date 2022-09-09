@@ -92,6 +92,10 @@
 			{
 				"name": "drop-effects-on-items",
 				"description": "Redundancy of features you can disable 'Drop Effects on Items' module if you want"
+			},
+            {
+				"name": "quick-status-select",
+				"description": "Redundancy of features you can disable 'Quick status select module' module if you want"
 			}
 		]
 	}
