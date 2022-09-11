@@ -467,8 +467,9 @@ export default class EffectHandler {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
-		const effectToRemove = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
+		const effectToRemove = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
 
 		if (!effectToRemove) {
 			debugM(
@@ -880,8 +881,9 @@ export default class EffectHandler {
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
-		const effectToRemove = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
+		const effectToRemove = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
 
 		if (!effectToRemove) {
 			debugM(
@@ -980,8 +982,9 @@ export default class EffectHandler {
 			//@ts-ignore
 			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
 			for (const effectIdTmp of effectIds) {
-				const effectToRemove = <ActiveEffect>//@ts-ignore
-				actorEffects.find((activeEffect) => <string>activeEffect?._id === effectIdTmp);
+				const effectToRemove = <
+					ActiveEffect //@ts-ignore
+				>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectIdTmp);
 				if (effectToRemove) {
 					effectIdsTmp.push(effectIdTmp);
 				}
@@ -1280,8 +1283,9 @@ export default class EffectHandler {
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
-		const activeEffect = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
+		const activeEffect = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
 
 		if (!activeEffect) {
 			return undefined;
@@ -1331,8 +1335,9 @@ export default class EffectHandler {
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
-		const activeEffect = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
+		const activeEffect = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
 
 		if (!activeEffect) {
 			return undefined;
@@ -1382,8 +1387,9 @@ export default class EffectHandler {
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
-		const activeEffect = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
+		const activeEffect = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
 
 		if (!activeEffect) {
 			return undefined;
@@ -1430,8 +1436,9 @@ export default class EffectHandler {
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
-		const activeEffect = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
+		const activeEffect = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
 
 		if (!activeEffect) {
 			return undefined;
@@ -1488,8 +1495,9 @@ export default class EffectHandler {
         isDisabled=${isDisabled}]`
 		);
 		const actorEffects = owner?.data.effects;
-		const activeEffect = <ActiveEffect>//@ts-ignore
-		actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
+		const activeEffect = <
+			ActiveEffect //@ts-ignore
+		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
 		const response = this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,

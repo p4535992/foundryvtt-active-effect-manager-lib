@@ -82,7 +82,7 @@ export const registerSettings = function (): void {
 		},
 	});
 
-    game.settings.register(CONSTANTS.MODULE_NAME, "enableQuickStatusEffect", {
+	game.settings.register(CONSTANTS.MODULE_NAME, "enableQuickStatusEffect", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.hint`,
 		scope: "world",
@@ -202,14 +202,14 @@ function otherSettings(apply = false) {
 			type: Boolean,
 		},
 
-        enableQuickStatusEffect: {
-            name: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.name`,
-            hint: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.hint`,
-            scope: "world",
-            config: true,
-            default: false,
-            type: Boolean,
-        },
+		enableQuickStatusEffect: {
+			name: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.name`,
+			hint: `${CONSTANTS.MODULE_NAME}.setting.enableQuickStatusEffect.hint`,
+			scope: "world",
+			config: true,
+			default: false,
+			type: Boolean,
+		},
 
 		debug: {
 			name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,

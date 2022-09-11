@@ -2,7 +2,7 @@
 	"name": "active-effect-manager-lib",
 	"title": "Library: Active effect manager",
 	"description": "Active effect manager library for leverage operation on active effects",
-	"version": "0.0.10",
+	"version": "0.1.0",
 	"library": "true",
 	"authors": [
 		{
@@ -65,8 +65,8 @@
 	"url": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib",
 	"manifest": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.json",
 	"download": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.zip",
-	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.0.10/README.md",
-	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.0.10/changelog.md",
+	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.0/README.md",
+	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.0/changelog.md",
 	"bugs": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/issues",
 	"allowBugReporter": true,
 	"dependencies": [
@@ -93,7 +93,7 @@
 				"name": "drop-effects-on-items",
 				"description": "Redundancy of features you can disable 'Drop Effects on Items' module if you want"
 			},
-            {
+			{
 				"name": "quick-status-select",
 				"description": "Redundancy of features you can disable 'Quick status select module' module if you want"
 			}
