@@ -1,6 +1,7 @@
 import type { StatusEffect } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/token";
 import API from "../api";
 import CONSTANTS from "../constants";
+import { isStringEquals } from "./effect-log";
 import type { StatusEffectInternal } from "./effect-models";
 import { EffectSupport } from "./effect-support";
 
@@ -144,10 +145,25 @@ export default class StatusEffectsLib {
 						const effectId = statusEffectId;
 						activeEffectFound = <ActiveEffect>await API.findEffectByIdOnToken(tokenId, effectId);
 					}
+					if (!activeEffectFound) {
+						for(const effect of <ActiveEffect[]>Object.values(token.actor.effects.contents)){
+							//@ts-ignore
+							if(isStringEquals(effect.flags.core.statusId,"Convenient Effect: " + statusEffectInternal.label)){
+								activeEffectFound = effect;
+								break;
+							}
+							//@ts-ignore
+							if(isStringEquals(effect.flags.core.statusId, statusEffectId)){
+								activeEffectFound = effect;
+								break;
+							}
+						}
+					}
 					if (activeEffectFound) {
 						const effectName = activeEffectFound.data ? <string>activeEffectFound.data.label : <string>activeEffectFound.name;
 						// Added 2022-09-11 for strange bug on draw effect ?
 						// is the reverse condition
+						/*
 						if(token.document.overlayEffect === "[object Object]"){
 							//@ts-ignore
 							if (String(activeEffectFound.disabled) === "true") {
@@ -162,6 +178,13 @@ export default class StatusEffectsLib {
 								token.document.overlayEffect = img.getAttribute("src");
 							}
 						}
+						*/
+						const texture = img.getAttribute("src");
+						//@ts-ignore
+						let isDisabled = String(activeEffectFound.disabled) === "true" ? true : false; 
+						let active = !isDisabled;
+						// active = active ?? token.document.overlayEffect !== texture;
+						token.document.overlayEffect = active ? null : img.getAttribute("src");
 
 						// Original code
 						event.preventDefault();
@@ -170,7 +193,7 @@ export default class StatusEffectsLib {
 						// const effect = ( img.dataset.statusId && token.actor ) ?
 						// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 						// 	img.getAttribute("src");
-						/*
+						
 						if(activeEffectFound.getFlag("core", "statusId")?.startsWith("Convenient Effect:")){
 							//@ts-ignore
 							statusEffectInternal.id = "Convenient Effect: " + statusEffectInternal.label;
@@ -178,15 +201,10 @@ export default class StatusEffectsLib {
 							//@ts-ignore
 							statusEffectInternal.id = activeEffectFound._id;
 						}
+						// return token.toggleEffect(statusEffectInternal, { overlay });
 						
-						return token.toggleEffect(statusEffectInternal, { overlay });
-						*/
-						
-						// const uuids = <string[]>[tokenId];
 						
 						const effectId = <string>activeEffectFound.id;
-						// TODO add module settings for manage this
-						
 						const effect = EffectSupport.convertActiveEffectToEffect(activeEffectFound);
 						effect.customId = effectId;
 						effect.name = effectName;
@@ -194,11 +212,27 @@ export default class StatusEffectsLib {
 						await API.toggleEffectFromDataOnToken(
 							tokenId, effect, false, undefined, undefined, overlay);
 
-						const texture = img.getAttribute("src");
-						//@ts-ignore
-						const active = String(activeEffectFound.disabled) === "true" ? false : true; 
+						active = !active;
 						token._toggleOverlayEffect(texture, {active});
+						
+
+						// // Assign the overlay effect
+						// active = active ?? token.document.overlayEffect !== texture;
+						// const effectIn = active ? texture : undefined;
+						// await token.document.update({overlayEffect: effectIn});
+						// await token.document.update({ overlayEffect: effectIn });
+						// await token.document.update({ overlayEffect: effectIn });
+						// // Set the defeated status in the combat tracker
+						// // TODO - deprecate this and require that active effects be used instead
+						// if ( (texture === CONFIG.controlIcons.defeated) && game.combat ) {
+						// 	const combatant = game.combat.getCombatantByToken(token.id);
+						// 	if ( combatant ) await combatant.update({defeated: active});
+						// }
+					}else{
+						wrapper(...args);
 					}
+				}else{
+					wrapper(...args);
 				}
 			} else {
 				wrapper(...args);
