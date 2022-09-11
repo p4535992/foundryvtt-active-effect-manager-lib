@@ -982,8 +982,8 @@ export default class EffectHandler {
 		);
 		if (effectId) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
-			//@ts-ignore
 			const actorEffects =
+				//@ts-ignore
 				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			const effectToRemove = <ActiveEffect>actorEffects.find(
 				//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
@@ -1030,8 +1030,8 @@ export default class EffectHandler {
 		if (effectIds) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			const effectIdsTmp: string[] = [];
-			//@ts-ignore
 			const actorEffects =
+				//@ts-ignore
 				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			for (const effectIdTmp of effectIds) {
 				const effectToRemove = <

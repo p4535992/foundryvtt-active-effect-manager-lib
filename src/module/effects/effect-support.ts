@@ -206,43 +206,43 @@ export class EffectSupport {
 		return undefined;
 	}
 
-	static convertActiveEffectToEffect(effect: ActiveEffect): Effect {
+	static convertActiveEffectToEffect(activeEffect: ActiveEffect): Effect {
 		//@ts-ignore
-		const atlChanges = effect.changes.filter((changes) => changes.key.startsWith("ATL"));
+		const atlChanges = activeEffect.changes.filter((changes) => changes.key.startsWith("ATL"));
 		//@ts-ignore
-		const tokenMagicChanges = effect.changes.filter((changes) => changes.key === "macro.tokenMagic");
+		const tokenMagicChanges = activeEffect.changes.filter((changes) => changes.key === "macro.tokenMagic");
 		//@ts-ignore
-		const atcvChanges = effect.changes.filter((changes) => changes.key.startsWith("ATCV"));
+		const atcvChanges = activeEffect.changes.filter((changes) => changes.key.startsWith("ATCV"));
 		//@ts-ignore
-		const changes = effect.changes.filter(
+		const changes = activeEffect.changes.filter(
 			(change) =>
 				!change.key.startsWith("ATL") && change.key !== "macro.tokenMagic" && !change.key.startsWith("ATCV")
 		);
 		//@ts-ignore
-		const isDisabled = effect.disabled || false;
+		const isDisabled = activeEffect.disabled || false;
 		//@ts-ignore
-		const isSuppressed = effect.isSuppressed || false;
-		const isTemporary = effect.isTemporary || false;
+		const isSuppressed = activeEffect.isSuppressed || false;
+		const isTemporary = activeEffect.isTemporary || false;
 		const isPassive = !isTemporary;
 
 		return new Effect({
-			customId: <string>effect.id,
+			customId: <string>activeEffect.id,
 			//@ts-ignore
-			name: i18n(effect.label),
+			name: i18n(activeEffect.label),
 			//@ts-ignore
-			description: i18n(<string>effect.flags.customEffectDescription),
+			description: i18n(<string>activeEffect.flags.customEffectDescription),
 			//@ts-ignore
-			icon: <string>effect.icon,
+			icon: <string>activeEffect.icon,
 			//@ts-ignore
-			tint: <string>effect.tint,
+			tint: <string>activeEffect.tint,
 			//@ts-ignore
-			seconds: effect.duration.seconds,
+			seconds: activeEffect.duration.seconds,
 			//@ts-ignore
-			rounds: effect.duration.rounds,
+			rounds: activeEffect.duration.rounds,
 			//@ts-ignore
-			turns: effect.duration.turns,
+			turns: activeEffect.duration.turns,
 			//@ts-ignore
-			flags: effect.flags,
+			flags: activeEffect.flags,
 			changes,
 			atlChanges,
 			tokenMagicChanges,
@@ -382,9 +382,9 @@ export class EffectSupport {
 	//   return changes;
 	// }
 
-	static retrieveChangesOrderedByPriorityFromAE(effectEntity: ActiveEffect) {
+	static retrieveChangesOrderedByPriorityFromAE(activeEffect: ActiveEffect) {
 		// Organize non-disabled effects by their application priority
-		const changes = <EffectChangeData[]>[effectEntity].reduce((changes, e: ActiveEffect) => {
+		const changes = <EffectChangeData[]>[activeEffect].reduce((changes, e: ActiveEffect) => {
 			if (e.data.disabled) {
 				return changes;
 			}
@@ -417,12 +417,12 @@ export class EffectSupport {
 		return origin;
 	}
 
-	static prepareOriginForActor(actorOrAcotrId: Actor | string): string {
+	static prepareOriginForActor(actorOrActorId: Actor | string): string {
 		let actor: Actor;
-		if (typeof actorOrAcotrId === "string" || actorOrAcotrId instanceof String) {
-			actor = <Actor>game.actors?.get(<string>actorOrAcotrId);
+		if (typeof actorOrActorId === "string" || actorOrActorId instanceof String) {
+			actor = <Actor>game.actors?.get(<string>actorOrActorId);
 		} else {
-			actor = actorOrAcotrId;
+			actor = actorOrActorId;
 		}
 		const origin = `Actor.${actor.id}`;
 		return origin;

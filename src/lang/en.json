@@ -2,7 +2,7 @@
 	"active-effect-manager-lib.setting.statusEffectNames.name": "Status Effect Names",
 	"active-effect-manager-lib.setting.statusEffectNames.hint": " ",
 	"active-effect-manager-lib.setting.enableStatusEffectNames.name": "Feature: Enable the extended status effect name hud interaction",
-	"active-effect-manager-lib.setting.enableStatusEffectNames.hint": "This will extend the funcionality of the standard status effect name",
+	"active-effect-manager-lib.setting.enableStatusEffectNames.hint": "This will extend the functionality of the standard status effect name",
 	"active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.name": "Show only temporary effect on the status effects panel",
 	"active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.hint": "If this module setting is enabled, it will show only temporary effect on the status effects panel, if disabled you will see all the active effect temporary and passive.",
 	"active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",

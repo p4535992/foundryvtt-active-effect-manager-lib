@@ -5,6 +5,10 @@ import type { ActiveEffectData } from "@league-of-foundry-developers/foundry-vtt
 import type Effect from "./effects/effect";
 import type { EffectActions } from "./effects/effect-models";
 import StatusEffectsLib from "./effects/status-effects";
+import { EffectSupport } from "./effects/effect-support";
+import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
+import type { ActiveEffectDataProperties } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData";
+import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 
 const API = {
 	effectInterface: EffectInterface,
@@ -816,6 +820,139 @@ const API = {
 			isDisabled
 		);
 		return result;
+	},
+
+	// ==========================
+	// SUPPORT 2022-09-11
+	// ==========================
+
+	async buildDefault(
+		id: string,
+		name: string,
+		icon: string,
+		isPassive: boolean,
+		changes: EffectChangeData[] = [],
+		atlChanges: EffectChangeData[] = [],
+		tokenMagicChanges: EffectChangeData[] = [],
+		atcvChanges: EffectChangeData[] = []
+	): Promise<Effect> {
+		return EffectSupport.buildDefault(
+			id,
+			name,
+			icon,
+			isPassive,
+			changes,
+			atlChanges,
+			tokenMagicChanges,
+			atcvChanges
+		);
+	},
+
+	async isDuplicateEffectChange(aeKey: string, arrChanges: EffectChangeData[]): Promise<boolean> {
+		return EffectSupport.isDuplicateEffectChange(aeKey, arrChanges);
+	},
+
+	async _handleIntegrations(effect: Effect): Promise<EffectChangeData[]> {
+		return EffectSupport._handleIntegrations(effect);
+	},
+
+	async convertActiveEffectToEffect(activeEffect: ActiveEffect): Promise<Effect> {
+		return EffectSupport.convertActiveEffectToEffect(activeEffect);
+	},
+
+	async convertActiveEffectDataPropertiesToActiveEffect(
+		activeEffectDataProperties: PropertiesToSource<ActiveEffectDataProperties>,
+		isPassive: boolean
+	): Promise<ActiveEffect> {
+		return EffectSupport.convertActiveEffectDataPropertiesToActiveEffect(activeEffectDataProperties, isPassive);
+	},
+
+	async convertToActiveEffectData(effect: Effect): Promise<Record<string, unknown>> {
+		return EffectSupport.convertToActiveEffectData(effect);
+	},
+
+	async retrieveChangesOrderedByPriorityFromAE(activeEffect: ActiveEffect): Promise<EffectChangeData[]> {
+		return EffectSupport.retrieveChangesOrderedByPriorityFromAE(activeEffect);
+	},
+
+	async prepareOriginForToken(tokenOrTokenId: Token | string): Promise<string> {
+		return EffectSupport.prepareOriginForToken(tokenOrTokenId);
+	},
+
+	async prepareOriginForActor(actorOrActorId: Actor | string): Promise<string> {
+		return EffectSupport.prepareOriginForActor(actorOrActorId);
+	},
+
+	async convertToATLEffect(
+		//lockRotation: boolean,
+		dimSight: number,
+		brightSight: number,
+		sightAngle: number,
+		dimLight: number,
+		brightLight: number,
+		lightColor: string,
+		lightAlpha: number,
+		lightAngle: number,
+
+		lightColoration: number | null = null,
+		lightLuminosity: number | null = null,
+		lightGradual: boolean | null = null,
+		lightSaturation: number | null = null,
+		lightContrast: number | null = null,
+		lightShadows: number | null = null,
+
+		lightAnimationType: string | null,
+		lightAnimationSpeed: number | null,
+		lightAnimationIntensity: number | null,
+		lightAnimationReverse: boolean | null,
+
+		// applyAsAtlEffect = false, // rimosso
+		effectName: string | null = null,
+		effectIcon: string | null = null,
+		duration: number | null = null,
+
+		// vision = false,
+		// id: string | null = null,
+		// name: string | null = null,
+		height: number | null = null,
+		width: number | null = null,
+		scale: number | null = null
+	): Promise<Effect> {
+		return EffectSupport.convertToATLEffect(
+			//lockRotation,
+			dimSight,
+			brightSight,
+			sightAngle,
+			dimLight,
+			brightLight,
+			lightColor,
+			lightAlpha,
+			lightAngle,
+
+			lightColoration,
+			lightLuminosity,
+			lightGradual,
+			lightSaturation,
+			lightContrast,
+			lightShadows,
+
+			lightAnimationType,
+			lightAnimationSpeed,
+			lightAnimationIntensity,
+			lightAnimationReverse,
+
+			// applyAsAtlEffect, // rimosso
+			effectName,
+			effectIcon,
+			duration,
+
+			// visio,
+			// id,
+			// name,
+			height,
+			width,
+			scale
+		);
 	},
 };
 
