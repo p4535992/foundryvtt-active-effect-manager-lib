@@ -6,8 +6,7 @@ export enum EffectActions {
 	update = "update",
 }
 
-export interface StatusEffectInternal
-{
+export interface StatusEffectInternal {
 	id: string;
 	title: string;
 	label: string;

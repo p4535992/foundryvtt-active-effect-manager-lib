@@ -108,11 +108,10 @@ export default class StatusEffectsLib {
 
 		const effect =
 			img.dataset.statusId && token.actor
-			? CONFIG.statusEffects.find((e) => e.id === img.dataset.statusId)
-			: img.getAttribute("src");
-		
-		if (statusEffectId) {
+				? CONFIG.statusEffects.find((e) => e.id === img.dataset.statusId)
+				: img.getAttribute("src");
 
+		if (statusEffectId) {
 			// Integration with DFred
 			// if (statusEffectId.startsWith('Convenient Effect: ')) {
 			// event.preventDefault();
@@ -123,14 +122,13 @@ export default class StatusEffectsLib {
 			// if (statusEffectId.startsWith('Convenient Effect: ')) {
 
 			if (!effect) {
-
 				const arrayStatusEffects = Object.values(this._getStatusEffectChoicesInternal(token)) || [];
 				const effect2 =
 					img.dataset.statusId && token.actor
-					? arrayStatusEffects.find((e) => {
-						return e.id === img.dataset.statusId;
-					})
-					: img.getAttribute("src");	
+						? arrayStatusEffects.find((e) => {
+								return e.id === img.dataset.statusId;
+						  })
+						: img.getAttribute("src");
 
 				if (effect2) {
 					let statusId = statusEffectId.replace("Convenient Effect:", "");
@@ -141,9 +139,9 @@ export default class StatusEffectsLib {
 					const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
 					// Added 2022-09-11 for strange bug on draw effect ?
 					//@ts-ignore
-					if(String(result.disabled) == "true"){
+					if (String(result.disabled) == "true") {
 						token.document.overlayEffect = undefined;
-					}else{
+					} else {
 						token.document.overlayEffect = img.getAttribute("src");
 					}
 
@@ -154,7 +152,7 @@ export default class StatusEffectsLib {
 					// const effect = ( img.dataset.statusId && token.actor ) ?
 					// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 					// 	img.getAttribute("src");
-					return token.toggleEffect(effect2, {overlay});
+					return token.toggleEffect(effect2, { overlay });
 					/*
 					if (result) {
 						// const uuids = <string[]>[tokenId];
@@ -184,10 +182,10 @@ export default class StatusEffectsLib {
 		// // const effect = ( img.dataset.statusId && token.actor ) ?
 		// // 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 		// // 	img.getAttribute("src");
-		// return token.toggleEffect(effect, {overlay});		
+		// return token.toggleEffect(effect, {overlay});
 	}
 
-	_getStatusEffectChoicesInternal(token: Token):StatusEffectInternal[] {
+	_getStatusEffectChoicesInternal(token: Token): StatusEffectInternal[] {
 		// const token = args[0]; //<Token>(<unknown>this);
 
 		const doc = token.document;
@@ -204,12 +202,12 @@ export default class StatusEffectsLib {
 						};
 					}
 					return obj;
-			}, {})
+			  }, {})
 			: {};
 
 		let effectsArray: ActiveEffect[] =
 			//@ts-ignore
-			<ActiveEffect[]>token.actor?.effects?.contents || <ActiveEffect[]>doc.effects || [] ;
+			<ActiveEffect[]>token.actor?.effects?.contents || <ActiveEffect[]>doc.effects || [];
 		if (game.settings.get(CONSTANTS.MODULE_NAME, "showOnlyTemporaryStatusEffectNames")) {
 			effectsArray = effectsArray.filter((ae) => {
 				return ae.isTemporary;

@@ -405,6 +405,14 @@ function getElevationPlaceableObject(placeableObject: any): number {
 // Module specific function
 // =============================
 
+export async function drawOverlayHandler(wrapper, ...args) {
+	const [src, tint] = args;
+	if (src === "[object Object]") {
+		args[0] = undefined;
+	}
+	return wrapper(...args);
+}
+
 export async function drawShyEffects() {
 	this.hud.effects.removeChildren().forEach((c) => c.destroy());
 	const tokenEffects = this.document.effects;

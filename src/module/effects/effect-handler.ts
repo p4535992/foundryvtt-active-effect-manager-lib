@@ -37,9 +37,9 @@ export default class EffectHandler {
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'toggleEffect' : [effectName=${effectName},overlay=${overlay},uuids=${String(uuids)},metadata=${String(
-				metadata
-			)}]`
+			`START Effect Handler 'toggleEffect' : [effectName=${effectName},overlay=${overlay},uuids=${String(
+				uuids
+			)},metadata=${String(metadata)}]`
 		);
 		const effectNames: string[] = [];
 		for (const uuid of uuids) {
@@ -203,8 +203,12 @@ export default class EffectHandler {
 		this._handleIntegrations(effect);
 
 		effect.origin = effectData.origin ? effectData.origin : origin;
-		effect.overlay = (String(effectData.overlay) === "false" || String(effectData.overlay) === "true") ? effectData.overlay : 
-			((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
+		effect.overlay =
+			String(effectData.overlay) === "false" || String(effectData.overlay) === "true"
+				? effectData.overlay
+				: String(overlay) === "false" || String(overlay) === "true"
+				? overlay
+				: false;
 		const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
 		if (activeEffectFounded) {
 			warnM(
@@ -590,8 +594,12 @@ export default class EffectHandler {
 			//   overlay,
 			// });
 			effect.origin = effect.origin ? effect.origin : origin;
-			effect.overlay = (String(effect.overlay) === "false" || String(effect.overlay) === "true") ? effect.overlay : 
-				((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
+			effect.overlay =
+				String(effect.overlay) === "false" || String(effect.overlay) === "true"
+					? effect.overlay
+					: String(overlay) === "false" || String(overlay) === "true"
+					? overlay
+					: false;
 			const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
 			if (activeEffectFounded) {
 				warnM(
@@ -651,23 +659,23 @@ export default class EffectHandler {
 			return undefined;
 		}
 
-		if(String(overlay) === "false" || String(overlay) === "true"){
+		if (String(overlay) === "false" || String(overlay) === "true") {
 			// DO NOTHING
-		}else{
+		} else {
 			//@ts-ignore
-			if(!activeEffect.flags){
+			if (!activeEffect.flags) {
 				//@ts-ignore
 				activeEffect.flags = {};
 			}
 			//@ts-ignore
-			if(!activeEffect.flags.core){
+			if (!activeEffect.flags.core) {
 				//@ts-ignore
 				activeEffect.flags.core = {};
 			}
 			//@ts-ignore
-			overlay = activeEffect.flags.core.overlay
-			if(!overlay){
-				overlay = false
+			overlay = activeEffect.flags.core.overlay;
+			if (!overlay) {
+				overlay = false;
 			}
 		}
 
@@ -686,9 +694,9 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -696,9 +704,9 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -707,9 +715,9 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		}
 
@@ -975,7 +983,8 @@ export default class EffectHandler {
 		if (effectId) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+			const actorEffects =
+				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			const effectToRemove = <ActiveEffect>actorEffects.find(
 				//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 				//@ts-ignore
@@ -1022,7 +1031,8 @@ export default class EffectHandler {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			const effectIdsTmp: string[] = [];
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+			const actorEffects =
+				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			for (const effectIdTmp of effectIds) {
 				const effectToRemove = <
 					ActiveEffect //@ts-ignore
@@ -1099,8 +1109,12 @@ export default class EffectHandler {
 			//   overlay,
 			// });
 			effect.origin = effect.origin ? effect.origin : origin;
-			effect.overlay = (String(effect.overlay) === "false" || String(effect.overlay) === "true") ? effect.overlay : 
-				((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
+			effect.overlay =
+				String(effect.overlay) === "false" || String(effect.overlay) === "true"
+					? effect.overlay
+					: String(overlay) === "false" || String(overlay) === "true"
+					? overlay
+					: false;
 			const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnToken(effectName, uuid);
 			if (activeEffectFounded) {
 				warnM(
@@ -1166,23 +1180,23 @@ export default class EffectHandler {
 			return undefined;
 		}
 
-		if(String(overlay) === "false" || String(overlay) === "true"){
+		if (String(overlay) === "false" || String(overlay) === "true") {
 			// DO NOTHING
-		}else{
+		} else {
 			//@ts-ignore
-			if(!activeEffect.flags){
+			if (!activeEffect.flags) {
 				//@ts-ignore
 				activeEffect.flags = {};
 			}
 			//@ts-ignore
-			if(!activeEffect.flags.core){
+			if (!activeEffect.flags.core) {
 				//@ts-ignore
 				activeEffect.flags.core = {};
 			}
 			//@ts-ignore
-			overlay = activeEffect.flags.core.overlay
-			if(!overlay){
-				overlay = false
+			overlay = activeEffect.flags.core.overlay;
+			if (!overlay) {
+				overlay = false;
 			}
 		}
 
@@ -1201,9 +1215,9 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -1211,9 +1225,9 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -1222,9 +1236,9 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		}
 		debugM(
@@ -1268,23 +1282,23 @@ export default class EffectHandler {
 			return undefined;
 		}
 
-		if(String(overlay) === "false" || String(overlay) === "true"){
+		if (String(overlay) === "false" || String(overlay) === "true") {
 			// DO NOTHING
-		}else{
+		} else {
 			//@ts-ignore
-			if(!activeEffect.flags){
+			if (!activeEffect.flags) {
 				//@ts-ignore
 				activeEffect.flags = {};
 			}
 			//@ts-ignore
-			if(!activeEffect.flags.core){
+			if (!activeEffect.flags.core) {
 				//@ts-ignore
 				activeEffect.flags.core = {};
 			}
 			//@ts-ignore
-			overlay = activeEffect.flags.core.overlay
-			if(!overlay){
-				overlay = false
+			overlay = activeEffect.flags.core.overlay;
+			if (!overlay) {
+				overlay = false;
 			}
 		}
 
@@ -1303,9 +1317,9 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -1313,9 +1327,9 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -1324,9 +1338,9 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
-						overlay: overlay
-					}
-				}
+						overlay: overlay,
+					},
+				},
 			});
 		}
 		debugM(
@@ -1417,7 +1431,7 @@ export default class EffectHandler {
 		//   overlay,
 		// });
 		effectUpdated.origin = origin;
-		effectUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
+		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1469,7 +1483,7 @@ export default class EffectHandler {
 		//   overlay,
 		// });
 		effectUpdated.origin = origin;
-		effectUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
+		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1512,23 +1526,23 @@ export default class EffectHandler {
 			return undefined;
 		}
 
-		if(String(overlay) === "false" || String(overlay) === "true"){
+		if (String(overlay) === "false" || String(overlay) === "true") {
 			// DO NOTHING
-		}else{
+		} else {
 			//@ts-ignore
-			if(!activeEffect.flags){
+			if (!activeEffect.flags) {
 				//@ts-ignore
 				activeEffect.flags = {};
 			}
 			//@ts-ignore
-			if(!activeEffect.flags.core){
+			if (!activeEffect.flags.core) {
 				//@ts-ignore
 				activeEffect.flags.core = {};
 			}
 			//@ts-ignore
-			overlay = activeEffect.flags.core.overlay
-			if(!overlay){
-				overlay = false
+			overlay = activeEffect.flags.core.overlay;
+			if (!overlay) {
+				overlay = false;
 			}
 		}
 
@@ -1582,23 +1596,23 @@ export default class EffectHandler {
 			return undefined;
 		}
 
-		if(String(overlay) === "false" || String(overlay) === "true"){
+		if (String(overlay) === "false" || String(overlay) === "true") {
 			// DO NOTHING
-		}else{
+		} else {
 			//@ts-ignore
-			if(!activeEffect.flags){
+			if (!activeEffect.flags) {
 				//@ts-ignore
 				activeEffect.flags = {};
 			}
 			//@ts-ignore
-			if(!activeEffect.flags.core){
+			if (!activeEffect.flags.core) {
 				//@ts-ignore
 				activeEffect.flags.core = {};
 			}
 			//@ts-ignore
-			overlay = activeEffect.flags.core.overlay
-			if(!overlay){
-				overlay = false
+			overlay = activeEffect.flags.core.overlay;
+			if (!overlay) {
+				overlay = false;
 			}
 		}
 
