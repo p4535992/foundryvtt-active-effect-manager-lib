@@ -407,10 +407,10 @@ function getElevationPlaceableObject(placeableObject: any): number {
 
 export async function drawShyEffects() {
 	this.hud.effects.removeChildren().forEach((c) => c.destroy());
-	const tokenEffects = this.data.effects;
+	const tokenEffects = this.document.effects;
 	const actorEffects = this.actor?.temporaryEffects || [];
 	let overlay = {
-		src: this.data.overlayEffect,
+		src: this.document.overlayEffect,
 		tint: <number | null>null,
 	};
 	const minPerm = <CONST.DOCUMENT_PERMISSION_LEVELS>game.settings.get(CONSTANTS.MODULE_NAME, "permLevel");

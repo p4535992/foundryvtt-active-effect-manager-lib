@@ -23,7 +23,6 @@ export default class EffectHandler {
 	 * Toggles an effect on or off by name on an actor by UUID
 	 *
 	 * @param {string} effectName - name of the effect to toggle
-	 * @param {string} overlay - name of the effect to toggle
 	 * @param {boolean} overlay- if the effect is with overlay on the token
 	 * @param {string[]} uuids - UUIDS of the actors to toggle the effect on
 	 * @param {object} metadata - additional contextual data for the application of the effect (likely provided by midi-qol)
@@ -38,7 +37,7 @@ export default class EffectHandler {
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'toggleEffect' : [overlay=${overlay},uuids=${String(uuids)},metadata=${String(
+			`START Effect Handler 'toggleEffect' : [effectName=${effectName},overlay=${overlay},uuids=${String(uuids)},metadata=${String(
 				metadata
 			)}]`
 		);
@@ -54,7 +53,7 @@ export default class EffectHandler {
 		}
 		debugM(
 			this.moduleName,
-			`END Effect Handler 'toggleEffect' : [overlay=${overlay},effectNames=${String(
+			`END Effect Handler 'toggleEffect' : [effectName=${effectName},overlay=${overlay},effectNames=${String(
 				effectNames
 			)},metadata=${String(metadata)}]`
 		);
@@ -204,7 +203,8 @@ export default class EffectHandler {
 		this._handleIntegrations(effect);
 
 		effect.origin = effectData.origin ? effectData.origin : origin;
-		effect.overlay = effectData.overlay ? effectData.overlay : overlay;
+		effect.overlay = (String(effectData.overlay) === "false" || String(effectData.overlay) === "true") ? effectData.overlay : 
+			((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
 		const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
 		if (activeEffectFounded) {
 			warnM(
@@ -590,7 +590,8 @@ export default class EffectHandler {
 			//   overlay,
 			// });
 			effect.origin = effect.origin ? effect.origin : origin;
-			effect.overlay = effect.overlay ? effect.overlay : overlay;
+			effect.overlay = (String(effect.overlay) === "false" || String(effect.overlay) === "true") ? effect.overlay : 
+				((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
 			const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnActor(effectName, uuid);
 			if (activeEffectFounded) {
 				warnM(
@@ -636,7 +637,8 @@ export default class EffectHandler {
 		uuid: string,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
@@ -644,30 +646,70 @@ export default class EffectHandler {
 		const activeEffect = <ActiveEffect>actorEffects.find((entity: ActiveEffect) => {
 			return <string>entity.id === effectId;
 		});
+
+		if (!activeEffect) {
+			return undefined;
+		}
+
+		if(String(overlay) === "false" || String(overlay) === "true"){
+			// DO NOTHING
+		}else{
+			//@ts-ignore
+			if(!activeEffect.flags){
+				//@ts-ignore
+				activeEffect.flags = {};
+			}
+			//@ts-ignore
+			if(!activeEffect.flags.core){
+				//@ts-ignore
+				activeEffect.flags.core = {};
+			}
+			//@ts-ignore
+			overlay = activeEffect.flags.core.overlay
+			if(!overlay){
+				overlay = false
+			}
+		}
+
 		// nuke it if it has a statusId
 		// brittle assumption
 		// provides an option to always do this
 		// if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
-		if (alwaysDelete) {
+		if (String(alwaysDelete) === "true") {
 			const deleted = await activeEffect.delete();
 			return !!deleted;
 		}
 		let updated;
 		//@ts-ignore
-		if (forceEnabled && activeEffect.disabled) {
+		if (String(forceEnabled) === "true" && activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: false,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
-		} else if (forceDisabled && !activeEffect.disabled) {
+		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: true,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
 			updated = await activeEffect.update({
 				//@ts-ignore
 				disabled: !activeEffect.disabled,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		}
 
@@ -678,8 +720,8 @@ export default class EffectHandler {
 		if (!Array.isArray(inAttributes)) {
 			throw errorM(this.moduleName, "toggleEffectFromIdOnActorArr | inAttributes must be of type array");
 		}
-		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
-		return this.toggleEffectFromIdOnActor(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled);
+		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay] = inAttributes;
+		return this.toggleEffectFromIdOnActor(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
 	}
 
 	/**
@@ -730,7 +772,7 @@ export default class EffectHandler {
 		}
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		let effect: ActiveEffect | undefined = undefined;
 		if (!effectName) {
 			return effect;
@@ -779,7 +821,7 @@ export default class EffectHandler {
 		}
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -829,7 +871,7 @@ export default class EffectHandler {
 	hasEffectAppliedFromIdOnToken(effectId: string, uuid: string, includeDisabled = false): boolean {
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects ?? [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents ?? [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -880,7 +922,7 @@ export default class EffectHandler {
 		}
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
@@ -933,7 +975,7 @@ export default class EffectHandler {
 		if (effectId) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			const effectToRemove = <ActiveEffect>actorEffects.find(
 				//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 				//@ts-ignore
@@ -980,7 +1022,7 @@ export default class EffectHandler {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			const effectIdsTmp: string[] = [];
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			for (const effectIdTmp of effectIds) {
 				const effectToRemove = <
 					ActiveEffect //@ts-ignore
@@ -989,7 +1031,7 @@ export default class EffectHandler {
 					effectIdsTmp.push(effectIdTmp);
 				}
 			}
-			// const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+			// const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 			// const effectToRemove = <ActiveEffect>actorEffects.find(
 			//   //(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//   (activeEffect) => <string>activeEffect?._id == effectId,
@@ -1057,7 +1099,8 @@ export default class EffectHandler {
 			//   overlay,
 			// });
 			effect.origin = effect.origin ? effect.origin : origin;
-			effect.overlay = effect.overlay ? effect.overlay : overlay;
+			effect.overlay = (String(effect.overlay) === "false" || String(effect.overlay) === "true") ? effect.overlay : 
+				((String(overlay) === "false" || String(overlay) === "true") ? overlay : false);
 			const activeEffectFounded = <ActiveEffect>await this.findEffectByNameOnToken(effectName, uuid);
 			if (activeEffectFounded) {
 				warnM(
@@ -1103,15 +1146,16 @@ export default class EffectHandler {
 		uuid: string,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'toggleEffectFromIdOnToken' : [effectId=${effectId},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`
+			`START Effect Handler 'toggleEffectFromIdOnToken' : [effectId=${effectId},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled},overlay=${overlay}]`
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//@ts-ignore
@@ -1121,35 +1165,71 @@ export default class EffectHandler {
 		if (!activeEffect) {
 			return undefined;
 		}
+
+		if(String(overlay) === "false" || String(overlay) === "true"){
+			// DO NOTHING
+		}else{
+			//@ts-ignore
+			if(!activeEffect.flags){
+				//@ts-ignore
+				activeEffect.flags = {};
+			}
+			//@ts-ignore
+			if(!activeEffect.flags.core){
+				//@ts-ignore
+				activeEffect.flags.core = {};
+			}
+			//@ts-ignore
+			overlay = activeEffect.flags.core.overlay
+			if(!overlay){
+				overlay = false
+			}
+		}
+
 		// nuke it if it has a statusId
 		// brittle assumption
 		// provides an option to always do this
 		// if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
-		if (alwaysDelete) {
+		if (String(alwaysDelete) === "true") {
 			const deleted = await activeEffect.delete();
 			return !!deleted;
 		}
 		let updated;
 		//@ts-ignore
-		if (forceEnabled && activeEffect.disabled) {
+		if (String(forceEnabled) === "true" && activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: false,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
-		} else if (forceDisabled && !activeEffect.disabled) {
+		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: true,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
 			updated = await activeEffect.update({
 				//@ts-ignore
 				disabled: !activeEffect.disabled,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		}
 		debugM(
 			this.moduleName,
-			`END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`
+			`END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled},overlay=${overlay}]`
 		);
 		return !!updated;
 	}
@@ -1162,15 +1242,16 @@ export default class EffectHandler {
 		uuid: string,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'toggleEffectFromIdOnToken' : [effect=${effect},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`
+			`START Effect Handler 'toggleEffectFromIdOnToken' : [effect=${effect},uuid=${uuid},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled},overlay=${overlay}]`
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			(activeEffect) => {
@@ -1186,35 +1267,71 @@ export default class EffectHandler {
 		if (!activeEffect) {
 			return undefined;
 		}
+
+		if(String(overlay) === "false" || String(overlay) === "true"){
+			// DO NOTHING
+		}else{
+			//@ts-ignore
+			if(!activeEffect.flags){
+				//@ts-ignore
+				activeEffect.flags = {};
+			}
+			//@ts-ignore
+			if(!activeEffect.flags.core){
+				//@ts-ignore
+				activeEffect.flags.core = {};
+			}
+			//@ts-ignore
+			overlay = activeEffect.flags.core.overlay
+			if(!overlay){
+				overlay = false
+			}
+		}
+
 		// nuke it if it has a statusId
 		// brittle assumption
 		// provides an option to always do this
 		// if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
-		if (alwaysDelete) {
+		if (String(alwaysDelete) === "true") {
 			const deleted = await activeEffect.delete();
 			return !!deleted;
 		}
 		let updated;
 		//@ts-ignore
-		if (forceEnabled && activeEffect.disabled) {
+		if (String(forceEnabled) === "true" && activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: false,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
-		} else if (forceDisabled && !activeEffect.disabled) {
+		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
 			updated = await activeEffect.update({
 				disabled: true,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
 			updated = await activeEffect.update({
 				//@ts-ignore
 				disabled: !activeEffect.disabled,
+				flags: {
+					core: {
+						overlay: overlay
+					}
+				}
 			});
 		}
 		debugM(
 			this.moduleName,
-			`END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled}]`
+			`END Effect Handler 'toggleEffectFromIdOnToken' : [effectName=${activeEffect.name},tokenName=${token.name},alwaysDelete=${alwaysDelete},forceEnabled=${forceEnabled},forceDisabled=${forceDisabled},overlay=${overlay}]`
 		);
 		return !!updated;
 	}
@@ -1223,8 +1340,8 @@ export default class EffectHandler {
 		if (!Array.isArray(inAttributes)) {
 			throw errorM(this.moduleName, "toggleEffectFromIdOnTokenArr | inAttributes must be of type array");
 		}
-		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
-		return this.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled);
+		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay] = inAttributes;
+		return this.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
 	}
 
 	/**
@@ -1282,7 +1399,7 @@ export default class EffectHandler {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
@@ -1300,7 +1417,7 @@ export default class EffectHandler {
 		//   overlay,
 		// });
 		effectUpdated.origin = origin;
-		effectUpdated.overlay = overlay;
+		effectUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1334,7 +1451,7 @@ export default class EffectHandler {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
@@ -1352,7 +1469,7 @@ export default class EffectHandler {
 		//   overlay,
 		// });
 		effectUpdated.origin = origin;
-		effectUpdated.overlay = overlay;
+		effectUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1386,7 +1503,7 @@ export default class EffectHandler {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
@@ -1394,6 +1511,27 @@ export default class EffectHandler {
 		if (!activeEffect) {
 			return undefined;
 		}
+
+		if(String(overlay) === "false" || String(overlay) === "true"){
+			// DO NOTHING
+		}else{
+			//@ts-ignore
+			if(!activeEffect.flags){
+				//@ts-ignore
+				activeEffect.flags = {};
+			}
+			//@ts-ignore
+			if(!activeEffect.flags.core){
+				//@ts-ignore
+				activeEffect.flags.core = {};
+			}
+			//@ts-ignore
+			overlay = activeEffect.flags.core.overlay
+			if(!overlay){
+				overlay = false
+			}
+		}
+
 		if (!origin) {
 			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
 			// origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1401,7 +1539,7 @@ export default class EffectHandler {
 		}
 		const activeEffectDataUpdated = effectUpdated;
 		// if(origin) activeEffectDataUpdated.origin = origin;
-		// if(overlay) activeEffectDataUpdated.overlay = overlay;
+		// if(overlay) activeEffectDataUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
 		activeEffectDataUpdated._id = activeEffect.id;
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1435,7 +1573,7 @@ export default class EffectHandler {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
@@ -1443,6 +1581,27 @@ export default class EffectHandler {
 		if (!activeEffect) {
 			return undefined;
 		}
+
+		if(String(overlay) === "false" || String(overlay) === "true"){
+			// DO NOTHING
+		}else{
+			//@ts-ignore
+			if(!activeEffect.flags){
+				//@ts-ignore
+				activeEffect.flags = {};
+			}
+			//@ts-ignore
+			if(!activeEffect.flags.core){
+				//@ts-ignore
+				activeEffect.flags.core = {};
+			}
+			//@ts-ignore
+			overlay = activeEffect.flags.core.overlay
+			if(!overlay){
+				overlay = false
+			}
+		}
+
 		if (!origin) {
 			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
 			// origin = `Scene.${sceneId}.Token.${token.id}`;
@@ -1450,7 +1609,7 @@ export default class EffectHandler {
 		}
 		const activeEffectDataUpdated = effectUpdated;
 		// if(origin) activeEffectDataUpdated.origin = origin;
-		// if(overlay) activeEffectDataUpdated.overlay = overlay;
+		// if(overlay) activeEffectDataUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
 		activeEffectDataUpdated._id = activeEffect.id;
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
@@ -1491,7 +1650,7 @@ export default class EffectHandler {
 		debugM(
 			this.moduleName,
 			`START Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner.data}, effectId=${effectId},
-        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
+        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
 		const actorEffects = owner?.data.effects;
@@ -1511,7 +1670,7 @@ export default class EffectHandler {
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner.data}, effectId=${effectId},
-        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
+        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
 		return response;
@@ -1556,7 +1715,7 @@ export default class EffectHandler {
 		debugM(
 			this.moduleName,
 			`START Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner.data}, effect=${effect},
-        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
+        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
 		const activeEffect = effect.name ? owner.effects.getName(i18n(effect.name)) : null;
@@ -1573,7 +1732,7 @@ export default class EffectHandler {
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner.data}, effect=${effect},
-        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
+        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
 		return response;
@@ -1618,7 +1777,7 @@ export default class EffectHandler {
 		debugM(
 			this.moduleName,
 			`START Effect Handler 'onManageActiveEffectFromActiveEffect' : [effectActions=${effectActions}, owner=${owner.data}, activeEffect=${activeEffect},
-        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
+        alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
 		switch (effectActions) {
@@ -1703,18 +1862,18 @@ export default class EffectHandler {
 				if (!activeEffect) {
 					warnM(this.moduleName, `Can't retrieve effect to toogle`);
 				}
-				if (activeEffect?.getFlag("core", "statusId") || alwaysDelete) {
+				if (activeEffect?.getFlag("core", "statusId") || String(alwaysDelete) === "true") {
 					const deleted = await activeEffect?.delete();
 					return !!deleted;
 				}
 				let updated;
 				//@ts-ignore
-				if (forceEnabled && activeEffect?.disabled) {
+				if (String(forceEnabled) === "true" && activeEffect?.disabled) {
 					updated = await activeEffect?.update({
 						disabled: false,
 					});
 					//@ts-ignore
-				} else if (forceDisabled && !activeEffect?.disabled) {
+				} else if (String(forceDisabled) === "true" && !activeEffect?.disabled) {
 					updated = await activeEffect?.update({
 						disabled: true,
 					});

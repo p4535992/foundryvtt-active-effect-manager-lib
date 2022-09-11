@@ -193,13 +193,14 @@ const API = {
 		if (!Array.isArray(inAttributes)) {
 			throw error("addEffectOnActorArr | inAttributes must be of type array");
 		}
-		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
+		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay] = inAttributes;
 		const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffectFromIdOnActor(
 			effectId,
 			uuid,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},
@@ -297,13 +298,14 @@ const API = {
 		if (!Array.isArray(inAttributes)) {
 			throw error("toggleEffectFromIdOnTokenArr | inAttributes must be of type array");
 		}
-		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
+		const [effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay] = inAttributes;
 		const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffectFromIdOnToken(
 			effectId,
 			uuid,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},
@@ -312,13 +314,14 @@ const API = {
 		if (!Array.isArray(inAttributes)) {
 			throw error("toggleEffectFromDataOnTokenArr | inAttributes must be of type array");
 		}
-		const [effect, uuid, alwaysDelete, forceEnabled, forceDisabled] = inAttributes;
+		const [effect, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay] = inAttributes;
 		const result = await (<EffectInterface>this.effectInterface)._effectHandler.toggleEffectFromDataOnToken(
 			effect,
 			uuid,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},
@@ -519,14 +522,16 @@ const API = {
 		effectId: string,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromIdOnActor(
 			effectId,
 			<string>actorId,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},
@@ -607,14 +612,16 @@ const API = {
 		effectId: string,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromIdOnToken(
 			effectId,
 			<string>tokenId,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},
@@ -624,14 +631,16 @@ const API = {
 		effect: Effect,
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
-		forceDisabled?: boolean
+		forceDisabled?: boolean,
+		overlay?: boolean
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromDataOnToken(
 			effect,
 			<string>tokenId,
 			alwaysDelete,
 			forceEnabled,
-			forceDisabled
+			forceDisabled,
+			overlay
 		);
 		return result;
 	},

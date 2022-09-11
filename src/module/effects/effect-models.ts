@@ -5,3 +5,15 @@ export enum EffectActions {
 	toogle = "toggle",
 	update = "update",
 }
+
+export interface StatusEffectInternal
+{
+	id: string;
+	title: string;
+	label: string;
+	src: string;
+	icon: string;
+	isActive: boolean;
+	isOverlay: boolean;
+	cssClass?: string;
+}

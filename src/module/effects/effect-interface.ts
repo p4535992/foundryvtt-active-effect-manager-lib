@@ -302,6 +302,7 @@ export default class EffectInterface {
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
 		forceDisabled?: boolean,
+		overlay?: boolean,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (effectId.length === 0) {
@@ -326,7 +327,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		} else {
 			return this._effectHandler.toggleEffectFromIdOnActor(
@@ -334,7 +336,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		}
 	}
@@ -512,6 +515,7 @@ export default class EffectInterface {
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
 		forceDisabled?: boolean,
+		overlay?: boolean,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (effectId.length === 0) {
@@ -521,7 +525,7 @@ export default class EffectInterface {
 
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
 		const effect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//@ts-ignore
@@ -542,7 +546,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		} else {
 			return this._effectHandler.toggleEffectFromIdOnToken(
@@ -550,7 +555,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		}
 	}
@@ -561,6 +567,7 @@ export default class EffectInterface {
 		alwaysDelete: boolean,
 		forceEnabled?: boolean,
 		forceDisabled?: boolean,
+		overlay?: boolean,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (!effect) {
@@ -575,7 +582,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		} else {
 			return this._effectHandler.toggleEffectFromDataOnToken(
@@ -583,7 +591,8 @@ export default class EffectInterface {
 				uuid,
 				alwaysDelete,
 				forceEnabled,
-				forceDisabled
+				forceDisabled,
+				overlay
 			);
 		}
 	}

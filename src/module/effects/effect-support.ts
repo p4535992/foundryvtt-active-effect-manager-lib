@@ -221,7 +221,7 @@ export class EffectSupport {
 		//@ts-ignore
 		const isDisabled = effect.disabled || false;
 		//@ts-ignore
-		const isSuppressed = effect.document.isSuppressed || false;
+		const isSuppressed = effect.isSuppressed || false;
 		const isTemporary = effect.isTemporary || false;
 		const isPassive = !isTemporary;
 
