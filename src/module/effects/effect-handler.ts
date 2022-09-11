@@ -340,17 +340,14 @@ export default class EffectHandler {
 		return effect;
 	}
 
-/**
+	/**
 	 * Searches through the list of available effects and returns one matching the
 	 * effect name. Prioritizes finding custom effects first.
 	 *
 	 * @param {string} effectName - the effect name to search for
 	 * @returns {Effect} the found effect
 	 */
-	async findEffectByIdOnActor(
-		effectId: string | undefined | null,
-		uuid: string
-	): Promise<ActiveEffect | undefined> {
+	async findEffectByIdOnActor(effectId: string | undefined | null, uuid: string): Promise<ActiveEffect | undefined> {
 		if (effectId) {
 			effectId = i18n(effectId);
 		}
@@ -744,7 +741,7 @@ export default class EffectHandler {
 				flags: {
 					core: {
 						//@ts-ignore
-						statusId: activeEffect._id,						
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -756,7 +753,7 @@ export default class EffectHandler {
 				flags: {
 					core: {
 						//@ts-ignore
-						statusId: activeEffect._id,						
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -769,7 +766,7 @@ export default class EffectHandler {
 				flags: {
 					core: {
 						//@ts-ignore
-						statusId: activeEffect._id,						
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -1318,7 +1315,7 @@ export default class EffectHandler {
 				flags: {
 					core: {
 						//@ts-ignore
-						statusId: activeEffect._id,						
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -1426,7 +1423,7 @@ export default class EffectHandler {
 				flags: {
 					core: {
 						//@ts-ignore
-						statusId: activeEffect._id,						
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},

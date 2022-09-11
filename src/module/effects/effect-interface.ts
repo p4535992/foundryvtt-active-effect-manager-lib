@@ -387,11 +387,7 @@ export default class EffectInterface {
 	 * @param {string} uuid - UUID of the actor to toggle the effect on
 	 * @returns {Promise} a promise that resolves when the GM socket function completes
 	 */
-	async findEffectByIdOnActor(
-		effectId: string,
-		uuid: string,
-		withSocket = true
-	): Promise<ActiveEffect | undefined> {
+	async findEffectByIdOnActor(effectId: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnectedAndSocketLibEnable()) {
 			return this._socket.executeAsGM("findEffectByIdOnActor", effectId, uuid);
 		} else {
@@ -661,11 +657,7 @@ export default class EffectInterface {
 	 * @param {string} uuid - UUID of the token to toggle the effect on
 	 * @returns {Promise} a promise that resolves when the GM socket function completes
 	 */
-	async findEffectByIdOnToken(
-		effectId: string,
-		uuid: string,
-		withSocket = true
-	): Promise<ActiveEffect | undefined> {
+	async findEffectByIdOnToken(effectId: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnectedAndSocketLibEnable()) {
 			return this._socket.executeAsGM("findEffectByIdOnToken", effectId, uuid);
 		} else {

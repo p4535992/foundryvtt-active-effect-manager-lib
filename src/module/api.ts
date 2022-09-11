@@ -520,10 +520,7 @@ const API = {
 	},
 
 	async findEffectByIdOnActor(actorId: string, effectId: string): Promise<ActiveEffect | undefined> {
-		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnActor(
-			effectId,
-			<string>actorId
-		);
+		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnActor(effectId, <string>actorId);
 		return result;
 	},
 
@@ -618,10 +615,7 @@ const API = {
 	},
 
 	async findEffectByIdOnToken(tokenId: string, effectId: string): Promise<ActiveEffect | undefined> {
-		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnToken(
-			effectId,
-			<string>tokenId
-		);
+		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnToken(effectId, <string>tokenId);
 		return result;
 	},
 

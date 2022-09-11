@@ -1,7 +1,7 @@
 import type { StatusEffect } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/token";
 import API from "../api";
 import CONSTANTS from "../constants";
-import { isStringEquals } from "./effect-log";
+import { i18n, isStringEquals } from "./effect-log";
 import type { StatusEffectInternal } from "./effect-models";
 import { EffectSupport } from "./effect-support";
 
@@ -124,18 +124,20 @@ export default class StatusEffectsLib {
 
 			if (!effect) {
 				const arrayStatusEffects = Object.values(this._getStatusEffectChoicesInternal(token)) || [];
-				const statusEffectInternal:StatusEffectInternal = <StatusEffectInternal>arrayStatusEffects.find((e) => {
-					return e.id === img.dataset.statusId;
-				});
+				const statusEffectInternal: StatusEffectInternal = <StatusEffectInternal>arrayStatusEffects.find(
+					(e) => {
+						return e.id === img.dataset.statusId;
+					}
+				);
 				// const effect2 =
 				// 	img.dataset.statusId && token.actor
 				// 		? statusEffectInternal.src
 				// 		: img.getAttribute("src");
 
 				if (statusEffectInternal) {
-					let activeEffectFound:ActiveEffect|undefined = undefined;
+					let activeEffectFound: ActiveEffect | undefined = undefined;
 					const tokenId = token.id;
-					if(statusEffectId.startsWith("Convenient Effect:")){
+					if (statusEffectId.startsWith("Convenient Effect:")) {
 						let statusId = statusEffectId.replace("Convenient Effect:", "");
 						statusId = statusId.replace(/\s/g, "");
 						statusId = statusId.trim().toLowerCase();
@@ -146,21 +148,28 @@ export default class StatusEffectsLib {
 						activeEffectFound = <ActiveEffect>await API.findEffectByIdOnToken(tokenId, effectId);
 					}
 					if (!activeEffectFound) {
-						for(const effect of <ActiveEffect[]>Object.values(token.actor.effects.contents)){
-							//@ts-ignore
-							if(isStringEquals(effect.flags.core.statusId,"Convenient Effect: " + statusEffectInternal.label)){
+						for (const effect of <ActiveEffect[]>Object.values(token.actor.effects.contents)) {
+							if (
+								isStringEquals(
+									//@ts-ignore
+									effect.flags.core.statusId,
+									"Convenient Effect: " + statusEffectInternal.label
+								)
+							) {
 								activeEffectFound = effect;
 								break;
 							}
 							//@ts-ignore
-							if(isStringEquals(effect.flags.core.statusId, statusEffectId)){
+							if (isStringEquals(effect.flags.core.statusId, statusEffectId)) {
 								activeEffectFound = effect;
 								break;
 							}
 						}
 					}
 					if (activeEffectFound) {
-						const effectName = activeEffectFound.data ? <string>activeEffectFound.data.label : <string>activeEffectFound.name;
+						const effectName = activeEffectFound.data
+							? <string>activeEffectFound.data.label
+							: <string>activeEffectFound.name;
 						// Added 2022-09-11 for strange bug on draw effect ?
 						// is the reverse condition
 						/*
@@ -181,7 +190,7 @@ export default class StatusEffectsLib {
 						*/
 						const texture = img.getAttribute("src");
 						//@ts-ignore
-						let isDisabled = String(activeEffectFound.disabled) === "true" ? true : false; 
+						let isDisabled = String(activeEffectFound.disabled) === "true" ? true : false;
 						let active = !isDisabled;
 						// active = active ?? token.document.overlayEffect !== texture;
 						token.document.overlayEffect = active ? null : img.getAttribute("src");
@@ -193,28 +202,25 @@ export default class StatusEffectsLib {
 						// const effect = ( img.dataset.statusId && token.actor ) ?
 						// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 						// 	img.getAttribute("src");
-						
-						if(activeEffectFound.getFlag("core", "statusId")?.startsWith("Convenient Effect:")){
+
+						if (activeEffectFound.getFlag("core", "statusId")?.startsWith("Convenient Effect:")) {
 							//@ts-ignore
 							statusEffectInternal.id = "Convenient Effect: " + statusEffectInternal.label;
-						}else{
+						} else {
 							//@ts-ignore
 							statusEffectInternal.id = activeEffectFound._id;
 						}
 						// return token.toggleEffect(statusEffectInternal, { overlay });
-						
-						
+
 						const effectId = <string>activeEffectFound.id;
 						const effect = EffectSupport.convertActiveEffectToEffect(activeEffectFound);
 						effect.customId = effectId;
 						effect.name = effectName;
 						effect.overlay = overlay;
-						await API.toggleEffectFromDataOnToken(
-							tokenId, effect, false, undefined, undefined, overlay);
+						await API.toggleEffectFromDataOnToken(tokenId, effect, false, undefined, undefined, overlay);
 
 						active = !active;
-						token._toggleOverlayEffect(texture, {active});
-						
+						token._toggleOverlayEffect(texture, { active });
 
 						// // Assign the overlay effect
 						// active = active ?? token.document.overlayEffect !== texture;
@@ -228,10 +234,10 @@ export default class StatusEffectsLib {
 						// 	const combatant = game.combat.getCombatantByToken(token.id);
 						// 	if ( combatant ) await combatant.update({defeated: active});
 						// }
-					}else{
+					} else {
 						wrapper(...args);
 					}
-				}else{
+				} else {
 					wrapper(...args);
 				}
 			} else {
@@ -345,7 +351,18 @@ export default class StatusEffectsLib {
 		//   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.data.label,e.label);
 		// });
 
-		return <StatusEffectInternal[]>CONFIG.statusEffects.concat(<any>tokenEffects).reduce((obj, e: any) => {
+		const statusEffectDefaultFiltered = CONFIG.statusEffects.filter((e: any) => {
+			let result = true;
+			for (const efct of <ActiveEffect[]>tokenEffects) {
+				if (efct.data.label === i18n(e.label)) {
+					result = false;
+					break;
+				}
+			}
+			return result;
+		});
+
+		return <StatusEffectInternal[]>statusEffectDefaultFiltered.concat(<any>tokenEffects).reduce((obj, e: any) => {
 			if (e.contents) {
 				let activeEffects = <ActiveEffect[]>e.contents;
 				if (game.settings.get(CONSTANTS.MODULE_NAME, "showOnlyTemporaryStatusEffectNames")) {
