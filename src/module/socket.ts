@@ -42,6 +42,8 @@ export function registerSocket() {
 	);
 	activeEffectManagerSocket.register("findEffectByNameOnActor", (...args) => API.findEffectByNameOnActorArr(...args));
 
+	activeEffectManagerSocket.register("findEffectByIdOnActor", (...args) => API.findEffectByIdOnActorArr(...args));
+
 	// Token
 
 	activeEffectManagerSocket.register("toggleEffectFromIdOnToken", (...args) =>
@@ -64,6 +66,7 @@ export function registerSocket() {
 		API.removeEffectFromIdOnTokenMultipleArr(...args)
 	);
 	activeEffectManagerSocket.register("findEffectByNameOnToken", (...args) => API.findEffectByNameOnTokenArr(...args));
+	activeEffectManagerSocket.register("findEffectByIdOnToken", (...args) => API.findEffectByIdOnTokenArr(...args));
 	activeEffectManagerSocket.register("updateEffectFromIdOnToken", (...args) =>
 		API.updateEffectFromIdOnTokenArr(...args)
 	);

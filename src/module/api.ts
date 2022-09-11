@@ -221,6 +221,18 @@ const API = {
 		return result;
 	},
 
+	async findEffectByIdOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
+		if (!Array.isArray(inAttributes)) {
+			throw error("findEffectByIdOnActorArr | inAttributes must be of type array");
+		}
+		const [effectId, uuid] = inAttributes;
+		const result = await (<EffectInterface>this.effectInterface)._effectHandler.findEffectByIdOnActor(
+			effectId,
+			uuid
+		);
+		return result;
+	},
+
 	async hasEffectAppliedOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
 		if (!Array.isArray(inAttributes)) {
 			throw error("hasEffectAppliedOnTokenArr | inAttributes must be of type array");
@@ -337,6 +349,18 @@ const API = {
 		const [effectName, uuid] = inAttributes;
 		const result = await (<EffectInterface>this.effectInterface)._effectHandler.findEffectByNameOnToken(
 			effectName,
+			uuid
+		);
+		return result;
+	},
+
+	async findEffectByIdOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
+		if (!Array.isArray(inAttributes)) {
+			throw error("findEffectByIdOnTokenArr | inAttributes must be of type array");
+		}
+		const [effectId, uuid] = inAttributes;
+		const result = await (<EffectInterface>this.effectInterface)._effectHandler.findEffectByIdOnToken(
+			effectId,
 			uuid
 		);
 		return result;
@@ -495,6 +519,14 @@ const API = {
 		return result;
 	},
 
+	async findEffectByIdOnActor(actorId: string, effectId: string): Promise<ActiveEffect | undefined> {
+		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnActor(
+			effectId,
+			<string>actorId
+		);
+		return result;
+	},
+
 	async hasEffectAppliedOnActor(
 		actorId: string,
 		effectName: string,
@@ -580,6 +612,14 @@ const API = {
 	async findEffectByNameOnToken(tokenId: string, effectName: string): Promise<ActiveEffect | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).findEffectByNameOnToken(
 			effectName,
+			<string>tokenId
+		);
+		return result;
+	},
+
+	async findEffectByIdOnToken(tokenId: string, effectId: string): Promise<ActiveEffect | undefined> {
+		const result = await (<EffectInterface>this.effectInterface).findEffectByIdOnToken(
+			effectId,
 			<string>tokenId
 		);
 		return result;

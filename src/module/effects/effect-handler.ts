@@ -340,6 +340,40 @@ export default class EffectHandler {
 		return effect;
 	}
 
+/**
+	 * Searches through the list of available effects and returns one matching the
+	 * effect name. Prioritizes finding custom effects first.
+	 *
+	 * @param {string} effectName - the effect name to search for
+	 * @returns {Effect} the found effect
+	 */
+	async findEffectByIdOnActor(
+		effectId: string | undefined | null,
+		uuid: string
+	): Promise<ActiveEffect | undefined> {
+		if (effectId) {
+			effectId = i18n(effectId);
+		}
+		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
+		let effect: ActiveEffect | null | undefined = undefined;
+		if (!effectId) {
+			return effect;
+		}
+		//@ts-ignore
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		for (const effectEntity of actorEffects) {
+			const effectIdToSet = effectEntity.data ? effectEntity.data._id : effectEntity.id;
+			if (!effectIdToSet) {
+				continue;
+			}
+			if (isStringEquals(effectIdToSet, effectId)) {
+				effect = effectEntity;
+				break;
+			}
+		}
+		return effect;
+	}
+
 	/**
 	 * Searches through the list of available effects and returns one matching the
 	 * effect name. Prioritizes finding custom effects first.
@@ -353,6 +387,21 @@ export default class EffectHandler {
 		}
 		const [effectName, uuid] = inAttributes;
 		return this.findEffectByNameOnActor(effectName, uuid);
+	}
+
+	/**
+	 * Searches through the list of available effects and returns one matching the
+	 * effect name. Prioritizes finding custom effects first.
+	 *
+	 * @param {string} effectName - the effect name to search for
+	 * @returns {Effect} the found effect
+	 */
+	async findEffectByIdOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | null | undefined> {
+		if (!Array.isArray(inAttributes)) {
+			throw errorM(this.moduleName, "findEffectByIdOnActorArr | inAttributes must be of type array");
+		}
+		const [effectId, uuid] = inAttributes;
+		return this.findEffectByIdOnActor(effectId, uuid);
 	}
 
 	/**
@@ -694,6 +743,8 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,						
 						overlay: overlay,
 					},
 				},
@@ -704,6 +755,8 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,						
 						overlay: overlay,
 					},
 				},
@@ -715,6 +768,8 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,						
 						overlay: overlay,
 					},
 				},
@@ -803,6 +858,38 @@ export default class EffectHandler {
 	 * Searches through the list of available effects and returns one matching the
 	 * effect name. Prioritizes finding custom effects first.
 	 *
+	 * @param {string} effectId - the effect name to search for
+	 * @returns {Effect} the found effect
+	 */
+	async findEffectByIdOnToken(effectId: string, uuid: string): Promise<ActiveEffect | undefined> {
+		if (effectId) {
+			effectId = i18n(effectId);
+		}
+		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
+		//@ts-ignore
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		let effect: ActiveEffect | undefined = undefined;
+		if (!effectId) {
+			return effect;
+		}
+		for (const effectEntity of actorEffects) {
+			//@ts-ignore
+			const effectIdToSet = effectEntity.data ? effectEntity.data._id : effectEntity.id;
+			if (!effectIdToSet) {
+				continue;
+			}
+			if (isStringEquals(effectIdToSet, effectId)) {
+				effect = effectEntity;
+				break;
+			}
+		}
+		return effect;
+	}
+
+	/**
+	 * Searches through the list of available effects and returns one matching the
+	 * effect name. Prioritizes finding custom effects first.
+	 *
 	 * @param {string} effectName - the effect name to search for
 	 * @returns {Effect} the found effect
 	 */
@@ -812,6 +899,21 @@ export default class EffectHandler {
 		}
 		const [effectName, uuid] = inAttributes;
 		return this.findEffectByNameOnToken(effectName, uuid);
+	}
+
+	/**
+	 * Searches through the list of available effects and returns one matching the
+	 * effect name. Prioritizes finding custom effects first.
+	 *
+	 * @param {string} effectName - the effect name to search for
+	 * @returns {Effect} the found effect
+	 */
+	async findEffectByIdOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
+		if (!Array.isArray(inAttributes)) {
+			throw errorM(this.moduleName, "findEffectByIdOnTokenArr | inAttributes must be of type array");
+		}
+		const [effectName, uuid] = inAttributes;
+		return this.findEffectByIdOnToken(effectName, uuid);
 	}
 
 	/**
@@ -1215,6 +1317,8 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,						
 						overlay: overlay,
 					},
 				},
@@ -1225,6 +1329,8 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -1236,6 +1342,8 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -1317,6 +1425,8 @@ export default class EffectHandler {
 				disabled: false,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,						
 						overlay: overlay,
 					},
 				},
@@ -1327,6 +1437,8 @@ export default class EffectHandler {
 				disabled: true,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},
@@ -1338,6 +1450,8 @@ export default class EffectHandler {
 				disabled: !activeEffect.disabled,
 				flags: {
 					core: {
+						//@ts-ignore
+						statusId: activeEffect._id,
 						overlay: overlay,
 					},
 				},

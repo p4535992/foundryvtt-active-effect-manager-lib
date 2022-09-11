@@ -123,28 +123,44 @@ export default class StatusEffectsLib {
 
 			if (!effect) {
 				const arrayStatusEffects = Object.values(this._getStatusEffectChoicesInternal(token)) || [];
-				const effect2 =
-					img.dataset.statusId && token.actor
-						? arrayStatusEffects.find((e) => {
-								return e.id === img.dataset.statusId;
-						})
-						: img.getAttribute("src");
+				const statusEffectInternal:StatusEffectInternal = <StatusEffectInternal>arrayStatusEffects.find((e) => {
+					return e.id === img.dataset.statusId;
+				});
+				// const effect2 =
+				// 	img.dataset.statusId && token.actor
+				// 		? statusEffectInternal.src
+				// 		: img.getAttribute("src");
 
-				if (effect2) {
-					let statusId = statusEffectId.replace("Convenient Effect:", "");
-					statusId = statusId.replace(/\s/g, "");
-					statusId = statusId.trim().toLowerCase();
-					const effectName = statusId;
+				if (statusEffectInternal) {
+					let activeEffectFound:ActiveEffect|undefined = undefined;
 					const tokenId = token.id;
-					const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
-					if (result) {
+					if(statusEffectId.startsWith("Convenient Effect:")){
+						let statusId = statusEffectId.replace("Convenient Effect:", "");
+						statusId = statusId.replace(/\s/g, "");
+						statusId = statusId.trim().toLowerCase();
+						const effectName = statusId;
+						activeEffectFound = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
+					} else {
+						const effectId = statusEffectId;
+						activeEffectFound = <ActiveEffect>await API.findEffectByIdOnToken(tokenId, effectId);
+					}
+					if (activeEffectFound) {
+						const effectName = activeEffectFound.data ? <string>activeEffectFound.data.label : <string>activeEffectFound.name;
 						// Added 2022-09-11 for strange bug on draw effect ?
 						// is the reverse condition
-						//@ts-ignore
-						if (String(result.disabled) == "true") {
-							token.document.overlayEffect = undefined;
+						if(token.document.overlayEffect === "[object Object]"){
+							//@ts-ignore
+							if (String(activeEffectFound.disabled) === "true") {
+								token.document.overlayEffect = undefined;
+							} else {
+								token.document.overlayEffect = img.getAttribute("src");
+							}
 						} else {
-							token.document.overlayEffect = img.getAttribute("src");
+							if(token.document.overlayEffect){
+								token.document.overlayEffect = undefined;
+							} else {
+								token.document.overlayEffect = img.getAttribute("src");
+							}
 						}
 
 						// Original code
@@ -154,23 +170,34 @@ export default class StatusEffectsLib {
 						// const effect = ( img.dataset.statusId && token.actor ) ?
 						// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 						// 	img.getAttribute("src");
-						
-						return token.toggleEffect(effect2, { overlay });
 						/*
+						if(activeEffectFound.getFlag("core", "statusId")?.startsWith("Convenient Effect:")){
+							//@ts-ignore
+							statusEffectInternal.id = "Convenient Effect: " + statusEffectInternal.label;
+						}else{
+							//@ts-ignore
+							statusEffectInternal.id = activeEffectFound._id;
+						}
+						
+						return token.toggleEffect(statusEffectInternal, { overlay });
+						*/
+						
 						// const uuids = <string[]>[tokenId];
 						
-						const effectId = <string>result.id;
+						const effectId = <string>activeEffectFound.id;
 						// TODO add module settings for manage this
 						
-						const effect = EffectSupport.convertActiveEffectToEffect(result);
+						const effect = EffectSupport.convertActiveEffectToEffect(activeEffectFound);
 						effect.customId = effectId;
 						effect.name = effectName;
 						effect.overlay = overlay;
 						await API.toggleEffectFromDataOnToken(
 							tokenId, effect, false, undefined, undefined, overlay);
-						*/
-					} else {
-						wrapper(...args);
+
+						const texture = img.getAttribute("src");
+						//@ts-ignore
+						const active = String(activeEffectFound.disabled) === "true" ? false : true; 
+						token._toggleOverlayEffect(texture, {active});
 					}
 				}
 			} else {

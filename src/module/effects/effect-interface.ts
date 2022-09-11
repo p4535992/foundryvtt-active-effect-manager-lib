@@ -380,6 +380,25 @@ export default class EffectInterface {
 		}
 	}
 
+	/**
+	 * Toggles the effect on the provided actor UUIDS as the GM via sockets
+	 *
+	 * @param {string} effectId - name of the effect to toggle
+	 * @param {string} uuid - UUID of the actor to toggle the effect on
+	 * @returns {Promise} a promise that resolves when the GM socket function completes
+	 */
+	async findEffectByIdOnActor(
+		effectId: string,
+		uuid: string,
+		withSocket = true
+	): Promise<ActiveEffect | undefined> {
+		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+			return this._socket.executeAsGM("findEffectByIdOnActor", effectId, uuid);
+		} else {
+			return this._effectHandler.findEffectByIdOnActor(effectId, uuid);
+		}
+	}
+
 	// ====================================================================
 	// TOKEN MANAGEMENT
 	// ====================================================================
@@ -632,6 +651,25 @@ export default class EffectInterface {
 			return this._socket.executeAsGM("findEffectByNameOnToken", effectName, uuid);
 		} else {
 			return this._effectHandler.findEffectByNameOnToken(effectName, uuid);
+		}
+	}
+
+	/**
+	 * Toggles the effect on the provided token UUIDS as the GM via sockets
+	 *
+	 * @param {string} effectId - name of the effect to toggle
+	 * @param {string} uuid - UUID of the token to toggle the effect on
+	 * @returns {Promise} a promise that resolves when the GM socket function completes
+	 */
+	async findEffectByIdOnToken(
+		effectId: string,
+		uuid: string,
+		withSocket = true
+	): Promise<ActiveEffect | undefined> {
+		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+			return this._socket.executeAsGM("findEffectByIdOnToken", effectId, uuid);
+		} else {
+			return this._effectHandler.findEffectByIdOnToken(effectId, uuid);
 		}
 	}
 
