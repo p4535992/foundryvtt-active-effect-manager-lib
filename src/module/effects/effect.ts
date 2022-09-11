@@ -162,7 +162,7 @@ export default class Effect {
 				return {
 					startRound: game.combat.round,
 					rounds: this._getCombatRounds(),
-					turns: this.turns,
+					turns: !is_real_number(this.turns) ? undefined : this.turns,
 				};
 			}
 		} else {

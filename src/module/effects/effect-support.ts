@@ -149,7 +149,7 @@ export class EffectSupport {
 				return {
 					startRound: game.combat.round,
 					rounds: EffectSupport._getCombatRounds(seconds, rounds),
-					turns: turns,
+					turns: !is_real_number(turns) ? undefined : turns,
 				};
 			}
 		} else {
@@ -171,7 +171,7 @@ export class EffectSupport {
       return {
         startRound: game.combat.round,
         rounds: EffectSupport._getCombatRounds(seconds, rounds),
-        turns: turns,
+        turns: !is_real_number(turns) ? undefined : turns,
       };
     } else {
       return {
@@ -240,7 +240,7 @@ export class EffectSupport {
 			//@ts-ignore
 			rounds: activeEffect.duration.rounds,
 			//@ts-ignore
-			turns: activeEffect.duration.turns,
+			turns: !is_real_number(activeEffect.duration.turns) ? undefined : activeEffect.duration.turns,
 			//@ts-ignore
 			flags: activeEffect.flags,
 			changes,

@@ -127,7 +127,7 @@ export default class StatusEffectsLib {
 					img.dataset.statusId && token.actor
 						? arrayStatusEffects.find((e) => {
 								return e.id === img.dataset.statusId;
-						  })
+						})
 						: img.getAttribute("src");
 
 				if (effect2) {
@@ -137,37 +137,41 @@ export default class StatusEffectsLib {
 					const effectName = statusId;
 					const tokenId = token.id;
 					const result = <ActiveEffect>await API.findEffectByNameOnToken(tokenId, effectName);
-					// Added 2022-09-11 for strange bug on draw effect ?
-					//@ts-ignore
-					if (String(result.disabled) == "true") {
-						token.document.overlayEffect = undefined;
-					} else {
-						token.document.overlayEffect = img.getAttribute("src");
-					}
-
-					// Original code
-					event.preventDefault();
-					event.stopPropagation();
-					// let img = event.currentTarget;
-					// const effect = ( img.dataset.statusId && token.actor ) ?
-					// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
-					// 	img.getAttribute("src");
-					return token.toggleEffect(effect2, { overlay });
-					/*
 					if (result) {
+						// Added 2022-09-11 for strange bug on draw effect ?
+						// is the reverse condition
+						//@ts-ignore
+						if (String(result.disabled) == "true") {
+							token.document.overlayEffect = undefined;
+						} else {
+							token.document.overlayEffect = img.getAttribute("src");
+						}
+
+						// Original code
+						event.preventDefault();
+						event.stopPropagation();
+						// let img = event.currentTarget;
+						// const effect = ( img.dataset.statusId && token.actor ) ?
+						// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
+						// 	img.getAttribute("src");
+						
+						return token.toggleEffect(effect2, { overlay });
+						/*
 						// const uuids = <string[]>[tokenId];
 						
 						const effectId = <string>result.id;
-						// TODO add moduel settings for manage this
+						// TODO add module settings for manage this
 						
 						const effect = EffectSupport.convertActiveEffectToEffect(result);
 						effect.customId = effectId;
 						effect.name = effectName;
 						effect.overlay = overlay;
-						API.toggleEffectFromDataOnToken(
+						await API.toggleEffectFromDataOnToken(
 							tokenId, effect, false, undefined, undefined, overlay);
+						*/
+					} else {
+						wrapper(...args);
 					}
-					*/
 				}
 			} else {
 				wrapper(...args);
