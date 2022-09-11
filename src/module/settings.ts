@@ -54,7 +54,7 @@ export const registerSettings = function (): void {
 		hint: `${CONSTANTS.MODULE_NAME}.setting.showOnlyTemporaryStatusEffectNames.hint`,
 		scope: "world",
 		config: true,
-		default: true,
+		default: false,
 		type: Boolean,
 	});
 
