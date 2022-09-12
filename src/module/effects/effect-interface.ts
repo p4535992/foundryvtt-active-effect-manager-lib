@@ -299,10 +299,10 @@ export default class EffectInterface {
 	async toggleEffectFromIdOnActor(
 		effectId: string,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (effectId.length === 0) {
@@ -527,10 +527,10 @@ export default class EffectInterface {
 	async toggleEffectFromIdOnToken(
 		effectId: string,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (effectId.length === 0) {
@@ -579,10 +579,10 @@ export default class EffectInterface {
 	async toggleEffectFromDataOnToken(
 		effect: Effect,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (!effect) {
@@ -765,11 +765,11 @@ export default class EffectInterface {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effectId: string,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		// if (withSocket && isGMConnectedAndSocketLibEnable()) {
@@ -808,11 +808,11 @@ export default class EffectInterface {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effect: Effect,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		// if (withSocket && isGMConnectedAndSocketLibEnable()) {
@@ -851,11 +851,11 @@ export default class EffectInterface {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean,
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		// if (withSocket && isGMConnectedAndSocketLibEnable()) {

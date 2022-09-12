@@ -689,10 +689,10 @@ export default class EffectHandler {
 	async toggleEffectFromIdOnActor(
 		effectId: string,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
@@ -1257,10 +1257,10 @@ export default class EffectHandler {
 	async toggleEffectFromIdOnToken(
 		effectId: string,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
@@ -1359,10 +1359,10 @@ export default class EffectHandler {
 	async toggleEffectFromDataOnToken(
 		effect: Effect,
 		uuid: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		debugM(
 			this.moduleName,
@@ -1766,11 +1766,11 @@ export default class EffectHandler {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effectId: string,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,
@@ -1831,11 +1831,11 @@ export default class EffectHandler {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effect: Effect,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,
@@ -1893,11 +1893,11 @@ export default class EffectHandler {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined | undefined,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,

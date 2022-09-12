@@ -553,10 +553,10 @@ const API = {
 	async toggleEffectFromIdOnActor(
 		actorId: string,
 		effectId: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromIdOnActor(
 			effectId,
@@ -648,10 +648,10 @@ const API = {
 	async toggleEffectFromIdOnToken(
 		tokenId: string,
 		effectId: string,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromIdOnToken(
 			effectId,
@@ -667,10 +667,10 @@ const API = {
 	async toggleEffectFromDataOnToken(
 		tokenId: string,
 		effect: Effect,
-		alwaysDelete: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		overlay?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).toggleEffectFromDataOnToken(
 			effect,
@@ -791,11 +791,11 @@ const API = {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effectId: string,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromEffectId(
 			effectActions,
@@ -814,11 +814,11 @@ const API = {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		effect: Effect,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromEffect(
 			effectActions,
@@ -837,11 +837,11 @@ const API = {
 		effectActions: EffectActions,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined,
-		alwaysDelete?: boolean,
-		forceEnabled?: boolean,
-		forceDisabled?: boolean,
-		isTemporary?: boolean,
-		isDisabled?: boolean
+		alwaysDelete?: boolean | undefined,
+		forceEnabled?: boolean | undefined,
+		forceDisabled?: boolean | undefined,
+		isTemporary?: boolean | undefined,
+		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).onManageActiveEffectFromActiveEffect(
 			effectActions,

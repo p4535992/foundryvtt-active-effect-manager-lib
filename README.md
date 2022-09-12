@@ -291,7 +291,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
   ): Promise<Item | ActiveEffect | boolean | undefined>;
 ```
 
-###  async game.modules.get('active-effect-manager-lib').api.invokePolymorpherManagerFromActor(sourceActorIdOrName: string, removePolymorpher: boolean ordered: boolean random: boolean animationExternal:{ sequence:Sequence, timeToWait:number }|undefined = undefined) ⇒ <code>Promise.&lt;void&gt;</code>
+###  async game.modules.get('active-effect-manager-lib').api.xxx() ⇒ <code>Promise.&lt;void&gt;</code>
 
 Invoke the polymorpher manager feature from macro
 
