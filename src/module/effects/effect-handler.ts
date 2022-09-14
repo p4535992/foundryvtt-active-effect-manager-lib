@@ -92,9 +92,12 @@ export default class EffectHandler {
 		);
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const isApplied = actor?.system?.effects?.some(
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		//@ts-ignore
+		const isApplied = actorEffects?.some(
 			// (activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect?.label == effectName,
 			(activeEffect) => {
+				//@ts-ignore
 				if (isStringEquals(activeEffect?.label, effectName) && !activeEffect?.disabled) {
 					return true;
 				} else {
@@ -136,8 +139,11 @@ export default class EffectHandler {
 	async removeEffect(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const effectToRemove = actor.system?.effects.find(
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		//@ts-ignore
+		const effectToRemove = actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && activeEffect?.label == effectName,
+			//@ts-ignore
 			(activeEffect) => activeEffect?.label === effectName
 		);
 
@@ -265,7 +271,7 @@ export default class EffectHandler {
 
 		let effect: Effect | undefined;
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
 			if (!effectNameToSet) {
@@ -326,7 +332,7 @@ export default class EffectHandler {
 			return effect;
 		}
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
 			if (!effectNameToSet) {
@@ -357,7 +363,7 @@ export default class EffectHandler {
 			return effect;
 		}
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			const effectIdToSet = effectEntity.data ? effectEntity.data._id : effectEntity.id;
 			if (!effectIdToSet) {
@@ -416,7 +422,7 @@ export default class EffectHandler {
 		}
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -466,7 +472,7 @@ export default class EffectHandler {
 	hasEffectAppliedFromIdOnActor(effectId: string, uuid: string, includeDisabled = false): boolean {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects ?? [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				if (<string>activeEffect?.id === effectId) {
@@ -516,7 +522,7 @@ export default class EffectHandler {
 		}
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
@@ -565,7 +571,7 @@ export default class EffectHandler {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		if (effectId) {
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 			//actor.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemoveId]);
 			// Why i need this ??? for avoid the double AE
 			const effectToRemove = <ActiveEffect>(
@@ -696,7 +702,7 @@ export default class EffectHandler {
 	): Promise<boolean | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.system?.effects;
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		const activeEffect = <ActiveEffect>actorEffects.find((entity: ActiveEffect) => {
 			return <string>entity.id === effectId;
 		});
