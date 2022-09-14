@@ -10,18 +10,18 @@
  * 					 determines how others may use and modify your module
  */
 // Import TypeScript modules
-import { registerSettings } from "./module/settings";
-import CONSTANTS from "./module/constants";
-import { debug, dialogWarning, error, log } from "./module/lib/lib";
-import { initHooks, readyHooks, setupHooks } from "./module/module";
-import API from "./module/api";
+import { registerSettings } from "./scripts/settings";
+import CONSTANTS from "./scripts/constants";
+import { debug, dialogWarning, error, log } from "./scripts/lib/lib";
+import { initHooks, readyHooks, setupHooks } from "./scripts/module";
+import API from "./scripts/api";
 import {
 	filterStatusButtons,
 	findAllStatusEffectButtons,
 	findEffectsButton,
 	findStatusEffectButtonsContainingSearchTerm,
 	isPF2E,
-} from "./module/effects/effect-quick-status";
+} from "./scripts/effects/effect-quick-status";
 
 /* ------------------------------------ */
 /* Initialize module					*/
