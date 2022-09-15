@@ -23,7 +23,7 @@ After extensively testing it with different modules i decide to get better feedb
 
 ```json
 {
-    "name": "active-effect-manager-lib",
+    "id": "active-effect-manager-lib",
     "type": "module",
     "manifest": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.json"
 }
