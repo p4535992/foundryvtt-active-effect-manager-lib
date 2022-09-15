@@ -1,8 +1,8 @@
 {
-	"name": "active-effect-manager-lib",
+	"id": "active-effect-manager-lib",
 	"title": "Library: Active effect manager",
 	"description": "Active effect manager library for leverage operation on active effects",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"library": "true",
 	"authors": [
 		{
@@ -65,38 +65,41 @@
 	"url": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib",
 	"manifest": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.json",
 	"download": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.zip",
-	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.8/README.md",
-	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.8/CHANGELOG.md",
+	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.9/README.md",
+	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.9/CHANGELOG.md",
 	"bugs": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/issues",
 	"allowBugReporter": true,
-	"dependencies": [
-		{
-			"name": "warpgate",
-			"type": "module"
-		},
-		{
-			"name": "socketlib",
-			"type": "module"
-		}
-	],
-	"flags": {
-		"manifestPlusVersion": "1.2.0",
-		"allowBugReporter": true,
+	"relationships": {
+		"systems": [],
+		"requires": [
+			{
+				"id": "lib-wrapper",
+				"type": "module",
+				"manifest": "https://github.com/ruipin/fvtt-lib-wrapper/releases/latest/download/module.json",
+				"compatibility": {}
+			},
+			{
+				"id": "socketlib",
+				"type": "module",
+				"manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/develop/module.json",
+				"compatibility": {}
+			}
+		],
 		"conflicts": [
 			{
-				"name": "shy-effect-icons",
+				"id": "shy-effect-icons",
 				"description": "Redundancy of features you can disable 'Shy Effects' module if you want"
 			},
 			{
-				"name": "fathomless",
+				"id": "fathomless",
 				"description": "Redundancy of features you can disable 'Fathomless - Proof of Concept' module if you want"
 			},
 			{
-				"name": "drop-effects-on-items",
+				"id": "drop-effects-on-items",
 				"description": "Redundancy of features you can disable 'Drop Effects on Items' module if you want"
 			},
 			{
-				"name": "quick-status-select",
+				"id": "quick-status-select",
 				"description": "Redundancy of features you can disable 'Quick status select module' module if you want"
 			}
 		]
