@@ -10,6 +10,8 @@
 
 ![GitHub all releases](https://img.shields.io/github/downloads/p4535992/foundryvtt-active-effect-manager-lib/total?style=for-the-badge)
 
+[![Translation status](https://weblate.foundryvtt-hub.com/widgets/active-effect-manager-lib/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/active-effect-manager-lib/)
+
 ### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
 
 # [BETA] FoundryVTT Library: Active Effect Manager
@@ -347,6 +349,7 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 - **[Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)**: [GPLv3](https://github.com/schultzcole/FVTT-Fathomless/blob/master/LICENSE)
 - **[Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)**: [MIT](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items/blob/main/LICENSE)
 - **[Quick status effect](https://github.com/jeremiahverba/qss)**: [MIT](https://github.com/jeremiahverba/qss/blob/main/src/LICENSE)
+- **[Apply Self Effects D&D5e](https://github.com/ElfFriend-DnD/foundryvtt-apply-self-effects)**: [MIT](https://github.com/ElfFriend-DnD/foundryvtt-apply-self-effects-5e/blob/main/LICENSE)
 
 This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
@@ -357,7 +360,8 @@ This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limi
 - [schultzcole](https://github.com/schultzcole/) for the module [Fathomless - Proof of Concept](https://github.com/schultzcole/FVTT-Fathomless)
 - [ElfFriend-DnD](https://github.com/ElfFriend-DnD)  for the module [Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)
 - [jeremiahverba](https://github.com/jeremiahverba) for the module [Quick status effect](https://github.com/jeremiahverba/qss)
-
+- [ElfFriend-DnD](https://github.com/ElfFriend-DnD/) for the module [Apply Self Effects D&D5e](https://github.com/ElfFriend-DnD/foundryvtt-apply-self-effects)
+  
 ## Acknowledgements
 
 Bootstrapped with League of Extraordinary FoundryVTT Developers [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
