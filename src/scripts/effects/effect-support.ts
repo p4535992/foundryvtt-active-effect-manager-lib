@@ -1,8 +1,9 @@
 import type { ActiveEffectDataProperties } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import { duplicateExtended, i18n, isStringEquals, is_real_number } from "../lib/lib";
+import { i18n } from "../lib/lib";
 import Effect, { Constants } from "./effect";
+import { isStringEquals, is_real_number } from "./effect-utility";
 
 export class EffectSupport {
 	static buildDefault(

@@ -96,10 +96,6 @@ export function isGMConnected(): boolean {
 	return !!Array.from(<Users>game.users).find((user) => user.isGM && user.active);
 }
 
-export function isGMConnectedAndSocketLibEnable(): boolean {
-	return isGMConnected(); // && !game.settings.get(CONSTANTS.MODULE_NAME, 'doNotUseSocketLibFeature');
-}
-
 export function isEmptyObject(obj: any): boolean {
 	// because Object.keys(new Date()).length === 0;
 	// we have to do some additional check

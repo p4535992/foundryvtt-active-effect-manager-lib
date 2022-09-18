@@ -1,4 +1,4 @@
-import { debugM, errorM, i18n, isStringEquals, logM, warnM } from "./effect-log";
+import { debugM, errorM, i18n, isStringEquals, logM, warnM } from "./effect-utility";
 import FoundryHelpers from "./foundry-helpers";
 import Effect from "./effect";
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";

@@ -2,7 +2,7 @@ import FoundryHelpers from "./foundry-helpers";
 import { registerSocket } from "../socket";
 import type Effect from "./effect";
 import EffectHandler from "./effect-handler";
-import { errorM, isGMConnectedAndSocketLibEnable } from "./effect-log";
+import { errorM, isGMConnected } from "./effect-utility";
 import type {
 	ActiveEffectData,
 	ActorData,
@@ -63,7 +63,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("toggleEffect", effectName, overlay, uuids);
 		} else {
 			return this._effectHandler.toggleEffect(effectName, overlay, uuids);
@@ -80,7 +80,7 @@ export default class EffectInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectApplied(effectName: string, uuid: string, withSocket = true): boolean {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("hasEffectApplied", effectName, uuid);
 		} else {
 			return this._effectHandler.hasEffectApplied(effectName, uuid);
@@ -103,7 +103,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffect", {
 				effectName,
 				uuid,
@@ -140,7 +140,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("addEffect", effectName, effectData, uuid, origin, overlay, metadata);
 		} else {
 			return this._effectHandler.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
@@ -173,7 +173,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			const effectName = null; // TODO 2022-07-09
 			return this._socket.executeAsGM("addEffect", effectName, effectData, uuid, origin, overlay, metadata);
 		} else {
@@ -200,7 +200,7 @@ export default class EffectInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnActor(effectName: string, uuid: string, includeDisabled: boolean, withSocket = true): boolean {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("hasEffectAppliedOnActor", effectName, uuid, includeDisabled);
 		} else {
 			return this._effectHandler.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
@@ -222,7 +222,7 @@ export default class EffectInterface {
 		includeDisabled: boolean,
 		withSocket = true
 	): boolean {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("hasEffectAppliedFromIdOnActor", effectId, uuid, includeDisabled);
 		} else {
 			return this._effectHandler.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
@@ -237,7 +237,7 @@ export default class EffectInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectOnActor(effectName: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffectOnActor", effectName, uuid);
 		} else {
 			return this._effectHandler.removeEffectOnActor(effectName, uuid);
@@ -256,7 +256,7 @@ export default class EffectInterface {
 		uuid: string,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffectFromIdOnActor", effectId, uuid);
 		} else {
 			return this._effectHandler.removeEffectFromIdOnActor(effectId, uuid);
@@ -289,7 +289,7 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("addEffectOnActor", effect.name, uuid, undefined, false, effect);
 		} else {
 			return this._effectHandler.addEffectOnActor(effect.name, uuid, "", false, effect);
@@ -320,7 +320,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"toggleEffectFromIdOnActor",
 				effectId,
@@ -354,7 +354,7 @@ export default class EffectInterface {
 		activeEffectData: ActiveEffectData,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("addActiveEffectOnActor", uuid, activeEffectData);
 		} else {
 			return this._effectHandler.addActiveEffectOnActor(uuid, activeEffectData);
@@ -373,7 +373,7 @@ export default class EffectInterface {
 		uuid: string,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("findEffectByNameOnActor", effectName, uuid);
 		} else {
 			return this._effectHandler.findEffectByNameOnActor(effectName, uuid);
@@ -388,7 +388,7 @@ export default class EffectInterface {
 	 * @returns {Promise} a promise that resolves when the GM socket function completes
 	 */
 	async findEffectByIdOnActor(effectId: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("findEffectByIdOnActor", effectId, uuid);
 		} else {
 			return this._effectHandler.findEffectByIdOnActor(effectId, uuid);
@@ -409,7 +409,7 @@ export default class EffectInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnToken(effectName: string, uuid: string, includeDisabled: boolean, withSocket = true): boolean {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("hasEffectAppliedOnToken", effectName, uuid, includeDisabled);
 		} else {
 			return this._effectHandler.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
@@ -431,7 +431,7 @@ export default class EffectInterface {
 		includeDisabled: boolean,
 		withSocket = true
 	): boolean {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("hasEffectAppliedFromIdOnToken", effectId, uuid, includeDisabled);
 		} else {
 			return this._effectHandler.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
@@ -446,7 +446,7 @@ export default class EffectInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectOnToken(effectName: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffectOnToken", effectName, uuid);
 		} else {
 			return this._effectHandler.removeEffectOnToken(effectName, uuid);
@@ -465,7 +465,7 @@ export default class EffectInterface {
 		uuid: string,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffectFromIdOnToken", effectId, uuid);
 		} else {
 			return this._effectHandler.removeEffectFromIdOnToken(effectId, uuid);
@@ -484,7 +484,7 @@ export default class EffectInterface {
 		uuid: string,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffectFromIdOnTokenMultiple", effectIds, uuid);
 		} else {
 			return this._effectHandler.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
@@ -517,7 +517,7 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("addEffectOnToken", effect.name, uuid, undefined, false, effect);
 		} else {
 			return this._effectHandler.addEffectOnToken(effect.name, uuid, "", false, effect);
@@ -554,7 +554,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"toggleEffectFromIdOnToken",
 				effectId,
@@ -590,7 +590,7 @@ export default class EffectInterface {
 			return undefined;
 		}
 
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"toggleEffectFromDataOnToken",
 				effect,
@@ -624,7 +624,7 @@ export default class EffectInterface {
 		activeEffectData: ActiveEffectData,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("addActiveEffectOnToken", uuid, activeEffectData);
 		} else {
 			return this._effectHandler.addActiveEffectOnToken(uuid, activeEffectData);
@@ -643,7 +643,7 @@ export default class EffectInterface {
 		uuid: string,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("findEffectByNameOnToken", effectName, uuid);
 		} else {
 			return this._effectHandler.findEffectByNameOnToken(effectName, uuid);
@@ -658,7 +658,7 @@ export default class EffectInterface {
 	 * @returns {Promise} a promise that resolves when the GM socket function completes
 	 */
 	async findEffectByIdOnToken(effectId: string, uuid: string, withSocket = true): Promise<ActiveEffect | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("findEffectByIdOnToken", effectId, uuid);
 		} else {
 			return this._effectHandler.findEffectByIdOnToken(effectId, uuid);
@@ -673,7 +673,7 @@ export default class EffectInterface {
 		effectUpdated: Effect,
 		withSocket = true
 	): Promise<boolean | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"updateEffectFromIdOnToken",
 				effectId,
@@ -695,7 +695,7 @@ export default class EffectInterface {
 		effectUpdated: Effect,
 		withSocket = true
 	): Promise<boolean | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"updateEffectFromNameOnToken",
 				effectName,
@@ -717,7 +717,7 @@ export default class EffectInterface {
 		effectUpdated: ActiveEffectData,
 		withSocket = true
 	): Promise<boolean | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"updateActiveEffectFromIdOnToken",
 				effectId,
@@ -739,7 +739,7 @@ export default class EffectInterface {
 		effectUpdated: ActiveEffectData,
 		withSocket = true
 	): Promise<boolean | undefined> {
-		if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM(
 				"updateActiveEffectFromNameOnToken",
 				effectName,
@@ -772,7 +772,7 @@ export default class EffectInterface {
 		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-		// if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		// if (withSocket && isGMConnected()) {
 		//   return this._socket.executeAsGM(
 		//     'onManageActiveEffectFromEffectId',
 		//     effectActions,
@@ -815,7 +815,7 @@ export default class EffectInterface {
 		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-		// if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		// if (withSocket && isGMConnected()) {
 		//   return this._socket.executeAsGM(
 		//     'onManageActiveEffectFromEffect',
 		//     effectActions,
@@ -858,7 +858,7 @@ export default class EffectInterface {
 		isDisabled?: boolean | undefined,
 		withSocket = true
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-		// if (withSocket && isGMConnectedAndSocketLibEnable()) {
+		// if (withSocket && isGMConnected()) {
 		//   return this._socket.executeAsGM(
 		//     'onManageActiveEffectFromActiveEffect',
 		//     effectActions,

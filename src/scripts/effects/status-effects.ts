@@ -1,7 +1,7 @@
 import type { StatusEffect } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/client/data/documents/token";
 import API from "../api";
 import CONSTANTS from "../constants";
-import { i18n, isStringEquals } from "./effect-log";
+import { i18n, isStringEquals } from "./effect-utility";
 import type { StatusEffectInternal } from "./effect-models";
 import { EffectSupport } from "./effect-support";
 

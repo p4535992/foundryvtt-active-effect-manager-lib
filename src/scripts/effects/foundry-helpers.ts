@@ -1,3 +1,5 @@
+import { warn } from "../lib/lib";
+
 /**
  * Simple helpers for querying aspects of foundry
  */
