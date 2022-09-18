@@ -386,12 +386,13 @@ export class EffectSupport {
 	static retrieveChangesOrderedByPriorityFromAE(activeEffect: ActiveEffect) {
 		// Organize non-disabled effects by their application priority
 		const changes = <EffectChangeData[]>[activeEffect].reduce((changes, e: ActiveEffect) => {
-			if (e.data.disabled) {
+			//@ts-ignore
+			if (e.disabled) {
 				return changes;
 			}
 			return changes.concat(
 				//@ts-ignore
-				(<EffectChangeData[]>e.data.changes).map((c: EffectChangeData) => {
+				(<EffectChangeData[]>e.changes).map((c: EffectChangeData) => {
 					//@ts-ignore
 					const c2 = <EffectChangeData>duplicateExtended(c);
 					// c2.effect = e;
@@ -432,7 +433,7 @@ export class EffectSupport {
 	static _createAtlEffectKey(key) {
 		let result = key;
 		//@ts-ignore
-		const version = (game.version ?? game.data.version).charAt(0);
+		const version = game.version.charAt(0);
 
 		if (version === "9") {
 			switch (key) {

@@ -64,13 +64,11 @@ export class EffectOwnedItem extends ActiveEffect {
 
 		const effectIdToDelete = <string>this.id;
 
-		const newParentEffects = <ActiveEffect[]>(
-			this.parent?.effects.filter((effect) => effect.id !== effectIdToDelete)
-		);
+		const newParentEffects = <any[]>this.parent?.effects.filter((effect) => effect.id !== effectIdToDelete);
 
-		const newParentEffectsData = <ActiveEffectData[]>[];
+		const newParentEffectsData = <any[]>[];
 		for (const ae of newParentEffects) {
-			newParentEffectsData.push(ae.data);
+			newParentEffectsData.push(ae);
 		}
 
 		log(`Updating Parent, delete effect with id ${effectIdToDelete}, new parent effects ${newParentEffectsData}`);
@@ -117,8 +115,8 @@ export class EffectOwnedItem extends ActiveEffect {
 		// merge updates directly into the array of objects
 		//@ts-ignore
 		foundry.utils.mergeObject(<ActiveEffectData>newEffects[originalEffectIndex], data, <any>context);
-
-		const diff = foundry.utils.diffObject(this.data._source, foundry.utils.expandObject(data));
+		//@ts-ignore
+		const diff = <any>foundry.utils.diffObject(this._source, foundry.utils.expandObject(data));
 
 		try {
 			await this._preUpdate(diff, context, <User>game.user);
@@ -142,14 +140,14 @@ export class EffectOwnedItem extends ActiveEffect {
 			error(e);
 		}
 
-		this.data.update(diff);
+		this.update(diff);
 		this.sheet?.render();
-
-		if (this.data.transfer) {
+		//@ts-ignore
+		if (this.transfer) {
 			info(i18n(`${CONSTANTS.MODULE_NAME}.effect.not-reflected`), true);
 		}
-
-		if (!this.data.transfer && data.transfer) {
+		//@ts-ignore
+		if (!this.transfer && transfer) {
 			info(i18n(`${CONSTANTS.MODULE_NAME}.effect.not-transferred`), true);
 		}
 		return this;
@@ -188,14 +186,14 @@ export class EffectOwnedItem extends ActiveEffect {
 
 		// Only for dnd5e for now
 		//@ts-ignore
-		const hasDuration = !!item?.data.data?.duration?.value;
+		const hasDuration = !!item?.system?.duration?.value;
 
 		if (hasDuration) {
 			const duration = <any>{};
 
 			// Only for dnd5e for now
 			//@ts-ignore
-			const durationValue = item.data.data.duration;
+			const durationValue = item.system.duration;
 
 			switch (durationValue.units) {
 				case "hour":
@@ -244,8 +242,8 @@ export class EffectOwnedItem extends ActiveEffect {
 	//   const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
 
 	//   const initialEffectFromItem = {
-	//     label: owner.data.name,
-	//     icon: owner.data.img,
+	//     label: owner.name,
+	//     icon: owner.img,
 	//     origin: owner.uuid,
 	//     duration: this.getDurationFromItem(owner, li.dataset.effectType === "passive"),
 	//     disabled: li.dataset.effectType === "inactive"

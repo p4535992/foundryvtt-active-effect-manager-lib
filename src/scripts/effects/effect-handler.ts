@@ -273,7 +273,8 @@ export default class EffectHandler {
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
-			const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
+			//@ts-ignore
+			const effectNameToSet = effectEntity.label;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -334,7 +335,8 @@ export default class EffectHandler {
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
-			const effectNameToSet = effectEntity.name ? effectEntity.name : effectEntity.data.label;
+			//@ts-ignore
+			const effectNameToSet = effectEntity.label;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -365,7 +367,7 @@ export default class EffectHandler {
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
-			const effectIdToSet = effectEntity.data ? effectEntity.data._id : effectEntity.id;
+			const effectIdToSet = effectEntity.id;
 			if (!effectIdToSet) {
 				continue;
 			}
@@ -589,7 +591,8 @@ export default class EffectHandler {
 			const activeEffectsRemoved = <ActiveEffect[]>(
 				await actor.deleteEmbeddedDocuments("ActiveEffect", [<string>effectToRemove.id])
 			);
-			logM(this.moduleName, `Removed effect ${effectToRemove?.data?.label} from ${actor.name} - ${actor.id}`);
+			//@ts-ignore
+			logM(this.moduleName, `Removed effect ${effectToRemove?.label} from ${actor.name} - ${actor.id}`);
 			return activeEffectsRemoved[0];
 		} else {
 			debugM(this.moduleName, `Can't removed effect without id from ${actor.name} - ${actor.id}`);
@@ -845,7 +848,7 @@ export default class EffectHandler {
 		}
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
-			const effectNameToSet = effectEntity.data ? effectEntity.data.label : effectEntity.label;
+			const effectNameToSet = effectEntity.label;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -877,7 +880,7 @@ export default class EffectHandler {
 		}
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
-			const effectIdToSet = effectEntity.data ? effectEntity.data._id : effectEntity.id;
+			const effectIdToSet = effectEntity.id;
 			if (!effectIdToSet) {
 				continue;
 			}
@@ -1101,7 +1104,8 @@ export default class EffectHandler {
 				const activeEffectsRemoved = <ActiveEffect[]>(
 					await token.actor?.deleteEmbeddedDocuments("ActiveEffect", [<string>effectToRemove.id])
 				);
-				logM(this.moduleName, `Removed effect ${effectToRemove?.data?.label} from ${token.name} - ${token.id}`);
+				//@ts-ignore
+				logM(this.moduleName, `Removed effect ${effectToRemove?.label} from ${token.name} - ${token.id}`);
 				return activeEffectsRemoved[0];
 			}
 		}
@@ -1780,11 +1784,11 @@ export default class EffectHandler {
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner.data}, effectId=${effectId},
+			`START Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner}, effectId=${effectId},
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
-		const actorEffects = owner?.data.effects;
+		const actorEffects = owner?.effects;
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
@@ -1800,7 +1804,7 @@ export default class EffectHandler {
 		);
 		debugM(
 			this.moduleName,
-			`END Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner.data}, effectId=${effectId},
+			`END Effect Handler 'onManageActiveEffectFromEffectId' : [effectActions=${effectActions}, owner=${owner}, effectId=${effectId},
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
@@ -1845,7 +1849,7 @@ export default class EffectHandler {
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner.data}, effect=${effect},
+			`START Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner}, effect=${effect},
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
@@ -1862,7 +1866,7 @@ export default class EffectHandler {
 		);
 		debugM(
 			this.moduleName,
-			`END Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner.data}, effect=${effect},
+			`END Effect Handler 'onManageActiveEffectFromEffect' : [effectActions=${effectActions}, owner=${owner}, effect=${effect},
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
@@ -1907,7 +1911,7 @@ export default class EffectHandler {
 	): Promise<Item | ActiveEffect | boolean | undefined> {
 		debugM(
 			this.moduleName,
-			`START Effect Handler 'onManageActiveEffectFromActiveEffect' : [effectActions=${effectActions}, owner=${owner.data}, activeEffect=${activeEffect},
+			`START Effect Handler 'onManageActiveEffectFromActiveEffect' : [effectActions=${effectActions}, owner=${owner}, activeEffect=${activeEffect},
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
@@ -1919,7 +1923,8 @@ export default class EffectHandler {
 				}
 				if (owner instanceof Actor) {
 					const actor = owner;
-					if (!(<ActiveEffect>activeEffect).data.origin) {
+					//@ts-ignore
+					if (!(<ActiveEffect>activeEffect).origin) {
 						const origin = `Actor.${actor?.id}`;
 						setProperty(activeEffect, "origin", origin);
 					}
@@ -1944,7 +1949,8 @@ export default class EffectHandler {
 				}
 				if (owner instanceof Actor) {
 					const actor = owner;
-					if (!(<ActiveEffect>activeEffect).data.origin) {
+					//@ts-ignore
+					if (!(<ActiveEffect>activeEffect).origin) {
 						const origin = `Actor.${actor?.id}`;
 						setProperty(activeEffect, "origin", origin);
 					}

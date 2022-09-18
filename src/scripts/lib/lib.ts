@@ -31,10 +31,10 @@ import CONSTANTS from "../constants";
 // 			return arr;
 // 		}
 // 	}
-// 	let ownedTokens = <Token[]>canvas.tokens?.placeables.filter((token) => token.isOwner && (!token.data.hidden || gm));
+// 	let ownedTokens = <Token[]>canvas.tokens?.placeables.filter((token) => token.isOwner && (!token.document.hidden || gm));
 // 	if (ownedTokens.length === 0 || !canvas.tokens?.controlled[0]) {
 // 		ownedTokens = <Token[]>(
-// 			canvas.tokens?.placeables.filter((token) => (token.observer || token.isOwner) && (!token.data.hidden || gm))
+// 			canvas.tokens?.placeables.filter((token) => (token.observer || token.isOwner) && (!token.document.hidden || gm))
 // 		);
 // 	}
 // 	return ownedTokens;
@@ -84,7 +84,7 @@ import CONSTANTS from "../constants";
 
 // export function isResponsibleGM() {
 // 	if (!game.user?.isGM) return false;
-// 	return !getActiveGMs()?.some((other) => other.data._id < <string>game.user?.data._id);
+// 	return !getActiveGMs()?.some((other) => other.id < <string>game.user?.id);
 // }
 
 // export function firstGM() {
@@ -98,7 +98,7 @@ import CONSTANTS from "../constants";
 // export function firstOwner(doc): User | undefined {
 // 	/* null docs could mean an empty lookup, null docs are not owned by anyone */
 // 	if (!doc) return undefined;
-// 	const permissionObject = (doc instanceof TokenDocument ? doc.actor?.data.permission : doc.data.permission) ?? {};
+// 	const permissionObject = (doc instanceof TokenDocument ? doc.actor?.permission : doc.permission) ?? {};
 // 	const playerOwners = Object.entries(permissionObject)
 // 		.filter(([id, level]) => !game.users?.get(id)?.isGM && game.users?.get(id)?.active && level === 3)
 // 		.map(([id, level]) => id);
@@ -330,9 +330,9 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
 // 		return null;
 // 	}
 // 	if (!selectedTokens || selectedTokens.length === 0) {
-// 		//if(game.user.character.data.token){
+// 		//if(game.user.character.token){
 // 		//  //@ts-ignore
-// 		//  return game.user.character.data.token;
+// 		//  return game.user.character.token;
 // 		//}else{
 // 		return null;
 // 		//}
@@ -359,7 +359,7 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
 // 		if (!controlled.length || controlled.length === 0) {
 // 			// If no token is selected use the token of the users character
 // 			token = <Token>(
-// 				canvas.tokens?.placeables.find((token) => token.data._id === game.user?.character?.data?._id)
+// 				canvas.tokens?.placeables.find((token) => token.document.actorId === game.user?.character?._id)
 // 			);
 // 		}
 // 		// If no token is selected use the first owned token of the users character you found
@@ -371,19 +371,19 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
 // }
 
 // function getElevationToken(token: Token): number {
-// 	const base = token.document.data;
+// 	const base = token.document;
 // 	return getElevationPlaceableObject(base);
 // }
 
 // function getElevationWall(wall: Wall): number {
-// 	const base = wall.document.data;
+// 	const base = wall.document;
 // 	return getElevationPlaceableObject(base);
 // }
 
 // function getElevationPlaceableObject(placeableObject: any): number {
 // 	let base = placeableObject;
 // 	if (base.document) {
-// 		base = base.document.data;
+// 		base = base.document;
 // 	}
 // 	const base_elevation =
 // 		//@ts-ignore
@@ -433,19 +433,19 @@ export async function drawShyEffects() {
 
 		// Draw actor effects first
 		for (const f of actorEffects) {
-			if (!f.data.icon) {
+			if (!f.icon) {
 				continue;
 			}
-			const source = <ActiveEffect>await fromUuid(f.data.origin);
+			const source = <ActiveEffect>await fromUuid(f.origin);
 			if (!source.testUserPermission(<User>game.user, minPerm, {})) {
 				continue;
 			}
-			const tint = f.data.tint ? foundry.utils.colorStringToHex(f.data.tint) : null;
+			const tint = f.tint ? foundry.utils.colorStringToHex(f.tint) : null;
 			if (f.getFlag("core", "overlay")) {
-				overlay = { src: f.data.icon, tint: tint };
+				overlay = { src: f.icon, tint: tint };
 				continue;
 			}
-			promises.push(this._drawEffect(f.data.icon, i, bg, w, tint));
+			promises.push(this._drawEffect(f.icon, i, bg, w, tint));
 			i++;
 		}
 

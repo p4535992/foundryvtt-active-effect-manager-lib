@@ -167,9 +167,8 @@ export default class StatusEffectsLib {
 						}
 					}
 					if (activeEffectFound) {
-						const effectName = activeEffectFound.data
-							? <string>activeEffectFound.data.label
-							: <string>activeEffectFound.name;
+						//@ts-ignore
+						const effectName = <string>activeEffectFound.label;
 						// Added 2022-09-11 for strange bug on draw effect ?
 						// is the reverse condition
 						/*
@@ -305,9 +304,10 @@ export default class StatusEffectsLib {
 				let isDisabled = false;
 				for (const ae of effectsArray) {
 					//@ts-ignore
-					if (ae.data.icon.includes(src)) {
+					if (ae.icon.includes(src)) {
 						srcExt = true;
-						isDisabled = ae.data.disabled;
+						//@ts-ignore
+						isDisabled = ae.disabled;
 						break;
 					}
 				}
@@ -344,13 +344,13 @@ export default class StatusEffectsLib {
 		// }
 
 		// const activeEffect = <ActiveEffect>newTokenEffects.find((ae) =>{
-		//   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.data.label,e.label);
+		//   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.label,e.label);
 		// });
 
 		const statusEffectDefaultFiltered = tokenEffects.filter((e: any) => {
 			let result = true;
 			for (const efct of CONFIG.statusEffects) {
-				if (isStringEquals(e.data.label, <string>efct.label)) {
+				if (isStringEquals(e.label, <string>efct.label)) {
 					result = false;
 					break;
 				}
@@ -457,7 +457,7 @@ export default class StatusEffectsLib {
 					let srcExt = false;
 					for (const ae of effectsArray) {
 						//@ts-ignore
-						if (ae.data.icon.includes(src)) {
+						if (ae.icon.includes(src)) {
 							srcExt = true;
 							break;
 						}
@@ -551,9 +551,9 @@ export default class StatusEffectsLib {
 				let isDisabled = false;
 				for (const ae of effectsArray) {
 					//@ts-ignore
-					if (ae.data.icon.includes(src)) {
+					if (ae.icon.includes(src)) {
 						srcExt = true;
-						isDisabled = ae.data.disabled;
+						isDisabled = ae.disabled;
 						break;
 					}
 				}
@@ -589,7 +589,7 @@ export default class StatusEffectsLib {
 		// }
 
 		// const activeEffect = <ActiveEffect>newTokenEffects.find((ae) =>{
-		//   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.data.label,e.label);
+		//   return isStringEquals(<string>ae.id,e.id) ||  isStringEquals(<string>ae.label,e.label);
 		// });
 
 		return CONFIG.statusEffects.concat(<any>tokenEffects).reduce((obj, e: any) => {
@@ -688,7 +688,7 @@ export default class StatusEffectsLib {
 				let srcExt = false;
 				for (const ae of effectsArray) {
 					//@ts-ignore
-					if (ae.data.icon.includes(src)) {
+					if (ae.icon.includes(src)) {
 						srcExt = true;
 						break;
 					}
