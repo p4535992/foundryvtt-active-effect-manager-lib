@@ -40,15 +40,13 @@ export const setupHooks = (): void => {
 	//@ts-ignore
 	window.activeEffectManager.API.effectInterface.initialize();
 
-	//@ts-ignore
-	window.activeEffectManager.API.statusEffects = new StatusEffects();
-	//@ts-ignore
-	window.activeEffectManager.API.statusEffects.init();
-
-	//@ts-ignore
-	setApi(window.activeEffectManager.API);
-
 	if (game.settings.get(CONSTANTS.MODULE_NAME, "enableStatusEffectNames")) {
+		
+		//@ts-ignore
+		window.activeEffectManager.API.statusEffects = new StatusEffects();
+		//@ts-ignore
+		window.activeEffectManager.API.statusEffects.init();
+
 		//@ts-ignore
 		// libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', function (wrapped, ...args) {
 		//   const token = this.object;
@@ -120,12 +118,15 @@ export const setupHooks = (): void => {
 			}
 		);
 	}
+
+	//@ts-ignore
+	setApi(window.activeEffectManager.API);
+
 };
 
 export const readyHooks = (): void => {
 	// checkSystem();
 	// registerHotkeys();
-	// Hooks.callAll(HOOKS.READY);
 
 	if (game.settings.get(CONSTANTS.MODULE_NAME, "enableDropEffectsOnItems")) {
 		DropEffectsOnItems.init();

@@ -95,17 +95,3 @@ export function registerSocket() {
 	setSocket(activeEffectManagerSocket);
 	return activeEffectManagerSocket;
 }
-
-async function callHook(inHookName, ...args) {
-	const newArgs: any[] = [];
-	for (let arg of args) {
-		if (typeof arg === "string") {
-			const testArg = await fromUuid(arg);
-			if (testArg) {
-				arg = testArg;
-			}
-		}
-		newArgs.push(arg);
-	}
-	return Hooks.callAll(inHookName, ...newArgs);
-}
