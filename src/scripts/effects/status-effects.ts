@@ -41,27 +41,26 @@ export default class StatusEffectsLib {
 		//@ts-ignore
 		if (modifyStatusEffects === "replace") {
 			CONFIG.statusEffects = this._fetchStatusEffects(statusEffectNames);
-
-			//@ts-ignore
-			if (CONFIG.specialStatusEffects) {
-				//@ts-ignore
-				CONFIG.specialStatusEffects = {
-					DEFEATED: "Convenient Effect: Dead",
-					INVISIBLE: "Convenient Effect: Invisible",
-					BLIND: "Convenient Effect: Blinded",
-				};
-			}
+			// //@ts-ignore
+			// if (CONFIG.specialStatusEffects) {
+			// 	//@ts-ignore
+			// 	CONFIG.specialStatusEffects = {
+			// 		DEFEATED: "Convenient Effect: Dead",
+			// 		INVISIBLE: "Convenient Effect: Invisible",
+			// 		BLIND: "Convenient Effect: Blinded",
+			// 	};
+			// }
 		} else if (modifyStatusEffects === "add") {
 			CONFIG.statusEffects = CONFIG.statusEffects.concat(this._fetchStatusEffects(statusEffectNames));
-			//@ts-ignore
-			if (CONFIG.specialStatusEffects) {
-				//@ts-ignore
-				CONFIG.specialStatusEffects = {
-					DEFEATED: "Convenient Effect: Dead",
-					INVISIBLE: "Convenient Effect: Invisible",
-					BLIND: "Convenient Effect: Blinded",
-				};
-			}
+			// //@ts-ignore
+			// if (CONFIG.specialStatusEffects) {
+			// 	//@ts-ignore
+			// 	CONFIG.specialStatusEffects = {
+			// 		DEFEATED: "Convenient Effect: Dead",
+			// 		INVISIBLE: "Convenient Effect: Invisible",
+			// 		BLIND: "Convenient Effect: Blinded",
+			// 	};
+			// }
 		}
 	}
 
