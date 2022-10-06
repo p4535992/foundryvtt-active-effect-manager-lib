@@ -351,7 +351,7 @@ export default class EffectInterface {
 	 */
 	async addActiveEffectOnActor(
 		uuid: string,
-		activeEffectData: ActiveEffectData,
+		activeEffectData: ActiveEffect,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnected()) {
@@ -621,7 +621,7 @@ export default class EffectInterface {
 	 */
 	async addActiveEffectOnToken(
 		uuid: string,
-		activeEffectData: ActiveEffectData,
+		activeEffectData: ActiveEffect,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnected()) {
@@ -714,7 +714,7 @@ export default class EffectInterface {
 		uuid: string,
 		origin: string,
 		overlay: boolean,
-		effectUpdated: ActiveEffectData,
+		effectUpdated: ActiveEffect,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (withSocket && isGMConnected()) {
@@ -736,7 +736,7 @@ export default class EffectInterface {
 		uuid: string,
 		origin: string,
 		overlay: boolean,
-		effectUpdated: ActiveEffectData,
+		effectUpdated: ActiveEffect,
 		withSocket = true
 	): Promise<boolean | undefined> {
 		if (withSocket && isGMConnected()) {

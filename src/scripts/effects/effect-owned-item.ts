@@ -11,10 +11,11 @@ import { error, i18n, info, log } from "../lib/lib";
  * THIS IS UNSTABLE, BRITTLE, AND NOT MADE FOR USE BEYOND THIS MODULE'S USE CASE
  */
 export class EffectOwnedItem extends ActiveEffect {
-	constructor(effect: ActiveEffectData, owner: Actor) {
+	constructor(effect: ActiveEffect, owner: Actor) {
 		log(`Attempting instantiation of Owned Item Effect ${effect}`);
 
 		// manually set the parent
+        //@ts-ignore
 		super(effect, { parent: owner });
 
 		log(`Instantiated Owned Item Effect ${this}`);
@@ -91,7 +92,8 @@ export class EffectOwnedItem extends ActiveEffect {
 	/**
 	 * Fake Update this Effect Document by instead updating the parent embedded Item document's array of effects.
 	 */
-	async update(data: ActiveEffectData, context: DocumentModificationOptions = {}) {
+    //@ts-ignore
+	async update(data: ActiveEffect, context: DocumentModificationOptions = {}) {
 		log(`Attempting update on Owned Item Effect ${data} ${context}`);
 
 		const embeddedItem = <Item>this.parent;
@@ -268,7 +270,7 @@ export class EffectOwnedItem extends ActiveEffect {
 	//   }
 	// }
 
-	static createEffectOnOwnedItem(effectData: ActiveEffectData, item: Item) {
+	static createEffectOnOwnedItem(effectData: ActiveEffect, item: Item) {
 		const parent = <Actor>item.parent;
 
 		if (!parent) {

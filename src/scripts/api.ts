@@ -1,13 +1,11 @@
 import CONSTANTS from "./constants";
 import EffectInterface from "./effects/effect-interface";
 import { error } from "./lib/lib";
-import type { ActiveEffectData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import type Effect from "./effects/effect";
 import type { EffectActions } from "./effects/effect-models";
 import StatusEffectsLib from "./effects/status-effects";
 import { EffectSupport } from "./effects/effect-support";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
-import type { ActiveEffectDataProperties } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData";
 import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 
 const API = {
@@ -571,7 +569,7 @@ const API = {
 
 	async addActiveEffectOnActor(
 		actorId: string,
-		activeEffectData: ActiveEffectData
+		activeEffectData: ActiveEffect
 	): Promise<ActiveEffect | undefined> {
 		const result = (<EffectInterface>this.effectInterface).addActiveEffectOnActor(
 			<string>actorId,
@@ -685,7 +683,7 @@ const API = {
 
 	async addActiveEffectOnToken(
 		tokenId: string,
-		activeEffectData: ActiveEffectData
+		activeEffectData: ActiveEffect
 	): Promise<ActiveEffect | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).addActiveEffectOnToken(
 			<string>tokenId,
@@ -754,7 +752,7 @@ const API = {
 		effectId: string,
 		origin: string,
 		overlay: boolean,
-		effectUpdated: ActiveEffectData
+		effectUpdated: ActiveEffect
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).updateActiveEffectFromIdOnToken(
 			effectId,
@@ -771,7 +769,7 @@ const API = {
 		effectName: string,
 		origin: string,
 		overlay: boolean,
-		effectUpdated: ActiveEffectData
+		effectUpdated: ActiveEffect
 	): Promise<boolean | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).updateActiveEffectFromNameOnToken(
 			effectName,
@@ -895,7 +893,7 @@ const API = {
 	},
 
 	async convertActiveEffectDataPropertiesToActiveEffect(
-		activeEffectDataProperties: PropertiesToSource<ActiveEffectDataProperties>,
+		activeEffectDataProperties: PropertiesToSource<any>,
 		isPassive: boolean
 	): Promise<ActiveEffect> {
 		return EffectSupport.convertActiveEffectDataPropertiesToActiveEffect(activeEffectDataProperties, isPassive);

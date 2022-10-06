@@ -147,7 +147,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
 
   addActiveEffectOnActor(
     actorId: string,
-    activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
+    activeEffect: ActiveEffect): Promise<ActiveEffect | undefined>;
 
   removeEffectOnActor(
     actorId: string,
@@ -195,7 +195,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
 
   addActiveEffectOnToken(
     tokenId: string,
-    activeEffectData: ActiveEffectData): Promise<ActiveEffect | undefined>;
+    activeEffect: ActiveEffect): Promise<ActiveEffect | undefined>;
 
   removeEffectOnToken(
     tokenId: string,
@@ -230,7 +230,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
     effectId: string,
     origin: string,
     overlay: boolean,
-    effectUpdated: ActiveEffectData,
+    effectUpdated: ActiveEffect,
   ): Promise<boolean | undefined>;
 
   updateActiveEffectFromNameOnToken(
@@ -238,7 +238,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
     effectName: string,
     origin: string,
     overlay: boolean,
-    effectUpdated: ActiveEffectData,
+    effectUpdated: ActiveEffect,
   ): Promise<boolean | undefined>;
 
   onManageActiveEffectFromEffectId(
@@ -361,7 +361,7 @@ This package is under an [GPLv3](LICENSE) and the [Foundry Virtual Tabletop Limi
 - [ElfFriend-DnD](https://github.com/ElfFriend-DnD)  for the module [Drop Effects on Items](https://github.com/ElfFriend-DnD/foundryvtt-drop-effects-on-items)
 - [jeremiahverba](https://github.com/jeremiahverba) for the module [Quick status effect](https://github.com/jeremiahverba/qss)
 - [ElfFriend-DnD](https://github.com/ElfFriend-DnD/) for the module [Apply Self Effects D&D5e](https://github.com/ElfFriend-DnD/foundryvtt-apply-self-effects)
-  
+
 ## Acknowledgements
 
 Bootstrapped with League of Extraordinary FoundryVTT Developers [foundry-vtt-types](https://github.com/League-of-Foundry-Developers/foundry-vtt-types).
