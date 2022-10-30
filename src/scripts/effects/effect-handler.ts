@@ -16,17 +16,17 @@ import EffectPf2eHandler from "./effect-handler-pf2e";
 export default class EffectHandler implements EffectHandlerInterface {
 	moduleName: string;
 	_foundryHelpers: FoundryHelpers;
-    effectGenericHandler: EffectGenericHandler;
-    effectPf2eHandler: EffectPf2eHandler;
+	effectGenericHandler: EffectGenericHandler;
+	effectPf2eHandler: EffectPf2eHandler;
 
-    isPf2e: boolean;
+	isPf2e: boolean;
 
 	constructor(moduleName: string) {
 		this.moduleName = moduleName;
 		this._foundryHelpers = new FoundryHelpers();
-        this.isPf2e = game.system.id === "pf2e";
-        this.effectGenericHandler = new EffectGenericHandler(moduleName);
-        this.effectPf2eHandler = new EffectPf2eHandler(moduleName);
+		this.isPf2e = game.system.id === "pf2e";
+		this.effectGenericHandler = new EffectGenericHandler(moduleName);
+		this.effectPf2eHandler = new EffectPf2eHandler(moduleName);
 	}
 
 	/**
@@ -45,11 +45,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 		metadata = undefined,
 		effectData: Effect | undefined = undefined
 	): Promise<boolean | undefined> {
-		if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffect(effectName, overlay, uuids, metadata, effectData);
-        } else {
-            return await this.effectGenericHandler.toggleEffect(effectName, overlay, uuids, metadata, effectData);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffect(effectName, overlay, uuids, metadata, effectData);
+		} else {
+			return await this.effectGenericHandler.toggleEffect(effectName, overlay, uuids, metadata, effectData);
+		}
 	}
 
 	/**
@@ -61,11 +61,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string[]} params.uuids - UUIDS of the actors to toggle the effect on
 	 */
 	async toggleEffectArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.toggleEffectArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.toggleEffectArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -78,11 +78,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectApplied(effectName: string, uuid: string): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectApplied(effectName, uuid);
-        } else {
-            return this.effectGenericHandler.hasEffectApplied(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectApplied(effectName, uuid);
+		} else {
+			return this.effectGenericHandler.hasEffectApplied(effectName, uuid);
+		}
 	}
 
 	/**
@@ -95,11 +95,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedArr(...inAttributes: any[]): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedArr(...inAttributes);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedArr(...inAttributes);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -110,11 +110,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffect(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffect(effectName, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffect(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffect(effectName, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffect(effectName, uuid);
+		}
 	}
 
 	/**
@@ -125,11 +125,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -151,11 +151,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay = false,
 		metadata = undefined
 	): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
-        } else {
-            return await this.effectGenericHandler.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
+		} else {
+			return await this.effectGenericHandler.addEffect(effectName, effectData, uuid, origin, overlay, metadata);
+		}
 	}
 
 	/**
@@ -169,11 +169,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {boolean} params.overlay - if the effect is an overlay or not
 	 */
 	async addEffectArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffectArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.addEffectArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffectArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.addEffectArr(...inAttributes);
+		}
 	}
 
 	// ====================================================================
@@ -191,11 +191,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 		effectName: string | undefined | null,
 		uuid: string
 	): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByNameOnActor(effectName, uuid);
-        } else {
-            return await this.effectGenericHandler.findEffectByNameOnActor(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByNameOnActor(effectName, uuid);
+		} else {
+			return await this.effectGenericHandler.findEffectByNameOnActor(effectName, uuid);
+		}
 	}
 
 	/**
@@ -206,11 +206,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByIdOnActor(effectId: string | undefined | null, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByIdOnActor(effectId, uuid);
-        } else {
-            return await this.effectGenericHandler.findEffectByIdOnActor(effectId, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByIdOnActor(effectId, uuid);
+		} else {
+			return await this.effectGenericHandler.findEffectByIdOnActor(effectId, uuid);
+		}
 	}
 
 	/**
@@ -221,11 +221,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByNameOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | null | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByNameOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.findEffectByNameOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByNameOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.findEffectByNameOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -236,11 +236,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByIdOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | null | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByIdOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.findEffectByIdOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByIdOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.findEffectByIdOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -253,11 +253,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnActor(effectName: string, uuid: string, includeDisabled = false): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedOnActor(effectName, uuid, includeDisabled);
+		}
 	}
 
 	/**
@@ -270,11 +270,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnActorArr(...inAttributes: any[]): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedOnActorArr(...inAttributes);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedOnActorArr(...inAttributes);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -287,11 +287,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedFromIdOnActor(effectId: string, uuid: string, includeDisabled = false): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedFromIdOnActor(effectId, uuid, includeDisabled);
+		}
 	}
 
 	/**
@@ -304,11 +304,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedFromIdOnActorArr(...inAttributes: any[]): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedFromIdOnActorArr(...inAttributes);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedFromIdOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedFromIdOnActorArr(...inAttributes);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedFromIdOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -319,11 +319,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectOnActor(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectOnActor(effectName, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffectOnActor(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectOnActor(effectName, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffectOnActor(effectName, uuid);
+		}
 	}
 
 	/**
@@ -334,11 +334,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -349,11 +349,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectFromIdOnActor(effectId: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnActor(effectId, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnActor(effectId, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnActor(effectId, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnActor(effectId, uuid);
+		}
 	}
 
 	/**
@@ -364,11 +364,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to remove the effect from
 	 */
 	async removeEffectFromIdOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -388,11 +388,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effect: Effect | null | undefined
 	): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffectOnActor(effectName, uuid, origin, overlay, effect);
-        } else {
-            return await this.effectGenericHandler.addEffectOnActor(effectName, uuid, origin, overlay, effect);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffectOnActor(effectName, uuid, origin, overlay, effect);
+		} else {
+			return await this.effectGenericHandler.addEffectOnActor(effectName, uuid, origin, overlay, effect);
+		}
 	}
 
 	/**
@@ -403,11 +403,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the actor to add the effect to
 	 */
 	async addEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffectOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.addEffectOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffectOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.addEffectOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -421,19 +421,33 @@ export default class EffectHandler implements EffectHandlerInterface {
 		forceDisabled?: boolean | undefined,
 		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectFromIdOnActor(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        } else {
-            return await this.effectGenericHandler.toggleEffectFromIdOnActor(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectFromIdOnActor(
+				effectId,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		} else {
+			return await this.effectGenericHandler.toggleEffectFromIdOnActor(
+				effectId,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		}
 	}
 
 	async toggleEffectFromIdOnActorArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectFromIdOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.toggleEffectFromIdOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectFromIdOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.toggleEffectFromIdOnActorArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -444,19 +458,19 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} activeEffectData - the name of the effect to add
 	 */
 	async addActiveEffectOnActor(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addActiveEffectOnActor(uuid, activeEffectData);
-        } else {
-            return await this.effectGenericHandler.addActiveEffectOnActor(uuid, activeEffectData);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addActiveEffectOnActor(uuid, activeEffectData);
+		} else {
+			return await this.effectGenericHandler.addActiveEffectOnActor(uuid, activeEffectData);
+		}
 	}
 
 	async addActiveEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addActiveEffectOnActorArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.addActiveEffectOnActorArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addActiveEffectOnActorArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.addActiveEffectOnActorArr(...inAttributes);
+		}
 	}
 
 	// ====================================================================
@@ -471,11 +485,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByNameOnToken(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByNameOnToken(effectName, uuid);
-        } else {
-            return await this.effectGenericHandler.findEffectByNameOnToken(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByNameOnToken(effectName, uuid);
+		} else {
+			return await this.effectGenericHandler.findEffectByNameOnToken(effectName, uuid);
+		}
 	}
 
 	/**
@@ -486,11 +500,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByIdOnToken(effectId: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByIdOnToken(effectId, uuid);
-        } else {
-            return await this.effectGenericHandler.findEffectByIdOnToken(effectId, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByIdOnToken(effectId, uuid);
+		} else {
+			return await this.effectGenericHandler.findEffectByIdOnToken(effectId, uuid);
+		}
 	}
 
 	/**
@@ -501,11 +515,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByNameOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByNameOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.findEffectByNameOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByNameOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.findEffectByNameOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -516,11 +530,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Effect} the found effect
 	 */
 	async findEffectByIdOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.findEffectByIdOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.findEffectByIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.findEffectByIdOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.findEffectByIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -533,11 +547,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnToken(effectName: string, uuid: string, includeDisabled = false): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedOnToken(effectName, uuid, includeDisabled);
+		}
 	}
 
 	/**
@@ -550,11 +564,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedOnTokenArr(...inAttributes: any[]): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedOnTokenArr(...inAttributes);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedOnTokenArr(...inAttributes);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -567,11 +581,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedFromIdOnToken(effectId: string, uuid: string, includeDisabled = false): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedFromIdOnToken(effectId, uuid, includeDisabled);
+		}
 	}
 
 	/**
@@ -584,11 +598,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
 	hasEffectAppliedFromIdOnTokenArr(...inAttributes: any[]): boolean {
-        if(this.isPf2e){
-            return this.effectPf2eHandler.hasEffectAppliedFromIdOnTokenArr(...inAttributes);
-        } else {
-            return this.effectGenericHandler.hasEffectAppliedFromIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return this.effectPf2eHandler.hasEffectAppliedFromIdOnTokenArr(...inAttributes);
+		} else {
+			return this.effectGenericHandler.hasEffectAppliedFromIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -599,11 +613,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectOnToken(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectOnToken(effectName, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffectOnToken(effectName, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectOnToken(effectName, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffectOnToken(effectName, uuid);
+		}
 	}
 
 	/**
@@ -614,11 +628,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -629,11 +643,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectFromIdOnToken(effectId: string, uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnToken(effectId, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnToken(effectId, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnToken(effectId, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnToken(effectId, uuid);
+		}
 	}
 
 	/**
@@ -644,11 +658,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectFromIdOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -659,11 +673,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectFromIdOnTokenMultiple(effectIds: string[], uuid: string): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnTokenMultiple(effectIds, uuid);
+		}
 	}
 
 	/**
@@ -674,11 +688,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to remove the effect from
 	 */
 	async removeEffectFromIdOnTokenMultipleArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.removeEffectFromIdOnTokenMultipleArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.removeEffectFromIdOnTokenMultipleArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.removeEffectFromIdOnTokenMultipleArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.removeEffectFromIdOnTokenMultipleArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -698,11 +712,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effect: Effect | null | undefined
 	): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffectOnToken(effectName, uuid, origin, overlay, effect);
-        } else {
-            return await this.effectGenericHandler.addEffectOnToken(effectName, uuid, origin, overlay, effect);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffectOnToken(effectName, uuid, origin, overlay, effect);
+		} else {
+			return await this.effectGenericHandler.addEffectOnToken(effectName, uuid, origin, overlay, effect);
+		}
 	}
 
 	/**
@@ -713,11 +727,11 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} uuid - the uuid of the token to add the effect to
 	 */
 	async addEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addEffectOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.addEffectOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addEffectOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.addEffectOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -731,11 +745,25 @@ export default class EffectHandler implements EffectHandlerInterface {
 		forceDisabled?: boolean | undefined,
 		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        } else {
-            return await this.effectGenericHandler.toggleEffectFromIdOnToken(effectId, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectFromIdOnToken(
+				effectId,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		} else {
+			return await this.effectGenericHandler.toggleEffectFromIdOnToken(
+				effectId,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		}
 	}
 
 	/**
@@ -749,19 +777,33 @@ export default class EffectHandler implements EffectHandlerInterface {
 		forceDisabled?: boolean | undefined,
 		overlay?: boolean | undefined
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectFromDataOnToken(effect, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        } else {
-            return await this.effectGenericHandler.toggleEffectFromDataOnToken(effect, uuid, alwaysDelete, forceEnabled, forceDisabled, overlay);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectFromDataOnToken(
+				effect,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		} else {
+			return await this.effectGenericHandler.toggleEffectFromDataOnToken(
+				effect,
+				uuid,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				overlay
+			);
+		}
 	}
 
 	async toggleEffectFromIdOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.toggleEffectFromIdOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.toggleEffectFromIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.toggleEffectFromIdOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.toggleEffectFromIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -772,19 +814,19 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @param {string} activeEffectData - the name of the effect to add
 	 */
 	async addActiveEffectOnToken(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addActiveEffectOnToken(uuid, activeEffectData);
-        } else {
-            return await this.effectGenericHandler.addActiveEffectOnToken(uuid, activeEffectData);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addActiveEffectOnToken(uuid, activeEffectData);
+		} else {
+			return await this.effectGenericHandler.addActiveEffectOnToken(uuid, activeEffectData);
+		}
 	}
 
 	async addActiveEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.addActiveEffectOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.addActiveEffectOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.addActiveEffectOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.addActiveEffectOnTokenArr(...inAttributes);
+		}
 	}
 
 	async updateEffectFromIdOnToken(
@@ -794,19 +836,31 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effectUpdated: Effect
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
-        } else {
-            return await this.effectGenericHandler.updateEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateEffectFromIdOnToken(
+				effectId,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		} else {
+			return await this.effectGenericHandler.updateEffectFromIdOnToken(
+				effectId,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		}
 	}
 
 	async updateEffectFromIdOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateEffectFromIdOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.updateEffectFromIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateEffectFromIdOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.updateEffectFromIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	async updateEffectFromNameOnToken(
@@ -816,19 +870,31 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effectUpdated: Effect
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
-        } else {
-            return await this.effectGenericHandler.updateEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateEffectFromNameOnToken(
+				effectName,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		} else {
+			return await this.effectGenericHandler.updateEffectFromNameOnToken(
+				effectName,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		}
 	}
 
 	async updateEffectFromNameOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateEffectFromNameOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.updateEffectFromNameOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateEffectFromNameOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.updateEffectFromNameOnTokenArr(...inAttributes);
+		}
 	}
 
 	async updateActiveEffectFromIdOnToken(
@@ -838,19 +904,31 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effectUpdated: ActiveEffect
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateActiveEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
-        } else {
-            return await this.effectGenericHandler.updateActiveEffectFromIdOnToken(effectId, uuid, origin, overlay, effectUpdated);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateActiveEffectFromIdOnToken(
+				effectId,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		} else {
+			return await this.effectGenericHandler.updateActiveEffectFromIdOnToken(
+				effectId,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		}
 	}
 
 	async updateActiveEffectFromIdOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateActiveEffectFromIdOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.updateActiveEffectFromIdOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateActiveEffectFromIdOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.updateActiveEffectFromIdOnTokenArr(...inAttributes);
+		}
 	}
 
 	async updateActiveEffectFromNameOnToken(
@@ -860,19 +938,31 @@ export default class EffectHandler implements EffectHandlerInterface {
 		overlay: boolean,
 		effectUpdated: ActiveEffect
 	): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateActiveEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
-        } else {
-            return await this.effectGenericHandler.updateActiveEffectFromNameOnToken(effectName, uuid, origin, overlay, effectUpdated);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateActiveEffectFromNameOnToken(
+				effectName,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		} else {
+			return await this.effectGenericHandler.updateActiveEffectFromNameOnToken(
+				effectName,
+				uuid,
+				origin,
+				overlay,
+				effectUpdated
+			);
+		}
 	}
 
 	async updateActiveEffectFromNameOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.updateActiveEffectFromNameOnTokenArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.updateActiveEffectFromNameOnTokenArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.updateActiveEffectFromNameOnTokenArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.updateActiveEffectFromNameOnTokenArr(...inAttributes);
+		}
 	}
 
 	// ========================================================
@@ -892,21 +982,39 @@ export default class EffectHandler implements EffectHandlerInterface {
 		isTemporary?: boolean | undefined,
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler
-                .onManageActiveEffectFromEffectId(effectActions, owner, effectId, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        } else {
-            return await this.effectGenericHandler
-                .onManageActiveEffectFromEffectId(effectActions, owner, effectId, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromEffectId(
+				effectActions,
+				owner,
+				effectId,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromEffectId(
+				effectActions,
+				owner,
+				effectId,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		}
 	}
 
-	async onManageActiveEffectFromEffectIdArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.onManageActiveEffectFromEffectIdArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.onManageActiveEffectFromEffectIdArr(...inAttributes);
-        }
+	async onManageActiveEffectFromEffectIdArr(
+		...inAttributes: any[]
+	): Promise<Item | ActiveEffect | boolean | undefined> {
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromEffectIdArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromEffectIdArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -925,21 +1033,39 @@ export default class EffectHandler implements EffectHandlerInterface {
 		isTemporary?: boolean | undefined,
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler
-                .onManageActiveEffectFromEffect(effectActions, owner, effect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        } else {
-            return await this.effectGenericHandler
-                .onManageActiveEffectFromEffect(effectActions, owner, effect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromEffect(
+				effectActions,
+				owner,
+				effect,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromEffect(
+				effectActions,
+				owner,
+				effect,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		}
 	}
 
-	async onManageActiveEffectFromEffectArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.onManageActiveEffectFromEffectArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.onManageActiveEffectFromEffectArr(...inAttributes);
-        }
+	async onManageActiveEffectFromEffectArr(
+		...inAttributes: any[]
+	): Promise<Item | ActiveEffect | boolean | undefined> {
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromEffectArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromEffectArr(...inAttributes);
+		}
 	}
 
 	/**
@@ -958,22 +1084,38 @@ export default class EffectHandler implements EffectHandlerInterface {
 		isTemporary?: boolean | undefined,
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.onManageActiveEffectFromActiveEffect(
-                effectActions, owner, activeEffect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        } else {
-            return await this.effectGenericHandler.onManageActiveEffectFromActiveEffect(
-                effectActions, owner, activeEffect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromActiveEffect(
+				effectActions,
+				owner,
+				activeEffect,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromActiveEffect(
+				effectActions,
+				owner,
+				activeEffect,
+				alwaysDelete,
+				forceEnabled,
+				forceDisabled,
+				isTemporary,
+				isDisabled
+			);
+		}
 	}
 
 	async onManageActiveEffectFromActiveEffectArr(
 		...inAttributes: any[]
 	): Promise<Item | ActiveEffect | boolean | undefined> {
-        if(this.isPf2e){
-            return await this.effectPf2eHandler.onManageActiveEffectFromActiveEffectArr(...inAttributes);
-        } else {
-            return await this.effectGenericHandler.onManageActiveEffectFromActiveEffectArr(...inAttributes);
-        }
+		if (this.isPf2e) {
+			return await this.effectPf2eHandler.onManageActiveEffectFromActiveEffectArr(...inAttributes);
+		} else {
+			return await this.effectGenericHandler.onManageActiveEffectFromActiveEffectArr(...inAttributes);
+		}
 	}
 }

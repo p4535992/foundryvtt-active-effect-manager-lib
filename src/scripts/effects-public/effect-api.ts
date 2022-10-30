@@ -90,11 +90,7 @@ export interface ActiveEffectManagerLibApi {
 	// Effect Actor Management
 	// ======================
 
-	addEffectOnActor(
-		actorId: string,
-		effectName: string,
-		effect: Effect
-	): Promise<ActiveEffect | undefined>;
+	addEffectOnActor(actorId: string, effectName: string, effect: Effect): Promise<ActiveEffect | undefined>;
 
 	findEffectByNameOnActor(actorId: string, effectName: string): Promise<ActiveEffect | undefined>;
 

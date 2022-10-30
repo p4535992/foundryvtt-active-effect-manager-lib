@@ -15,7 +15,7 @@ export class EffectOwnedItem extends ActiveEffect {
 		log(`Attempting instantiation of Owned Item Effect ${effect}`);
 
 		// manually set the parent
-        //@ts-ignore
+		//@ts-ignore
 		super(effect, { parent: owner });
 
 		log(`Instantiated Owned Item Effect ${this}`);
@@ -92,7 +92,7 @@ export class EffectOwnedItem extends ActiveEffect {
 	/**
 	 * Fake Update this Effect Document by instead updating the parent embedded Item document's array of effects.
 	 */
-    //@ts-ignore
+	//@ts-ignore
 	async update(data: ActiveEffect, context: DocumentModificationOptions = {}) {
 		log(`Attempting update on Owned Item Effect ${data} ${context}`);
 

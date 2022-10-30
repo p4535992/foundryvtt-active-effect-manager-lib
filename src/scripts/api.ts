@@ -567,10 +567,7 @@ const API = {
 		return result;
 	},
 
-	async addActiveEffectOnActor(
-		actorId: string,
-		activeEffectData: ActiveEffect
-	): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnActor(actorId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
 		const result = (<EffectInterface>this.effectInterface).addActiveEffectOnActor(
 			<string>actorId,
 			activeEffectData
@@ -681,10 +678,7 @@ const API = {
 		return result;
 	},
 
-	async addActiveEffectOnToken(
-		tokenId: string,
-		activeEffectData: ActiveEffect
-	): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnToken(tokenId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).addActiveEffectOnToken(
 			<string>tokenId,
 			activeEffectData

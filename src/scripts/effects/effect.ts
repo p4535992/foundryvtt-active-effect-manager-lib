@@ -290,7 +290,7 @@ export default class Effect {
 		}
 		const result =
 			obj && // null and undefined check
-			(Object.keys(obj).length === 0); // || Object.getPrototypeOf(obj) === Object.prototype);
+			Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
 		return result;
 	}
 }

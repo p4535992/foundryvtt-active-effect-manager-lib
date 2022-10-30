@@ -41,7 +41,6 @@ export const setupHooks = (): void => {
 	window.activeEffectManager.API.effectInterface.initialize();
 
 	if (game.settings.get(CONSTANTS.MODULE_NAME, "enableStatusEffectNames")) {
-		
 		//@ts-ignore
 		window.activeEffectManager.API.statusEffects = new StatusEffects();
 		//@ts-ignore
@@ -121,7 +120,6 @@ export const setupHooks = (): void => {
 
 	//@ts-ignore
 	setApi(window.activeEffectManager.API);
-
 };
 
 export const readyHooks = (): void => {

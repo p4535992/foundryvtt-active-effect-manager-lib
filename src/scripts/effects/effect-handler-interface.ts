@@ -2,8 +2,7 @@ import type Effect from "./effect";
 import type { EffectActions } from "./effect-models";
 
 export interface EffectHandlerInterface {
-
-    /**
+	/**
 	 * Toggles an effect on or off by name on an actor by UUID
 	 *
 	 * @param {string} effectName - name of the effect to toggle
@@ -16,7 +15,7 @@ export interface EffectHandlerInterface {
 		effectName: string,
 		overlay: boolean,
 		uuids: string[],
-		metadata?:any,
+		metadata?: any,
 		effectData?: Effect
 	): Promise<boolean | undefined>;
 
@@ -85,7 +84,7 @@ export interface EffectHandlerInterface {
 		effectData: Effect,
 		uuid: string,
 		origin: string,
-		overlay?:boolean,
+		overlay?: boolean,
 		metadata?: any
 	): Promise<ActiveEffect | undefined>;
 
@@ -129,10 +128,7 @@ export interface EffectHandlerInterface {
 	 * @param {string} effectName - the effect name to search for
 	 * @returns {Effect} the found effect
 	 */
-	findEffectByNameOnActor(
-		effectName: string | undefined | null,
-		uuid: string
-	): Promise<ActiveEffect | undefined>;
+	findEffectByNameOnActor(effectName: string | undefined | null, uuid: string): Promise<ActiveEffect | undefined>;
 
 	/**
 	 * Searches through the list of available effects and returns one matching the
@@ -170,7 +166,7 @@ export interface EffectHandlerInterface {
 	 * @param {string} includeDisabled - if true include the applied disabled effect
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
-	hasEffectAppliedOnActor(effectName: string, uuid: string, includeDisabled?:boolean): boolean;
+	hasEffectAppliedOnActor(effectName: string, uuid: string, includeDisabled?: boolean): boolean;
 
 	/**
 	 * Checks to see if any of the current active effects applied to the actor
@@ -191,7 +187,7 @@ export interface EffectHandlerInterface {
 	 * @param {string} includeDisabled - if true include the applied disabled effect
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
-	hasEffectAppliedFromIdOnActor(effectId: string, uuid: string, includeDisabled?:boolean): boolean;
+	hasEffectAppliedFromIdOnActor(effectId: string, uuid: string, includeDisabled?: boolean): boolean;
 
 	/**
 	 * Checks to see if any of the current active effects applied to the actor
@@ -341,7 +337,7 @@ export interface EffectHandlerInterface {
 	 * @param {string} includeDisabled - if true include the applied disabled effect
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
-	hasEffectAppliedOnToken(effectName: string, uuid: string, includeDisabled?:boolean): boolean;
+	hasEffectAppliedOnToken(effectName: string, uuid: string, includeDisabled?: boolean): boolean;
 
 	/**
 	 * Checks to see if any of the current active effects applied to the token
@@ -363,7 +359,7 @@ export interface EffectHandlerInterface {
 	 * @param {string} includeDisabled - if true include the applied disabled effect
 	 * @returns {boolean} true if the effect is applied, false otherwise
 	 */
-	hasEffectAppliedFromIdOnToken(effectId: string, uuid: string, includeDisabled?:boolean): boolean;
+	hasEffectAppliedFromIdOnToken(effectId: string, uuid: string, includeDisabled?: boolean): boolean;
 
 	/**
 	 * Checks to see if any of the current active effects applied to the token
@@ -551,9 +547,7 @@ export interface EffectHandlerInterface {
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined>;
 
-	onManageActiveEffectFromEffectIdArr(
-		...inAttributes: any[]
-	): Promise<Item | ActiveEffect | boolean | undefined>;
+	onManageActiveEffectFromEffectIdArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined>;
 
 	/**
 	 * Manage Active Effect instances through the Actor Sheet via effect control buttons.
@@ -572,9 +566,7 @@ export interface EffectHandlerInterface {
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined>;
 
-	onManageActiveEffectFromEffectArr(
-		...inAttributes: any[]
-	): Promise<Item | ActiveEffect | boolean | undefined>;
+	onManageActiveEffectFromEffectArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined>;
 
 	/**
 	 * Manage Active Effect instances through the Actor Sheet via effect control buttons.
@@ -593,9 +585,5 @@ export interface EffectHandlerInterface {
 		isDisabled?: boolean | undefined
 	): Promise<Item | ActiveEffect | boolean | undefined>;
 
-	onManageActiveEffectFromActiveEffectArr(
-		...inAttributes: any[]
-	): Promise<Item | ActiveEffect | boolean | undefined>;
-
-
+	onManageActiveEffectFromActiveEffectArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined>;
 }

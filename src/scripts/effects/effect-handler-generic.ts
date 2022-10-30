@@ -804,15 +804,15 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	async addActiveEffectOnActor(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
 		if (activeEffectData) {
 			const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
-            //@ts-ignore
+			//@ts-ignore
 			if (!activeEffectData.origin) {
-                //@ts-ignore
+				//@ts-ignore
 				activeEffectData.origin = `Actor.${actor.id}`;
 			}
 			const activeEffectsAdded = <ActiveEffect[]>(
 				await actor.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
-            //@ts-ignore
+			//@ts-ignore
 			logM(this.moduleName, `Added effect ${activeEffectData.label} to ${actor.name} - ${actor.id}`);
 			return activeEffectsAdded[0];
 		} else {
@@ -1497,18 +1497,18 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		if (activeEffectData) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
-            //@ts-ignore
+			//@ts-ignore
 			if (!activeEffectData.origin) {
 				const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
 				// const origin = `Scene.${sceneId}.Token.${token.id}`
 				const origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
-                //@ts-ignore
+				//@ts-ignore
 				activeEffectData.origin = origin;
 			}
 			const activeEffetsAdded = <ActiveEffect[]>(
 				await token.actor?.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
-            //@ts-ignore
+			//@ts-ignore
 			logM(this.moduleName, `Added effect ${activeEffectData.label} to ${token.name} - ${token.id}`);
 			debugM(
 				this.moduleName,
