@@ -50,13 +50,22 @@
 			"lang": "en",
 			"name": "English",
 			"path": "languages/en.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "languages/fr.json"
 		}
 	],
 	"packs": [],
 	"systems": [],
 	"scripts": [],
-	"esmodules": ["active-effect-manager-lib.js"],
-	"styles": ["styles/active-effect-manager-lib.css"],
+	"esmodules": [
+		"active-effect-manager-lib.js"
+	],
+	"styles": [
+		"styles/active-effect-manager-lib.css"
+	],
 	"compatibility": {
 		"minimum": 10,
 		"verified": 10,
