@@ -2,7 +2,7 @@
 	"id": "active-effect-manager-lib",
 	"title": "Library: Active effect manager",
 	"description": "Active effect manager library for leverage operation on active effects",
-	"version": "0.1.15",
+	"version": "0.1.16",
 	"library": "true",
 	"authors": [
 		{
@@ -60,12 +60,8 @@
 	"packs": [],
 	"systems": [],
 	"scripts": [],
-	"esmodules": [
-		"active-effect-manager-lib.js"
-	],
-	"styles": [
-		"styles/active-effect-manager-lib.css"
-	],
+	"esmodules": ["active-effect-manager-lib.js"],
+	"styles": ["styles/active-effect-manager-lib.css"],
 	"compatibility": {
 		"minimum": 10,
 		"verified": 10,
@@ -75,8 +71,8 @@
 	"url": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib",
 	"manifest": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.json",
 	"download": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/releases/latest/download/module.zip",
-	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.15/README.md",
-	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.15/CHANGELOG.md",
+	"readme": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.16/README.md",
+	"changelog": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/blob/v0.1.16/CHANGELOG.md",
 	"bugs": "https://github.com/p4535992/foundryvtt-active-effect-manager-lib/issues",
 	"allowBugReporter": true,
 	"relationships": {
