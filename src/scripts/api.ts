@@ -1,7 +1,7 @@
 import CONSTANTS from "./constants";
 import EffectInterface from "./effects/effect-interface";
 import { error } from "./lib/lib";
-import type Effect from "./effects/effect";
+import type Effect from "./effects-public/effect";
 import type { EffectActions } from "./effects/effect-models";
 import StatusEffectsLib from "./effects/status-effects";
 import { EffectSupport } from "./effects/effect-support";

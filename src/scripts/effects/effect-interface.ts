@@ -1,6 +1,6 @@
 import FoundryHelpers from "./foundry-helpers";
 import { registerSocket } from "../socket";
-import type Effect from "./effect";
+import type Effect from "../effects-public/effect";
 import EffectHandler from "./effect-handler";
 import { errorM, isGMConnected } from "./effect-utility";
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";

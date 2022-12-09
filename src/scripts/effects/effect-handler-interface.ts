@@ -1,4 +1,4 @@
-import type Effect from "./effect";
+import type Effect from "../effects-public/effect";
 import type { EffectActions } from "./effect-models";
 
 export interface EffectHandlerInterface {
