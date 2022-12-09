@@ -2,10 +2,6 @@ import { debugM, errorM, i18n, isStringEquals, logM, warnM } from "./effect-util
 import FoundryHelpers from "./foundry-helpers";
 import type Effect from "./effect";
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
-import type {
-	ActiveEffectData,
-	ActorData,
-} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import { EffectSupport } from "./effect-support";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { EffectActions } from "./effect-models";

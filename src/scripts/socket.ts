@@ -19,8 +19,8 @@ export function registerSocket() {
 
 	// Basic
 
-	// activeEffectManagerSocket.register('addActorDataChanges', (...args) => API._actorUpdater.addActorDataChanges(...args));
-	// activeEffectManagerSocket.register('removeActorDataChanges', (...args) => API._actorUpdater.removeActorDataChanges(...args));
+	// activeEffectManagerSocket.register('addActorChanges', (...args) => API._actorUpdater.addActorChanges(...args));
+	// activeEffectManagerSocket.register('removeActorChanges', (...args) => API._actorUpdater.removeActorChanges(...args));
 	activeEffectManagerSocket.register("toggleEffect", (...args) => API.toggleEffectArr(...args));
 	activeEffectManagerSocket.register("hasEffectApplied", (...args) => API.hasEffectAppliedArr(...args));
 	activeEffectManagerSocket.register("addEffect", (...args) => API.addEffectArr(...args));

@@ -1,4 +1,3 @@
-import type { ActiveEffectData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import CONSTANTS from "../constants";
 import { log } from "../lib/lib";
 
@@ -83,7 +82,7 @@ export class DropEffectsOnItems {
 		// Try to extract the data
 		let dropData;
 		try {
-			dropData = <ActiveEffectData>JSON.parse(event.dataTransfer.getData("text/plain"));
+			dropData = <ActiveEffect>JSON.parse(event.dataTransfer.getData("text/plain"));
 
 			log("DragDrop drop", {
 				event,

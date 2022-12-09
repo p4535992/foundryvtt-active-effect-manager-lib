@@ -1,4 +1,3 @@
-import type { ActiveEffectDataProperties } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/activeEffectData";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import { i18n } from "../lib/lib";
@@ -255,7 +254,7 @@ export class EffectSupport {
 	}
 
 	static convertActiveEffectDataPropertiesToActiveEffect(
-		p: PropertiesToSource<ActiveEffectDataProperties>,
+		p: PropertiesToSource<any>,
 		isPassive: boolean
 	): ActiveEffect {
 		let isTemporary = false;

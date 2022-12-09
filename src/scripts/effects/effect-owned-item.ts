@@ -1,5 +1,4 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
-import type { ActiveEffectData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs";
 import CONSTANTS from "../constants";
 import { error, i18n, info, log } from "../lib/lib";
 
@@ -25,26 +24,29 @@ export class EffectOwnedItem extends ActiveEffect {
 	 * Fake Create this effect by instead updating the parent embedded Item document's array of effects.
 	 */
 	async create(context: DocumentModificationOptions) {
-		const dataToCreate = <ActiveEffectData>this.toJSON();
+		const dataToCreate = <ActiveEffect>this.toJSON();
 
 		log(`Attempting create on Owned Item Effect ${dataToCreate} ${context}`);
 
 		try {
+			//@ts-ignore
 			await this._preCreate(dataToCreate, context, <User>game.user); // game.userId
 		} catch (error: any) {
 			error(error);
 		}
-
+		//@ts-ignore
 		log(`Updating Parent ${dataToCreate.label}`);
 
 		this.parent?.update(
 			{
+				//@ts-ignore
 				effects: [dataToCreate],
 			},
 			context
 		);
 
 		try {
+			//@ts-ignore
 			await this._onCreate(dataToCreate, { ...context, renderSheet: false }, <string>game.userId);
 		} catch (e) {
 			error(e);
@@ -104,9 +106,9 @@ export class EffectOwnedItem extends ActiveEffect {
 			);
 			return;
 		}
-
-		const newEffects = <ActiveEffectData[]>embeddedItem.effects.toObject();
-
+		//@ts-ignore
+		const newEffects = <ActiveEffect[]>embeddedItem.effects.toObject();
+		//@ts-ignore
 		const originalEffectIndex = <number>newEffects.findIndex((effect) => effect._id === this.id);
 
 		// means somehow we are editing an effect which does not exist on the item
@@ -116,7 +118,7 @@ export class EffectOwnedItem extends ActiveEffect {
 
 		// merge updates directly into the array of objects
 		//@ts-ignore
-		foundry.utils.mergeObject(<ActiveEffectData>newEffects[originalEffectIndex], data, <any>context);
+		foundry.utils.mergeObject(newEffects[originalEffectIndex], data, <any>context);
 		//@ts-ignore
 		const diff = <any>foundry.utils.diffObject(this._source, foundry.utils.expandObject(data));
 
@@ -130,6 +132,7 @@ export class EffectOwnedItem extends ActiveEffect {
 
 		try {
 			await embeddedItem.update({
+				//@ts-ignore
 				effects: newEffects,
 			});
 		} catch (e) {

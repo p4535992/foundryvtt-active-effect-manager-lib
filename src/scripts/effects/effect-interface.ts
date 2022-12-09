@@ -3,10 +3,6 @@ import { registerSocket } from "../socket";
 import type Effect from "./effect";
 import EffectHandler from "./effect-handler";
 import { errorM, isGMConnected } from "./effect-utility";
-import type {
-	ActiveEffectData,
-	ActorData,
-} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
 import type { EffectActions } from "./effect-models";
 
@@ -540,7 +536,7 @@ export default class EffectInterface {
 
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const effect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//@ts-ignore

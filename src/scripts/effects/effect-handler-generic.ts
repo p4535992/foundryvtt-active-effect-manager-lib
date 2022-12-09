@@ -2,10 +2,6 @@ import { debugM, errorM, i18n, isStringEquals, logM, warnM } from "./effect-util
 import FoundryHelpers from "./foundry-helpers";
 import Effect from "./effect";
 import type EmbeddedCollection from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/embedded-collection.mjs";
-import type {
-	ActiveEffectData,
-	ActorData,
-} from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/module.mjs";
 import { EffectSupport } from "./effect-support";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { EffectActions } from "./effect-models";
@@ -93,7 +89,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		//@ts-ignore
 		const isApplied = actorEffects?.some(
 			// (activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect?.label == effectName,
@@ -140,7 +136,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	async removeEffect(effectName: string, uuid: string): Promise<ActiveEffect | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		//@ts-ignore
 		const effectToRemove = actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && activeEffect?.label == effectName,
@@ -272,7 +268,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 
 		let effect: Effect | undefined;
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
 			const effectNameToSet = effectEntity.label;
@@ -334,7 +330,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			return effect;
 		}
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
 			const effectNameToSet = effectEntity.label;
@@ -366,7 +362,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			return effect;
 		}
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			const effectIdToSet = effectEntity.id;
 			if (!effectIdToSet) {
@@ -425,7 +421,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -475,7 +471,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	hasEffectAppliedFromIdOnActor(effectId: string, uuid: string, includeDisabled = false): boolean {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				if (<string>activeEffect?.id === effectId) {
@@ -525,7 +521,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
@@ -574,7 +570,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		if (effectId) {
 			//@ts-ignore
-			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+			const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 			//actor.deleteEmbeddedDocuments('ActiveEffect', [<string>effectToRemoveId]);
 			// Why i need this ??? for avoid the double AE
 			const effectToRemove = <ActiveEffect>(
@@ -645,10 +641,6 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			if (!origin) {
 				origin = `Actor.${actor.id}`;
 			}
-			// const activeEffectData = effect.convertToActiveEffectData({
-			//   origin,
-			//   overlay,
-			// });
 			effect.origin = effect.origin ? effect.origin : origin;
 			effect.overlay =
 				String(effect.overlay) === "false" || String(effect.overlay) === "true"
@@ -706,7 +698,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	): Promise<boolean | undefined> {
 		const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>actor?.effects || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		const activeEffect = <ActiveEffect>actorEffects.find((entity: ActiveEffect) => {
 			return <string>entity.id === effectId;
 		});
@@ -845,7 +837,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		let effect: ActiveEffect | undefined = undefined;
 		if (!effectName) {
 			return effect;
@@ -877,7 +869,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		let effect: ActiveEffect | undefined = undefined;
 		if (!effectId) {
 			return effect;
@@ -941,7 +933,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -991,7 +983,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	hasEffectAppliedFromIdOnToken(effectId: string, uuid: string, includeDisabled = false): boolean {
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents ?? [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents ?? [];
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
@@ -1042,7 +1034,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		const token = this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
@@ -1096,7 +1088,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			const actorEffects =
 				//@ts-ignore
-				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+				<EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 			const effectToRemove = <ActiveEffect>actorEffects.find(
 				//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 				//@ts-ignore
@@ -1145,7 +1137,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			const effectIdsTmp: string[] = [];
 			const actorEffects =
 				//@ts-ignore
-				<EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+				<EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 			for (const effectIdTmp of effectIds) {
 				const effectToRemove = <
 					ActiveEffect //@ts-ignore
@@ -1154,7 +1146,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 					effectIdsTmp.push(effectIdTmp);
 				}
 			}
-			// const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+			// const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 			// const effectToRemove = <ActiveEffect>actorEffects.find(
 			//   //(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//   (activeEffect) => <string>activeEffect?._id == effectId,
@@ -1217,10 +1209,6 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				// origin = `Scene.${sceneId}.Token.${token.id}`;
 				origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
 			}
-			// const activeEffectData = effect.convertToActiveEffectData({
-			//   origin,
-			//   overlay,
-			// });
 			effect.origin = effect.origin ? effect.origin : origin;
 			effect.overlay =
 				String(effect.overlay) === "false" || String(effect.overlay) === "true"
@@ -1282,7 +1270,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//@ts-ignore
@@ -1384,7 +1372,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <ActiveEffect>actorEffects.find(
 			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			(activeEffect) => {
@@ -1541,7 +1529,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
@@ -1551,13 +1539,8 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		if (!origin) {
 			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			// origin = `Scene.${sceneId}.Token.${token.id}`;
 			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
 		}
-		// const activeEffectDataUpdated = effectUpdated.convertToActiveEffectData({
-		//   origin,
-		//   overlay,
-		// });
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
@@ -1593,7 +1576,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
@@ -1603,13 +1586,8 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		if (!origin) {
 			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			// origin = `Scene.${sceneId}.Token.${token.id}`;
 			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
 		}
-		// const activeEffectDataUpdated = effectUpdated.convertToActiveEffectData({
-		//   origin,
-		//   overlay,
-		// });
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
 		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
@@ -1645,7 +1623,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
@@ -1676,13 +1654,9 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 
 		if (!origin) {
 			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			// origin = `Scene.${sceneId}.Token.${token.id}`;
 			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
 		}
 		const activeEffectDataUpdated = effectUpdated;
-		// if(origin) activeEffectDataUpdated.origin = origin;
-		// if(overlay) activeEffectDataUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
-		// activeEffectDataUpdated._id = activeEffect.id;
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
@@ -1715,7 +1689,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		);
 		const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 		//@ts-ignore
-		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, ActorData>>token.actor?.effects?.contents || [];
+		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
@@ -1750,9 +1724,6 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
 		}
 		const activeEffectDataUpdated = effectUpdated;
-		// if(origin) activeEffectDataUpdated.origin = origin;
-		// if(overlay) activeEffectDataUpdated.overlay = (String(overlay) === "false" || String(overlay) === "true") ? overlay : false;
-		// activeEffectDataUpdated._id = activeEffect.id;
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
