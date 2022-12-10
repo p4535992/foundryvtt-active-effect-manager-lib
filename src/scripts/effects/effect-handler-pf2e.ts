@@ -1739,7 +1739,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
 		>actorEffects.find((activeEffect) => <string>activeEffect?._id === effectId);
-		const response = this.onManageActiveEffectFromActiveEffect(
+		const response = await this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
 			activeEffect,
@@ -1801,7 +1801,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
         isDisabled=${isDisabled}]`
 		);
 		const activeEffect = effect.name ? owner.effects.getName(i18n(effect.name)) : null;
-		const response = this.onManageActiveEffectFromActiveEffect(
+		const response = await this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
 			activeEffect,
@@ -1988,7 +1988,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 		}
 		const [effectActions, owner, activeEffect, alwaysDelete, forceEnabled, forceDisabled, isTemporary, isDisabled] =
 			inAttributes;
-		return this.onManageActiveEffectFromActiveEffect(
+		return await this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
 			activeEffect,

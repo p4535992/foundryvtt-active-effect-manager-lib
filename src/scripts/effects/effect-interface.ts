@@ -867,7 +867,7 @@ export default class EffectInterface {
 		//     isDisabled,
 		//   );
 		// } else {
-		return this._effectHandler.onManageActiveEffectFromActiveEffect(
+		return await this._effectHandler.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
 			activeEffect,

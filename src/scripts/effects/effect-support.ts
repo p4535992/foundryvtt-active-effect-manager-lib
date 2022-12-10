@@ -599,6 +599,14 @@ export class EffectSupport {
 				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}}`,
 			});
 		}
+
+		const isTemporary = true;
+		const isPassive = !isTemporary;
+		const currentDae = {};
+		const overlay = false;
+		const statusId = "Convenient Effect: " + effectName;
+		const description = "Convenient Effect: " + effectName;
+		
 		const efffectAtlToApply = new Effect({
 			// // customId: id || <string>token.actor?.id,
 			// customId: undefined, //<string>token.actor?.id,
@@ -612,7 +620,7 @@ export class EffectSupport {
 
 			customId: undefined, //<string>token.actor?.id,
 			name: <string>effectName,
-			description: ``,
+			description: description,
 			icon: <string>effectIcon,
 			tint: "",
 			seconds: duration !== null ? <number>duration * 60 : undefined, // minutes to seconds
@@ -621,9 +629,22 @@ export class EffectSupport {
 			isDynamic: false,
 			isViewable: true,
 			isDisabled: false,
-			isTemporary: false,
+			isTemporary: isTemporary,
 			isSuppressed: false,
-			flags: {},
+			flags: foundry.utils.mergeObject({}, {
+				core: {
+					statusId: isPassive ? undefined : statusId,
+					overlay: overlay ? overlay : false
+				},
+				isConvenient: true,
+				isCustomConvenient: true,
+				convenientDescription: i18n(description) ?? "Applies custom effects",
+				dae: EffectSupport._isEmptyObject(currentDae)
+					? isPassive
+						? { stackable: false, specialDuration: [], transfer: true }
+						: {}
+					: currentDae,
+			}),
 			changes: [],
 			atlChanges: atlChanges,
 			tokenMagicChanges: [],
