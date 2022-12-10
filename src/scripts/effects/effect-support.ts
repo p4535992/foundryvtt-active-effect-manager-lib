@@ -600,14 +600,38 @@ export class EffectSupport {
 			});
 		}
 		const efffectAtlToApply = new Effect({
-			// customId: id || <string>token.actor?.id,
+			// // customId: id || <string>token.actor?.id,
+			// customId: undefined, //<string>token.actor?.id,
+			// name: <string>effectName,
+			// icon: <string>effectIcon,
+			// description: ``,
+			// // seconds: Constants.SECONDS.IN_EIGHT_HOURS,
+			// transfer: true,
+			// seconds: duration !== null ? <number>duration * 60 : undefined, // minutes to seconds
+			// atlChanges: atlChanges,
+
 			customId: undefined, //<string>token.actor?.id,
 			name: <string>effectName,
 			description: ``,
-			// seconds: Constants.SECONDS.IN_EIGHT_HOURS,
-			transfer: true,
+			icon: <string>effectIcon,
+			tint: "",
 			seconds: duration !== null ? <number>duration * 60 : undefined, // minutes to seconds
+			rounds: NaN,
+			turns: NaN,
+			isDynamic: false,
+			isViewable: true,
+			isDisabled: false,
+			isTemporary: false,
+			isSuppressed: false,
+			flags: {},
+			changes: [],
 			atlChanges: atlChanges,
+			tokenMagicChanges: [],
+			nestedEffects: [],
+			transfer: true,
+			atcvChanges: [],
+			dae: {},
+			overlay: false,
 		});
 		return efffectAtlToApply;
 	}
