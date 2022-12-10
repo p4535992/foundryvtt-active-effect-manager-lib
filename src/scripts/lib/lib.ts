@@ -441,7 +441,7 @@ export async function drawShyEffects() {
 				continue;
 			}
 			const tint = f.tint ? foundry.utils.colorStringToHex(f.tint) : null;
-			if (f.getFlag("core", "overlay")) {
+			if (f.flags.core?.overlay) {
 				overlay = { src: f.icon, tint: tint };
 				continue;
 			}

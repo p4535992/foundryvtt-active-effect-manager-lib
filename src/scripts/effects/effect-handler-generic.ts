@@ -719,7 +719,6 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		// nuke it if it has a statusId
 		// brittle assumption
 		// provides an option to always do this
-		// if (activeEffect.getFlag('core', 'statusId') || alwaysDelete) {
 		if (String(alwaysDelete) === "true") {
 			const deleted = await activeEffect.delete();
 			return !!deleted;
@@ -1943,7 +1942,8 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				if (!activeEffect) {
 					warnM(this.moduleName, `Can't retrieve effect to toogle`);
 				}
-				if (activeEffect?.getFlag("core", "statusId") || String(alwaysDelete) === "true") {
+				//@ts-ignore
+				if (activeEffect.flags.core?.statusId || String(alwaysDelete) === "true") {
 					const deleted = await activeEffect?.delete();
 					return !!deleted;
 				}

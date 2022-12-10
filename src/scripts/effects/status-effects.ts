@@ -200,8 +200,8 @@ export default class StatusEffectsLib {
 						// const effect = ( img.dataset.statusId && token.actor ) ?
 						// 	CONFIG.statusEffects.find(e => e.id === img.dataset.statusId) :
 						// 	img.getAttribute("src");
-
-						if (activeEffectFound.getFlag("core", "statusId")?.startsWith("Convenient Effect:")) {
+						//@ts-ignore
+						if (activeEffectFound.flags.core?.statusId?.startsWith("Convenient Effect:")) {
 							//@ts-ignore
 							statusEffectInternal.id = "Convenient Effect: " + statusEffectInternal.label;
 						} else {
@@ -259,11 +259,13 @@ export default class StatusEffectsLib {
 		const actor = token.actor || null;
 		const statuses = actor
 			? actor.effects.reduce((obj, e) => {
-					const id = e.getFlag("core", "statusId");
+					//@ts-ignore
+					const id = e.flags.core?.statusId;
 					if (id) {
 						obj[id] = {
 							id: id,
-							overlay: !!e.getFlag("core", "overlay"),
+							//@ts-ignore
+							overlay: !!e.flags.core?.overlay,
 						};
 					}
 					return obj;
@@ -506,11 +508,11 @@ export default class StatusEffectsLib {
 		const actor = token.actor || null;
 		const statuses = actor
 			? actor.effects.reduce((obj, e) => {
-					const id = e.getFlag("core", "statusId");
+					const id = e.flags.core?.statusId;
 					if (id) {
 						obj[id] = {
 							id: id,
-							overlay: !!e.getFlag("core", "overlay"),
+							overlay: !!e.flags.core?.overlay,
 						};
 					}
 					return obj;

@@ -224,6 +224,12 @@ export class EffectSupport {
 		const isSuppressed = activeEffect.isSuppressed || false;
 		const isTemporary = activeEffect.isTemporary || false;
 		const isPassive = !isTemporary;
+		//@ts-ignore
+		const currentDae = EffectSupport._isEmptyObject(activeEffect.dae) ? activeEffect.flags.dae : activeEffect.dae;
+		//@ts-ignore
+		const overlay = activeEffect.overlay;
+		//@ts-ignore
+		const statusId = isPassive ? undefined : activeEffect._id;
 
 		return new Effect({
 			customId: <string>activeEffect.id,
@@ -242,7 +248,26 @@ export class EffectSupport {
 			//@ts-ignore
 			turns: !is_real_number(activeEffect.duration.turns) ? undefined : activeEffect.duration.turns,
 			//@ts-ignore
-			flags: activeEffect.flags,
+			// flags: activeEffect.flags,
+			flags: foundry.utils.mergeObject(
+				{
+					core: {
+						statusId: isPassive ? undefined : statusId,
+						overlay: overlay ? overlay : false,
+					},
+					isConvenient: true,
+					isCustomConvenient: true,
+					//@ts-ignore
+					convenientDescription: i18n(activeEffect.flags.convenientDescription) ?? "Applies custom effects",
+					dae: EffectSupport._isEmptyObject(currentDae)
+						? isPassive
+							? { stackable: false, specialDuration: [], transfer: true }
+							: {}
+						: currentDae,
+				},
+				//@ts-ignore
+				activeEffect.flags
+			),
 			changes,
 			atlChanges,
 			tokenMagicChanges,
@@ -323,7 +348,10 @@ export class EffectSupport {
 			effect.isTemporary = true;
 		}
 		const isPassive = !effect.isTemporary;
-		const myid = effect._id ? effect._id : effect.flags?.core?.statusId ? effect.flags.core.statusId : undefined;
+		const myid = 
+			effect.customId ? effect.customId :
+			effect._id ? effect._id : 
+			effect.flags?.core?.statusId ? effect.flags.core.statusId : undefined;
 		const myoverlay = effect.overlay
 			? effect.overlay
 			: effect.flags?.core?.overlay
@@ -599,14 +627,14 @@ export class EffectSupport {
 				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}}`,
 			});
 		}
-
+		const effectNameI18 = i18n(<string>effectName);
 		const isTemporary = true;
 		const isPassive = !isTemporary;
 		const currentDae = {};
 		const overlay = false;
-		const statusId = "Convenient Effect: " + effectName;
-		const description = "Convenient Effect: " + effectName;
-		
+		const statusId = "Convenient Effect: " + effectNameI18;
+		const description = "Convenient Effect: " + effectNameI18;
+
 		const efffectAtlToApply = new Effect({
 			// // customId: id || <string>token.actor?.id,
 			// customId: undefined, //<string>token.actor?.id,
@@ -619,7 +647,7 @@ export class EffectSupport {
 			// atlChanges: atlChanges,
 
 			customId: undefined, //<string>token.actor?.id,
-			name: <string>effectName,
+			name: <string>effectNameI18,
 			description: description,
 			icon: <string>effectIcon,
 			tint: "",
@@ -631,20 +659,23 @@ export class EffectSupport {
 			isDisabled: false,
 			isTemporary: isTemporary,
 			isSuppressed: false,
-			flags: foundry.utils.mergeObject({}, {
-				core: {
-					statusId: isPassive ? undefined : statusId,
-					overlay: overlay ? overlay : false
-				},
-				isConvenient: true,
-				isCustomConvenient: true,
-				convenientDescription: i18n(description) ?? "Applies custom effects",
-				dae: EffectSupport._isEmptyObject(currentDae)
-					? isPassive
-						? { stackable: false, specialDuration: [], transfer: true }
-						: {}
-					: currentDae,
-			}),
+			flags: foundry.utils.mergeObject(
+				{},
+				{
+					core: {
+						statusId: isPassive ? undefined : statusId,
+						overlay: overlay ? overlay : false,
+					},
+					isConvenient: true,
+					isCustomConvenient: true,
+					convenientDescription: i18n(description) ?? "Applies custom effects",
+					dae: EffectSupport._isEmptyObject(currentDae)
+						? isPassive
+							? { stackable: false, specialDuration: [], transfer: true }
+							: {}
+						: currentDae,
+				}
+			),
 			changes: [],
 			atlChanges: atlChanges,
 			tokenMagicChanges: [],
