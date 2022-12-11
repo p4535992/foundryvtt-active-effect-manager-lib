@@ -67,6 +67,9 @@ export function registerSocket() {
 	);
 	activeEffectManagerSocket.register("findEffectByNameOnToken", (...args) => API.findEffectByNameOnTokenArr(...args));
 	activeEffectManagerSocket.register("findEffectByIdOnToken", (...args) => API.findEffectByIdOnTokenArr(...args));
+	activeEffectManagerSocket.register("addActiveEffectOnToken", (...args) =>
+		API.addActiveEffectOnTokenArr(...args)
+	);
 	activeEffectManagerSocket.register("updateEffectFromIdOnToken", (...args) =>
 		API.updateEffectFromIdOnTokenArr(...args)
 	);

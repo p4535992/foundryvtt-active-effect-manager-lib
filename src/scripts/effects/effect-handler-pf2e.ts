@@ -1947,7 +1947,8 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					warnM(this.moduleName, `Can't retrieve effect to toogle`);
 				}
 				//@ts-ignore
-				if (activeEffect.flags.core?.statusId || String(alwaysDelete) === "true") {
+				// if (activeEffect.flags.core?.statusId || String(alwaysDelete) === "true") {
+				if (String(alwaysDelete) === "true") {
 					const deleted = await activeEffect?.delete();
 					return !!deleted;
 				}
