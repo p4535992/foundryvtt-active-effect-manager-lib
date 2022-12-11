@@ -14,7 +14,7 @@
 
 ### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
 
-# [BETA] FoundryVTT Library: Active Effect Manager
+# FoundryVTT Library: Active Effect Manager
 
 A library for leverage and synchronize the creation/update/delete of Active Effects .
 
