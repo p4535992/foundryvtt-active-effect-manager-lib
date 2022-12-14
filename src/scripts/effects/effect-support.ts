@@ -348,9 +348,9 @@ export class EffectSupport {
 			effect.isTemporary = true;
 		}
 		const isPassive = !effect.isTemporary;
-		const myid = 
+		const myid =
 			effect.customId ? effect.customId :
-			effect._id ? effect._id : 
+			effect._id ? effect._id :
 			effect.flags?.core?.statusId ? effect.flags.core.statusId : undefined;
 		const myoverlay = effect.overlay
 			? effect.overlay
@@ -457,61 +457,54 @@ export class EffectSupport {
 		return origin;
 	}
 
-	static _createAtlEffectKey(key) {
-		let result = key;
-		//@ts-ignore
-		const version = game.version.charAt(0);
+    static _createAtlEffectKey(key) {
+        let result = key;
+        //@ts-ignore
+        const version = game.release.generation;
 
-		if (version === "9") {
-			switch (key) {
-				case "ATL.preset":
-					break;
-				case "ATL.brightSight":
-					break;
-				case "ATL.dimSight":
-					break;
-				case "ATL.height":
-					break;
-				case "ATl.img":
-					break;
-				case "ATL.mirrorX":
-					break;
-				case "ATL.mirrorY":
-					break;
-				case "ATL.rotation":
-					break;
-				case "ATL.scale":
-					break;
-				case "ATL.width":
-					break;
-				case "ATL.dimLight":
-					result = "ATL.light.dim";
-					break;
-				case "ATL.brightLight":
-					result = "ATL.light.bright";
-					break;
-				case "ATL.lightAnimation":
-					result = "ATL.light.animation";
-					break;
-				case "ATL.lightColor":
-					result = "ATL.light.color";
-					break;
-				case "ATL.lightAlpha":
-					result = "ATL.light.alpha";
-					break;
-				case "ATL.lightAngle":
-					result = "ATL.light.angle";
-					break;
-			}
-		}
-		return result;
-	}
+        if (version >= 9) {
+          switch (key) {
+            case 'ATL.dimLight':
+              result = 'ATL.light.dim';
+              break;
+            case 'ATL.brightLight':
+              result = 'ATL.light.bright';
+              break;
+            case 'ATL.lightAnimation':
+              result = 'ATL.light.animation';
+              break;
+            case 'ATL.lightColor':
+              result = 'ATL.light.color';
+              break;
+            case 'ATL.lightAlpha':
+              result = 'ATL.light.alpha';
+              break;
+            case 'ATL.lightAngle':
+              result = 'ATL.light.angle';
+              break;
+          }
+        }
+        if (version >= 10) {
+          switch (key) {
+            case 'ATL.sightAngle':
+              result = 'ATL.sight.angle';
+              break;
+            case 'ATL.vision':
+              result = 'ATL.sight.enabled';
+              break;
+          }
+        }
+        return result;
+    }
 
 	static convertToATLEffect(
 		//lockRotation: boolean,
+        sightEnabled: boolean,
 		dimSight: number,
 		brightSight: number,
-		sightAngle: number,
+        sighAngle: number,
+        sighVisionMode: string, //e.g. 'darkvision'
+
 		dimLight: number,
 		brightLight: number,
 		lightColor: string,
@@ -540,89 +533,107 @@ export class EffectSupport {
 		// name: string | null = null,
 		height: number | null = null,
 		width: number | null = null,
-		scale: number | null = null
+		scale: number | null = null,
+        alpha: number | null = null,
 	) {
 		const atlChanges: any = [];
-
+        if (alpha != null) {
+			atlChanges.push({
+				key: "ATL.alpha",
+				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+				value: alpha,
+			});
+		}
 		if (height && height > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.height"),
+				key: "ATL.height",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: height,
 			});
 		}
 		if (width && width > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.width"),
+				key: "ATL.width",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: width,
 			});
 		}
 		if (scale && scale > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.scale"),
+				key: "ATL.scale",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: scale,
 			});
 		}
+        // THEY ARE REPPLACED WITH VISION MODE
 		if (dimSight && dimSight > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.dimSight"),
+				// key: "ATL.dimSight",
+                key: "ATL.sight.range",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: dimSight,
 			});
 		}
+        // THEY ARE REPPLACED WITH VISION MODE
 		if (brightSight && brightSight > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.brightSight"),
+				// key: "ATL.sight.bright",
+                key: "ATL.sight.brightness",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: brightSight,
 			});
 		}
+        if (sighVisionMode) {
+			atlChanges.push({
+				key: "ATL.sight.visionMode",
+				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
+				value: sighVisionMode,
+			});
+		}
 		if (dimLight && dimLight > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.dim"),
+				key: "ATL.light.dim",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: dimLight,
 			});
 		}
 		if (brightLight && brightLight > 0) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.bright"),
+				key: "ATL.light.bright",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: brightLight,
 			});
 		}
 		if (lightAngle) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.angle"),
+				key: "ATL.light.angle",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: lightAngle,
 			});
 		}
 		if (lightColor) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.color"),
+				key: "ATL.light.color",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: lightColor,
 			});
 		}
 		if (lightAlpha) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.alpha"),
+				key: "ATL.light.alpha",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: lightAlpha,
 			});
 		}
 		if (lightAnimationType && lightAnimationSpeed && lightAnimationIntensity && lightAnimationReverse) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.animation"),
+				key: "ATL.light.animation",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}, "reverse":${lightAnimationReverse}}`,
 			});
 		} else if (lightAnimationType && lightAnimationSpeed && lightAnimationIntensity) {
 			atlChanges.push({
-				key: EffectSupport._createAtlEffectKey("ATL.light.animation"),
+				key: "ATL.light.animation",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}}`,
 			});

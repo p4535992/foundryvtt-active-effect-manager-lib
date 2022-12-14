@@ -911,9 +911,12 @@ const API = {
 
 	async convertToATLEffect(
 		//lockRotation: boolean,
+        sightEnabled: boolean,
 		dimSight: number,
 		brightSight: number,
-		sightAngle: number,
+        sighAngle: number,
+        sighVisionMode: string, //e.g. 'darkvision'
+
 		dimLight: number,
 		brightLight: number,
 		lightColor: string,
@@ -942,13 +945,17 @@ const API = {
 		// name: string | null = null,
 		height: number | null = null,
 		width: number | null = null,
-		scale: number | null = null
+		scale: number | null = null,
+        alpha: number | null = null,
 	): Promise<Effect> {
 		return EffectSupport.convertToATLEffect(
 			//lockRotation,
-			dimSight,
-			brightSight,
-			sightAngle,
+            sightEnabled,
+            dimSight,
+            brightSight,
+            sighAngle,
+            sighVisionMode,
+
 			dimLight,
 			brightLight,
 			lightColor,
@@ -977,7 +984,8 @@ const API = {
 			// name,
 			height,
 			width,
-			scale
+			scale,
+            alpha
 		);
 	},
 };
