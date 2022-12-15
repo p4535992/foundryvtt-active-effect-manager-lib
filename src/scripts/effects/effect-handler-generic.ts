@@ -1944,7 +1944,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				}
 				//@ts-ignore
 				// if (activeEffect.flags.core?.statusId || String(alwaysDelete) === "true") {
-				if (String(alwaysDelete) === "true") {	
+				if (String(alwaysDelete) === "true") {
 					const deleted = await activeEffect?.delete();
 					return !!deleted;
 				}

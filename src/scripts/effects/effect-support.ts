@@ -348,10 +348,13 @@ export class EffectSupport {
 			effect.isTemporary = true;
 		}
 		const isPassive = !effect.isTemporary;
-		const myid =
-			effect.customId ? effect.customId :
-			effect._id ? effect._id :
-			effect.flags?.core?.statusId ? effect.flags.core.statusId : undefined;
+		const myid = effect.customId
+			? effect.customId
+			: effect._id
+			? effect._id
+			: effect.flags?.core?.statusId
+			? effect.flags.core.statusId
+			: undefined;
 		const myoverlay = effect.overlay
 			? effect.overlay
 			: effect.flags?.core?.overlay
@@ -457,53 +460,53 @@ export class EffectSupport {
 		return origin;
 	}
 
-    static _createAtlEffectKey(key) {
-        let result = key;
-        //@ts-ignore
-        const version = game.release.generation;
+	static _createAtlEffectKey(key) {
+		let result = key;
+		//@ts-ignore
+		const version = game.release.generation;
 
-        if (version >= 9) {
-          switch (key) {
-            case 'ATL.dimLight':
-              result = 'ATL.light.dim';
-              break;
-            case 'ATL.brightLight':
-              result = 'ATL.light.bright';
-              break;
-            case 'ATL.lightAnimation':
-              result = 'ATL.light.animation';
-              break;
-            case 'ATL.lightColor':
-              result = 'ATL.light.color';
-              break;
-            case 'ATL.lightAlpha':
-              result = 'ATL.light.alpha';
-              break;
-            case 'ATL.lightAngle':
-              result = 'ATL.light.angle';
-              break;
-          }
-        }
-        if (version >= 10) {
-          switch (key) {
-            case 'ATL.sightAngle':
-              result = 'ATL.sight.angle';
-              break;
-            case 'ATL.vision':
-              result = 'ATL.sight.enabled';
-              break;
-          }
-        }
-        return result;
-    }
+		if (version >= 9) {
+			switch (key) {
+				case "ATL.dimLight":
+					result = "ATL.light.dim";
+					break;
+				case "ATL.brightLight":
+					result = "ATL.light.bright";
+					break;
+				case "ATL.lightAnimation":
+					result = "ATL.light.animation";
+					break;
+				case "ATL.lightColor":
+					result = "ATL.light.color";
+					break;
+				case "ATL.lightAlpha":
+					result = "ATL.light.alpha";
+					break;
+				case "ATL.lightAngle":
+					result = "ATL.light.angle";
+					break;
+			}
+		}
+		if (version >= 10) {
+			switch (key) {
+				case "ATL.sightAngle":
+					result = "ATL.sight.angle";
+					break;
+				case "ATL.vision":
+					result = "ATL.sight.enabled";
+					break;
+			}
+		}
+		return result;
+	}
 
 	static convertToATLEffect(
 		//lockRotation: boolean,
-        sightEnabled: boolean,
+		sightEnabled: boolean,
 		dimSight: number,
 		brightSight: number,
-        sighAngle: number,
-        sighVisionMode: string, //e.g. 'darkvision'
+		sightAngle: number,
+		sightVisionMode: string, //e.g. 'darkvision'
 
 		dimLight: number,
 		brightLight: number,
@@ -534,10 +537,10 @@ export class EffectSupport {
 		height: number | null = null,
 		width: number | null = null,
 		scale: number | null = null,
-        alpha: number | null = null,
+		alpha: number | null = null
 	) {
 		const atlChanges: any = [];
-        if (alpha != null) {
+		if (alpha != null) {
 			atlChanges.push({
 				key: "ATL.alpha",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
@@ -565,29 +568,29 @@ export class EffectSupport {
 				value: scale,
 			});
 		}
-        // THEY ARE REPPLACED WITH VISION MODE
+		// THEY ARE REPPLACED WITH VISION MODE
 		if (dimSight && dimSight > 0) {
 			atlChanges.push({
 				// key: "ATL.dimSight",
-                key: "ATL.sight.range",
+				key: "ATL.sight.range",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: dimSight,
 			});
 		}
-        // THEY ARE REPPLACED WITH VISION MODE
+		// THEY ARE REPPLACED WITH VISION MODE
 		if (brightSight && brightSight > 0) {
 			atlChanges.push({
 				// key: "ATL.sight.bright",
-                key: "ATL.sight.brightness",
+				key: "ATL.sight.brightness",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
 				value: brightSight,
 			});
 		}
-        if (sighVisionMode) {
+		if (sightVisionMode) {
 			atlChanges.push({
 				key: "ATL.sight.visionMode",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: sighVisionMode,
+				value: sightVisionMode,
 			});
 		}
 		if (dimLight && dimLight > 0) {

@@ -289,11 +289,11 @@ export interface ActiveEffectManagerLibApi {
 
 	convertToATLEffect(
 		//lockRotation: boolean,
-        sightEnabled: boolean,
+		sightEnabled: boolean,
 		dimSight: number,
 		brightSight: number,
-        sighAngle: number,
-        sighVisionMode: string, //e.g. 'darkvision'
+		sightAngle: number,
+		sightVisionMode: string, //e.g. 'darkvision'
 
 		dimLight: number,
 		brightLight: number,
@@ -324,7 +324,7 @@ export interface ActiveEffectManagerLibApi {
 		height: number | null,
 		width: number | null,
 		scale: number | null,
-        alpha: number | null
+		alpha: number | null
 	): Promise<Effect>;
 }
 
