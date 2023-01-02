@@ -2,7 +2,7 @@
   "name": "active-effect-manager-lib",
   "title": "Active effect manager library",
   "description": "Active effect manager library",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "main": "active-effect-manager-lib.js",
   "scripts": {
     "publish": "gulp publish --update",

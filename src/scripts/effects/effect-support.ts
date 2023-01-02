@@ -719,6 +719,12 @@ export class EffectSupport {
 			if (item.parent instanceof Actor) {
 				const origin = `Actor.${item.parent.id}.Item.${item.id}`;
 				return origin;
+			}
+			//@ts-ignore
+			else if (item.parent instanceof Token) {
+				//@ts-ignore
+				const origin = `Token.${item.parent.id}.Item.${item.id}`;
+				return origin;
 			} else {
 				const origin = `Item.${item.id}`;
 				return origin;
@@ -753,7 +759,20 @@ export class EffectSupport {
 			const ae = <ActiveEffect>entity;
 			if (ae.parent) {
 				if (ae.parent instanceof Item) {
-					origin = `Item.${ae.parent.id}`;
+					if (ae.parent.parent) {
+						if (ae.parent.parent instanceof Actor) {
+							origin = `Actor.${ae.parent.parent.id}.Item.${ae.parent.id}`;
+						}
+						//@ts-ignore
+						else if (ae.parent.parent instanceof Token) {
+							//@ts-ignore
+							origin = `Token.${ae.parent.parent.id}.Item.${ae.parent.id}`;
+						} else {
+							origin = `Item.${ae.parent.id}`;
+						}
+					} else {
+						origin = `Item.${ae.parent.id}`;
+					}
 				} else if (ae.parent instanceof Token) {
 					origin = `Token.${ae.parent.id}`;
 				} else if (ae.parent instanceof Actor) {
@@ -764,6 +783,11 @@ export class EffectSupport {
 			const item = <Item>entity;
 			if (item.parent instanceof Actor) {
 				origin = `Actor.${item.parent.id}.Item.${item.id}`;
+			}
+			//@ts-ignore
+			else if (item.parent instanceof Token) {
+				//@ts-ignore
+				origin = `Token.${item.parent.id}.Item.${item.id}`;
 			} else {
 				origin = `Item.${item.id}`;
 			}
