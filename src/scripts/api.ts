@@ -803,7 +803,7 @@ const API = {
 	},
 
 	async onManageActiveEffectFromEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effect: Effect,
 		alwaysDelete?: boolean | undefined,
@@ -826,7 +826,7 @@ const API = {
 	},
 
 	async onManageActiveEffectFromActiveEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined,
 		alwaysDelete?: boolean | undefined,

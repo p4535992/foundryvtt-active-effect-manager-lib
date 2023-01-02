@@ -1020,7 +1020,7 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effect: Effect,
 		alwaysDelete?: boolean | undefined,
@@ -1071,7 +1071,7 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromActiveEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined | undefined,
 		alwaysDelete?: boolean | undefined,

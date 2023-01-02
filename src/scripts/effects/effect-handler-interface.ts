@@ -556,7 +556,7 @@ export interface EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	onManageActiveEffectFromEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effect: Effect,
 		alwaysDelete?: boolean | undefined,
@@ -575,7 +575,7 @@ export interface EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	onManageActiveEffectFromActiveEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined | undefined,
 		alwaysDelete?: boolean | undefined,

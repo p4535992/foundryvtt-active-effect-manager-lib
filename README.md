@@ -248,7 +248,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       delete: 'delete';
       toggle: ';
       update: 'update';
-    },
+    } | string,
     owner: Actor | Item,
     effectId: string,
     alwaysDelete?: boolean,
@@ -265,7 +265,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       delete: 'delete';
       toggle: 'toggle';
       update: 'update';
-    },
+    } | string,
     owner: Actor | Item,
     effect: Effect,
     alwaysDelete?: boolean,
@@ -282,7 +282,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       delete: 'delete';
       toggle: 'toggle';
       update: 'update';
-    },
+    } | string,
     owner: Actor | Item,
     activeEffect: ActiveEffect | null | undefined,
     alwaysDelete?: boolean,

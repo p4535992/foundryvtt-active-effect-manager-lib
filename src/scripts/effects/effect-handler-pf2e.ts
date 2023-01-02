@@ -1781,7 +1781,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effect: Effect,
 		alwaysDelete?: boolean | undefined,
