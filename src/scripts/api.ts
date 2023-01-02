@@ -909,6 +909,10 @@ const API = {
 		return EffectSupport.prepareOriginForActor(actorOrActorId);
 	},
 
+	async prepareOriginFromEntity(entity: string | ActiveEffect | Actor | Item | Token): Promise<string> {
+		return EffectSupport.prepareOriginFromEntity(entity);
+	},
+
 	async convertToATLEffect(
 		//lockRotation: boolean,
 		sightEnabled: boolean,

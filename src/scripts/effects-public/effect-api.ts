@@ -287,6 +287,8 @@ export interface ActiveEffectManagerLibApi {
 
 	prepareOriginForActor(actorOrActorId: Actor | string): Promise<string>;
 
+	prepareOriginFromEntity(entity: string | ActiveEffect | Actor | Item | Token): Promise<string>;
+
 	convertToATLEffect(
 		//lockRotation: boolean,
 		sightEnabled: boolean,

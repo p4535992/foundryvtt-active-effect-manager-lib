@@ -44,7 +44,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				await this.removeEffect(effectName, uuid);
 			} else {
 				const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
-				const origin = `Actor.${actor.id}`;
+				const origin = EffectSupport.prepareOriginFromEntity(actor);
 				await this.addEffect(effectName, <Effect>effectData, uuid, origin, overlay, metadata);
 			}
 		}
@@ -196,7 +196,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 
 		if (!origin) {
-			origin = `Actor.${actor.id}`;
+			origin = EffectSupport.prepareOriginFromEntity(actor);
 		}
 
 		this._handleIntegrations(effect);
@@ -628,7 +628,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		if (effect) {
 			const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 			if (!origin) {
-				origin = `Actor.${actor.id}`;
+				origin = EffectSupport.prepareOriginFromEntity(actor);
 			}
 			effect.origin = effect.origin ? effect.origin : origin;
 			effect.overlay =
@@ -1179,8 +1179,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		if (effect) {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			if (!origin) {
-				const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-				origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+				origin = EffectSupport.prepareOriginFromEntity(token);
 			}
 			effect.origin = effect.origin ? effect.origin : origin;
 			effect.overlay =
@@ -1454,8 +1453,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			const token = <Token>this._foundryHelpers.getTokenByUuid(uuid);
 			//@ts-ignore
 			if (!activeEffectData.origin) {
-				const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-				const origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+				const origin = EffectSupport.prepareOriginFromEntity(token);
 				//@ts-ignore
 				activeEffectData.origin = origin;
 			}
@@ -1504,8 +1502,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			return undefined;
 		}
 		if (!origin) {
-			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
@@ -1551,8 +1548,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			return undefined;
 		}
 		if (!origin) {
-			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
@@ -1619,8 +1615,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 
 		if (!origin) {
-			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
 		const activeEffectDataUpdated = effectUpdated;
 		//@ts-ignore
@@ -1685,8 +1680,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 
 		if (!origin) {
-			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
+			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
 		const activeEffectDataUpdated = effectUpdated;
 		//@ts-ignore
@@ -1868,7 +1862,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 					const actor = owner;
 					//@ts-ignore
 					if (!(<ActiveEffect>activeEffect).origin) {
-						const origin = `Actor.${actor?.id}`;
+						const origin = EffectSupport.prepareOriginFromEntity(actor);
 						setProperty(activeEffect, "origin", origin);
 					}
 					const activeEffectsUpdated = <ActiveEffect[]>(
@@ -1894,7 +1888,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 					const actor = owner;
 					//@ts-ignore
 					if (!(<ActiveEffect>activeEffect).origin) {
-						const origin = `Actor.${actor?.id}`;
+						const origin = EffectSupport.prepareOriginFromEntity(actor);
 						setProperty(activeEffect, "origin", origin);
 					}
 					const activeEffectsAdded = <ActiveEffect[]>(

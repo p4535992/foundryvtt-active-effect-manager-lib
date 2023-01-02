@@ -436,28 +436,39 @@ export class EffectSupport {
 	}
 
 	static prepareOriginForToken(tokenOrTokenId: Token | string): string {
-		let token: Token;
+		let token: Token | undefined = undefined;
 		if (typeof tokenOrTokenId === "string" || tokenOrTokenId instanceof String) {
 			const tokens = <Token[]>canvas.tokens?.placeables;
 			token = <Token>tokens.find((token) => token.id === <string>tokenOrTokenId);
-		} else {
+		} else if (tokenOrTokenId instanceof Token) {
 			token = tokenOrTokenId;
 		}
-		const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-		// const origin = `Scene.${sceneId}.Token.${token.id}`;
-		const origin = token.actor ? `Actor.${token.actor?.id}` : `Scene.${sceneId}.Token.${token.id}`;
-		return origin;
+		if (token) {
+			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
+			const origin = token.actor
+				? `Actor.${token.actor?.id}`
+				: sceneId
+				? `Scene.${sceneId}.Token.${token.id}`
+				: `Token.${token.id}`;
+			return origin;
+		} else {
+			return "None";
+		}
 	}
 
 	static prepareOriginForActor(actorOrActorId: Actor | string): string {
-		let actor: Actor;
+		let actor: Actor | undefined = undefined;
 		if (typeof actorOrActorId === "string" || actorOrActorId instanceof String) {
 			actor = <Actor>game.actors?.get(<string>actorOrActorId);
-		} else {
+		} else if (actorOrActorId instanceof Actor) {
 			actor = actorOrActorId;
 		}
-		const origin = `Actor.${actor.id}`;
-		return origin;
+		if (actor) {
+			const origin = `Actor.${actor.id}`;
+			return origin;
+		} else {
+			return "None";
+		}
 	}
 
 	static _createAtlEffectKey(key) {
@@ -700,5 +711,51 @@ export class EffectSupport {
 			overlay: false,
 		});
 		return efffectAtlToApply;
+	}
+
+	static prepareOriginFromEntity(entity: Token | ActiveEffect | Item | Actor | string): string {
+		let origin = "None";
+		if (!entity) {
+			return origin;
+		}
+		if (typeof entity === "string" || entity instanceof String) {
+			origin = EffectSupport.prepareOriginForToken(<string>entity);
+			if (!origin || origin === "None") {
+				origin = EffectSupport.prepareOriginForActor(<string>entity);
+			}
+		}
+		if (entity instanceof Token) {
+			const token = <Token>entity;
+			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
+			if (token.actor) {
+				origin = `Actor.${token.actor?.id}`;
+			}
+			if (sceneId) {
+				origin = `Scene.${sceneId}.Token.${token.id}`;
+			}
+			origin = `Token.${token.id}`;
+		} else if (entity instanceof ActiveEffect) {
+			const ae = <ActiveEffect>entity;
+			if (ae.parent) {
+				if (ae.parent instanceof Item) {
+					origin = `Item.${ae.parent.id}`;
+				} else if (ae.parent instanceof Token) {
+					origin = `Token.${ae.parent.id}`;
+				} else if (ae.parent instanceof Actor) {
+					origin = `Actor.${ae.parent.id}`;
+				}
+			}
+		} else if (entity instanceof Item) {
+			const item = <Item>entity;
+			if (item.parent instanceof Actor) {
+				origin = `Actor.${item.parent.id}`;
+			} else {
+				origin = `Item.${item.id}`;
+			}
+		} else if (entity instanceof Actor) {
+			const actor = <Actor>entity;
+			origin = `Actor.${actor.id}`;
+		}
+		return origin;
 	}
 }
