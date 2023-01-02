@@ -435,42 +435,6 @@ export class EffectSupport {
 		return changes;
 	}
 
-	static prepareOriginForToken(tokenOrTokenId: Token | string): string {
-		let token: Token | undefined = undefined;
-		if (typeof tokenOrTokenId === "string" || tokenOrTokenId instanceof String) {
-			const tokens = <Token[]>canvas.tokens?.placeables;
-			token = <Token>tokens.find((token) => token.id === <string>tokenOrTokenId);
-		} else if (tokenOrTokenId instanceof Token) {
-			token = tokenOrTokenId;
-		}
-		if (token) {
-			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
-			const origin = token.actor
-				? `Actor.${token.actor?.id}`
-				: sceneId
-				? `Scene.${sceneId}.Token.${token.id}`
-				: `Token.${token.id}`;
-			return origin;
-		} else {
-			return "None";
-		}
-	}
-
-	static prepareOriginForActor(actorOrActorId: Actor | string): string {
-		let actor: Actor | undefined = undefined;
-		if (typeof actorOrActorId === "string" || actorOrActorId instanceof String) {
-			actor = <Actor>game.actors?.get(<string>actorOrActorId);
-		} else if (actorOrActorId instanceof Actor) {
-			actor = actorOrActorId;
-		}
-		if (actor) {
-			const origin = `Actor.${actor.id}`;
-			return origin;
-		} else {
-			return "None";
-		}
-	}
-
 	static _createAtlEffectKey(key) {
 		let result = key;
 		//@ts-ignore
@@ -713,6 +677,57 @@ export class EffectSupport {
 		return efffectAtlToApply;
 	}
 
+	static prepareOriginForToken(tokenOrTokenId: Token | string): string {
+		let token: Token | undefined = undefined;
+		if (typeof tokenOrTokenId === "string" || tokenOrTokenId instanceof String) {
+			const tokens = <Token[]>canvas.tokens?.placeables;
+			token = <Token>tokens.find((token) => token.id === <string>tokenOrTokenId);
+		} else if (tokenOrTokenId instanceof Token) {
+			token = tokenOrTokenId;
+		}
+		if (token) {
+			const sceneId = (token?.scene && token.scene.id) || canvas.scene?.id;
+			const origin = token.actor
+				? `Actor.${token.actor?.id}`
+				: sceneId
+				? `Scene.${sceneId}.Token.${token.id}`
+				: `Token.${token.id}`;
+			return origin;
+		} else {
+			return "None";
+		}
+	}
+
+	static prepareOriginForActor(actorOrActorId: Actor | string): string {
+		let actor: Actor | undefined = undefined;
+		if (typeof actorOrActorId === "string" || actorOrActorId instanceof String) {
+			actor = <Actor>game.actors?.get(<string>actorOrActorId);
+		} else if (actorOrActorId instanceof Actor) {
+			actor = actorOrActorId;
+		}
+		if (actor) {
+			const origin = `Actor.${actor.id}`;
+			return origin;
+		} else {
+			return "None";
+		}
+	}
+
+	static prepareOriginForItem(itemOrItemId: Item): string {
+		const item = <Item>itemOrItemId;
+		if (item) {
+			if (item.parent instanceof Actor) {
+				const origin = `Actor.${item.parent.id}.Item.${item.id}`;
+				return origin;
+			} else {
+				const origin = `Item.${item.id}`;
+				return origin;
+			}
+		} else {
+			return "None";
+		}
+	}
+
 	static prepareOriginFromEntity(entity: Token | ActiveEffect | Item | Actor | string): string {
 		let origin = "None";
 		if (!entity) {
@@ -748,13 +763,19 @@ export class EffectSupport {
 		} else if (entity instanceof Item) {
 			const item = <Item>entity;
 			if (item.parent instanceof Actor) {
-				origin = `Actor.${item.parent.id}`;
+				origin = `Actor.${item.parent.id}.Item.${item.id}`;
 			} else {
 				origin = `Item.${item.id}`;
 			}
 		} else if (entity instanceof Actor) {
 			const actor = <Actor>entity;
 			origin = `Actor.${actor.id}`;
+		}
+		//@ts-ignore
+		else if (entity.parent) {
+			//@ts-ignore
+			const parent = entity.parent;
+			return EffectSupport.prepareOriginFromEntity(parent);
 		}
 		return origin;
 	}
