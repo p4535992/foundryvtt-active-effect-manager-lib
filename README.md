@@ -246,7 +246,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       create: 'create';
       edit: 'edit';
       delete: 'delete';
-      toogle: 'toggle';
+      toggle: ';
       update: 'update';
     },
     owner: Actor | Item,
@@ -263,7 +263,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       create: 'create';
       edit: 'edit';
       delete: 'delete';
-      toogle: 'toggle';
+      toggle: 'toggle';
       update: 'update';
     },
     owner: Actor | Item,
@@ -280,7 +280,7 @@ Quickly select effects for a token or tokens by replacing the built-in status ef
       create: 'create';
       edit: 'edit';
       delete: 'delete';
-      toogle: 'toggle';
+      toggle: 'toggle';
       update: 'update';
     },
     owner: Actor | Item,

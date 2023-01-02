@@ -537,7 +537,7 @@ export interface EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	onManageActiveEffectFromEffectId(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,

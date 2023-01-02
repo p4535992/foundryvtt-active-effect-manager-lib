@@ -1710,7 +1710,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromEffectId(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,
@@ -1837,7 +1837,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromActiveEffect(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		activeEffect: ActiveEffect | null | undefined | undefined,
 		alwaysDelete?: boolean | undefined,
@@ -1934,7 +1934,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			}
 			case "toggle": {
 				if (!activeEffect) {
-					warnM(this.moduleName, `Can't retrieve effect to toogle`);
+					warnM(this.moduleName, `Can't retrieve effect to toggle`);
 				}
 				//@ts-ignore
 				// if (activeEffect.flags.core?.statusId || String(alwaysDelete) === "true") {

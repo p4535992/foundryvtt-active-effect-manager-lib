@@ -203,13 +203,15 @@ export interface ActiveEffectManagerLibApi {
 	// ======================
 
 	onManageActiveEffectFromEffectId(
-		effectActions: {
-			create: "create";
-			edit: "edit";
-			delete: "delete";
-			toogle: "toggle";
-			update: "update";
-		},
+		effectActions:
+			| {
+					create: "create";
+					edit: "edit";
+					delete: "delete";
+					toggle: "toggle";
+					update: "update";
+			  }
+			| string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,
@@ -224,7 +226,7 @@ export interface ActiveEffectManagerLibApi {
 			create: "create";
 			edit: "edit";
 			delete: "delete";
-			toogle: "toggle";
+			toggle: "toggle";
 			update: "update";
 		},
 		owner: Actor | Item,
@@ -241,7 +243,7 @@ export interface ActiveEffectManagerLibApi {
 			create: "create";
 			edit: "edit";
 			delete: "delete";
-			toogle: "toggle";
+			toggle: "toggle";
 			update: "update";
 		},
 		owner: Actor | Item,
@@ -510,13 +512,15 @@ interface EffectInterfaceApi {
 	// ==================================================================
 
 	onManageActiveEffectFromEffectId(
-		effectActions: {
-			create: "create";
-			edit: "edit";
-			delete: "delete";
-			toogle: "toggle";
-			update: "update";
-		},
+		effectActions:
+			| {
+					create: "create";
+					edit: "edit";
+					delete: "delete";
+					toggle: "toggle";
+					update: "update";
+			  }
+			| string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,
@@ -532,7 +536,7 @@ interface EffectInterfaceApi {
 			create: "create";
 			edit: "edit";
 			delete: "delete";
-			toogle: "toggle";
+			toggle: "toggle";
 			update: "update";
 		},
 		owner: Actor | Item,
@@ -550,7 +554,7 @@ interface EffectInterfaceApi {
 			create: "create";
 			edit: "edit";
 			delete: "delete";
-			toogle: "toggle";
+			toggle: "toggle";
 			update: "update";
 		},
 		owner: Actor | Item,

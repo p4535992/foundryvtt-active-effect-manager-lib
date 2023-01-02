@@ -758,7 +758,7 @@ export default class EffectInterface {
 	// ==================================================================
 
 	async onManageActiveEffectFromEffectId(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,

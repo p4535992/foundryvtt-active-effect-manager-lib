@@ -969,7 +969,7 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
 	async onManageActiveEffectFromEffectId(
-		effectActions: EffectActions,
+		effectActions: EffectActions | string,
 		owner: Actor | Item,
 		effectId: string,
 		alwaysDelete?: boolean | undefined,
