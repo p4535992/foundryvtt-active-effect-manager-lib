@@ -385,8 +385,8 @@ export class EffectSupport {
 
 		return {
 			id: myid,
-			name: i18n(effect.name),
-			label: i18n(effect.name),
+			// name: i18n(effect.name),
+			label: effect.label ? i18n(effect.label) : i18n(effect.name),
 			description: i18n(effect.description), // 4535992 this not make sense, but it doesn't hurt either
 			icon: effect.icon,
 			tint: effect.tint,
@@ -432,7 +432,7 @@ export class EffectSupport {
 	public static convertToActiveEffect(effect: Effect): ActiveEffect {
 		const changes = effect._handleIntegrations();
 		const flags = <any>{};
-		const label = effect.name;
+		const label = effect.label ? effect.label : effect.name;
 		const description = effect.description;
 		const isDynamic = effect.isDynamic;
 		const isViewable = effect.isViewable;

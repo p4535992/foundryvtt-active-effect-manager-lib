@@ -13,7 +13,7 @@ export default class StatusEffectsLib {
 	 * Initialize the token status effects based on the user configured settings.
 	 */
 	init(statusEffectNames: string[]) {
-		this.initializeStatusEffects(statusEffectNames);
+		this.initialize(statusEffectNames);
 		//@ts-ignore
 		//libWrapper.register(CONSTANTS.MODULE_NAME, 'TokenHUD.prototype._onToggleEffect', this.patchToggleEffect, "MIXED");
 	}
@@ -36,7 +36,7 @@ export default class StatusEffectsLib {
 	/**
 	 * Initialize the token status effects based on the user configured settings.
 	 */
-	initializeStatusEffects(statusEffectNames: string[]) {
+	initialize(statusEffectNames: string[]) {
 		const modifyStatusEffects = "add"; // TODO for now is always 'add'
 		//@ts-ignore
 		if (modifyStatusEffects === "replace") {
@@ -75,16 +75,23 @@ export default class StatusEffectsLib {
 				//@ts-ignore
 				const effect = game.dfreds._customEffectsHandler
 					.getCustomEffects()
-					.find((effect) => effect.name === name);
+					.find((effect) => effect.label === name);
 
 				if (effect) {
 					return effect;
 				}
 				//@ts-ignore
-				return game.dfreds.effects.all.find((effect) => effect.name === name);
+				return game.dfreds.effects.all.find((effect) => effect.label === name);
 			})
 			.filter((effect) => effect)
 			.map((effect) => effect.convertToActiveEffectData());
+		// TODO
+		// .map((effect) => {
+		// 	return {
+		// 	  id: `Convenient Effect: ${effect.label}`,
+		// 	  ...effect,
+		// 	};
+		// });
 	}
 
 	/**
@@ -213,7 +220,7 @@ export default class StatusEffectsLib {
 						const effectId = <string>activeEffectFound.id;
 						const effect = EffectSupport.convertActiveEffectToEffect(activeEffectFound);
 						effect.customId = effectId;
-						effect.name = effectName;
+						effect.label = effectName;
 						effect.overlay = overlay;
 						await API.toggleEffectFromDataOnToken(tokenId, effect, false, undefined, undefined, overlay);
 

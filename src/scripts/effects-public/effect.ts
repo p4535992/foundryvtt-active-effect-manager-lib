@@ -5,7 +5,9 @@ import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt
  */
 export default class Effect {
 	customId: string;
+	/** @deprecated use instead label */
 	name: string;
+	label: string;
 	description: string;
 	icon = "icons/svg/aura.svg";
 	tint: string;
@@ -36,6 +38,7 @@ export default class Effect {
 	constructor({
 		customId = "",
 		name = "",
+		label = "",
 		description = "",
 		icon = "icons/svg/aura.svg",
 		tint = "",
@@ -62,6 +65,7 @@ export default class Effect {
 	}) {
 		this.customId = customId;
 		this.name = name;
+		this.label = label;
 		this.description = description;
 		this.icon = icon;
 		this.tint = tint;
@@ -114,8 +118,8 @@ export default class Effect {
 
 		return {
 			id: this._id,
-			name: i18n(this.name),
-			label: i18n(this.name),
+			// name: i18n(this.name),
+			label: i18n(this.label),
 			description: i18n(this.description), // 4535992 this not make sense, but it doesn't hurt either
 			icon: this.icon,
 			tint: this.tint,
@@ -161,7 +165,7 @@ export default class Effect {
 	convertToActiveEffect(): ActiveEffect {
 		const changes = this._handleIntegrations();
 		const flags = <any>{};
-		const label = this.name;
+		const label = this.label ? this.label : this.name;
 		const description = this.description;
 		const isDynamic = this.isDynamic;
 		const isViewable = this.isViewable;
@@ -217,7 +221,8 @@ export default class Effect {
 	}
 
 	get _id() {
-		return `Convenient Effect: ${this.name}`;
+		const label = this.label ? this.label : this.name;
+		return `Convenient Effect: ${label}`;
 	}
 
 	_getDurationData() {

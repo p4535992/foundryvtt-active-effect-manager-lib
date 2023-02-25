@@ -290,10 +290,11 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
+		const label = effect.label ? effect.label : effect.name;
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addEffectOnActor", effect.name, uuid, undefined, false, effect);
+			return this._socket.executeAsGM("addEffectOnActor", label, uuid, undefined, false, effect);
 		} else {
-			return this._effectHandler.addEffectOnActor(effect.name, uuid, "", false, effect);
+			return this._effectHandler.addEffectOnActor(label, uuid, "", false, effect);
 		}
 	}
 
@@ -518,10 +519,11 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
+		const label = effect.label ? effect.label : effect.name;
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addEffectOnToken", effect.name, uuid, undefined, false, effect);
+			return this._socket.executeAsGM("addEffectOnToken", label, uuid, undefined, false, effect);
 		} else {
-			return this._effectHandler.addEffectOnToken(effect.name, uuid, "", false, effect);
+			return this._effectHandler.addEffectOnToken(label, uuid, "", false, effect);
 		}
 	}
 

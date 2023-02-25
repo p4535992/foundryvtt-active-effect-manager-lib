@@ -221,7 +221,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 		const activeEffectsAdded = <ActiveEffect[]>(
 			await actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData])
 		);
-		logM(this.moduleName, `Added effect ${effect.name} to ${actor.name} - ${actor.id}`);
+		logM(this.moduleName, `Added effect ${effect.label} to ${actor.name} - ${actor.id}`);
 		return activeEffectsAdded[0];
 	}
 
@@ -652,7 +652,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 			);
 			logM(
 				this.moduleName,
-				`Added effect ${effect.name ? effect.name : effectName} to ${actor.name} - ${actor.id}`
+				`Added effect ${effect.label ? effect.label : effectName} to ${actor.name} - ${actor.id}`
 			);
 			return activeEffectsAdded[0];
 		}
@@ -1204,7 +1204,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 			);
 			logM(
 				this.moduleName,
-				`Added effect ${effect.name ? effect.name : effectName} to ${token.name} - ${token.id}`
+				`Added effect ${effect.label ? effect.label : effectName} to ${token.name} - ${token.id}`
 			);
 			return activeEffectsAdded[0];
 		}
@@ -1796,7 +1796,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
-		const activeEffect = effect.name ? owner.effects.getName(i18n(effect.name)) : null;
+		const activeEffect = effect.label ? owner.effects.getName(i18n(effect.label)) : null;
 		const response = await this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
