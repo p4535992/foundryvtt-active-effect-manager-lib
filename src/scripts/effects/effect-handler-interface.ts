@@ -586,4 +586,45 @@ export interface EffectHandlerInterface {
 	): Promise<Item | ActiveEffect | boolean | undefined>;
 
 	onManageActiveEffectFromActiveEffectArr(...inAttributes: any[]): Promise<Item | ActiveEffect | boolean | undefined>;
+
+	// 2023-02-25
+
+	// /**
+	//  * Searches through the list of available effects and returns one matching the
+	//  * effect name. Prioritizes finding custom effects first.
+	//  *
+	//  * @param {string} effectName - the effect name to search for
+	//  * @returns {ActiveEffect} the found effect
+	//  */
+	// findEffectByName(effectName): Promise<ActiveEffect | undefined>;
+
+	// /**
+	//  * Toggles the effect on the provided actor UUIDS as the GM via sockets
+	//  *
+	//  * @param {string} effectName - name of the effect to toggle
+	//  * @param {string} overlay - name of the effect to toggle
+	//  * @param {string[]} uuids - UUIDS of the actors to toggle the effect on
+	//  * @param {string[]} withSocket - use socket library for execute as GM
+	//  * @returns {Promise} a promise that resolves when the GM socket function completes
+	//  */
+	// toggleEffect(effectName: string, overlay: boolean, uuids: string[]): Promise<boolean | undefined>;
+
+	// /**
+	//  * Creates new custom effects with the provided active effect data.
+	//  *
+	//  * @param {object} params - the params for adding an effect
+	//  * @param {ActiveEffect[]} params.activeEffects - array of active effects to add
+	//  * @returns {Promise} a promise that resolves when the active effects have finished being added
+	//  */
+	// createNewCustomEffectsWith({ activeEffects }): Promise<ActiveEffect[] | undefined>;
+
+	// /**
+	//  * Checks if the given effect has nested effects
+	//  *
+	//  * @param {ActiveEffect} effect - the active effect to check the nested effets on
+	//  * @returns
+	//  */
+	// hasNestedEffects(effect: ActiveEffect): Promise<boolean | undefined>;
+
+	// _getNestedEffectSelection(effect: ActiveEffect): Promise<ActiveEffect | undefined>;
 }

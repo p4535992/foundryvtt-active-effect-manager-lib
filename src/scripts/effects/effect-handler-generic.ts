@@ -6,6 +6,8 @@ import { EffectSupport } from "./effect-support";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { EffectActions } from "./effect-models";
 import type { EffectHandlerInterface } from "./effect-handler-interface";
+import API from "../api";
+import { warn } from "../lib/lib";
 
 export default class EffectGenericHandler implements EffectHandlerInterface {
 	moduleName: string;
@@ -216,7 +218,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			);
 			return undefined;
 		}
-		const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+		let activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+		if (await API.hasNestedEffects(activeEffectData)) {
+			activeEffectData = <any>await API._getNestedEffectSelection(activeEffectData);
+			if (!activeEffectData) {
+				warn(`dialog closed without selecting one`);
+				return; // dialog closed without selecting one
+			}
+		}
 		const activeEffectsAdded = <ActiveEffect[]>(
 			await actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData])
 		);
@@ -645,7 +654,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				);
 				return undefined;
 			}
-			const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+			let activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+			if (await API.hasNestedEffects(activeEffectData)) {
+				activeEffectData = <any>await API._getNestedEffectSelection(activeEffectData);
+				if (!activeEffectData) {
+					warn(`dialog closed without selecting one`);
+					return; // dialog closed without selecting one
+				}
+			}
 			const activeEffectsAdded = <ActiveEffect[]>(
 				await actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData])
 			);
@@ -1196,7 +1212,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				);
 				return activeEffectFounded;
 			}
-			const activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+			let activeEffectData = EffectSupport.convertToActiveEffectData(effect);
+			if (await API.hasNestedEffects(activeEffectData)) {
+				activeEffectData = <any>await API._getNestedEffectSelection(activeEffectData);
+				if (!activeEffectData) {
+					warn(`dialog closed without selecting one`);
+					return; // dialog closed without selecting one
+				}
+			}
 			const activeEffectsAdded = <ActiveEffect[]>(
 				await token.actor?.createEmbeddedDocuments("ActiveEffect", [activeEffectData])
 			);
@@ -1506,7 +1529,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
-		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
+		let activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
+		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
+			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);
+			if (!activeEffectDataUpdated) {
+				warn(`dialog closed without selecting one`);
+				return; // dialog closed without selecting one
+			}
+		}
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
@@ -1552,7 +1582,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
-		const activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
+		let activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
+		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
+			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);
+			if (!activeEffectDataUpdated) {
+				warn(`dialog closed without selecting one`);
+				return; // dialog closed without selecting one
+			}
+		}
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
@@ -1617,7 +1654,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		if (!origin) {
 			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
-		const activeEffectDataUpdated = effectUpdated;
+		let activeEffectDataUpdated = effectUpdated;
+		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
+			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);
+			if (!activeEffectDataUpdated) {
+				warn(`dialog closed without selecting one`);
+				return; // dialog closed without selecting one
+			}
+		}
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
@@ -1682,7 +1726,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		if (!origin) {
 			origin = EffectSupport.prepareOriginFromEntity(token);
 		}
-		const activeEffectDataUpdated = effectUpdated;
+		let activeEffectDataUpdated = effectUpdated;
+		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
+			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);
+			if (!activeEffectDataUpdated) {
+				warn(`dialog closed without selecting one`);
+				return; // dialog closed without selecting one
+			}
+		}
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore

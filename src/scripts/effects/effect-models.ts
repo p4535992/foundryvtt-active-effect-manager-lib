@@ -16,3 +16,5 @@ export interface StatusEffectInternal {
 	isOverlay: boolean;
 	cssClass?: string;
 }
+
+export enum EffectFlags {}

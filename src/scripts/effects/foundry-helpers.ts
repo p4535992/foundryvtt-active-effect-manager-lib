@@ -11,7 +11,7 @@ export default class FoundryHelpers {
 	/**
 	 * Gets all UUIDs for selected or targeted tokens, depending on if priortize
 	 * targets is enabled
-	 *
+	 * @deprecated
 	 * @returns {string[]} actor uuids for selected or targeted tokens
 	 */
 	getActorUuidsFromCanvas(): string[] {
@@ -27,61 +27,72 @@ export default class FoundryHelpers {
 	}
 
 	/**
+	 * Gets all UUIDs for selected or targeted tokens, depending on if priortize
+	 * targets is enabled
+	 *
+	 * @param prioritizeTargets If enabled, effects will be applied to any targeted tokens instead of selected tokens.
+	 * @returns {string[]} actor uuids for selected or targeted tokens
+	 */
+	getActorUuids(prioritizeTargets = false): string[] {
+		if (
+			canvas.tokens?.controlled.length == 0 &&
+			game.user?.targets.size == 0 &&
+			game.user?.character == undefined
+		) {
+			return [];
+		}
+
+		if (prioritizeTargets && game.user?.targets.size !== 0) {
+			return <string[]>Array.from(<UserTargets>game.user?.targets).map((token) => token.actor?.uuid);
+		} else if (canvas.tokens?.controlled.length !== 0) {
+			return <string[]>canvas.tokens?.controlled.map((token) => token.actor?.uuid);
+		} else {
+			return <string[]>[game.user?.character?.uuid];
+		}
+	}
+
+	/**
 	 * Gets the actor object by the actor UUID
 	 *
 	 * @param {string} uuid - the actor UUID
 	 * @returns {Actor5e} the actor that was found via the UUID
 	 */
 	getActorByUuid(uuid) {
-		const actorToken = this.fromUuid(uuid);
-		if (!actorToken) {
-			return <Actor>game.actors?.get(uuid);
-		}
+		//@ts-ignore
+		const actorToken = fromUuidSync(uuid);
 		const actor = actorToken?.actor ? actorToken?.actor : actorToken;
 		return actor;
 	}
 
-	// /**
-	//  * Re-renders the Convenient Effects application if open
-	//  */
-	// renderConvenientEffectsAppIfOpen() {
-	//   const openApps = Object.values(ui.windows);
-	//   const convenientEffectsApp = openApps.find(
-	//     (app) => app instanceof ConvenientEffectsApp
-	//   );
-
-	//   if (convenientEffectsApp) {
-	//     convenientEffectsApp.render();
-	//   }
-	// }
-
 	/**
-	 * Retrieve a Document by its Universally Unique Identifier (uuid).
-	 *
-	 * Note: This was taken from Foundry and modified to remove support for
-	 * searching in compendiums.
-	 *
-	 * @param {string} uuid - The uuid of the Document to retrieve
-	 * @return {Document|null}
+	 * Re-renders the Convenient Effects application if open
 	 */
-	fromUuid(uuid) {
-		if (!uuid || uuid === "") return null;
-		let parts = uuid.split(".");
-		let doc;
+	renderConvenientEffectsAppIfOpen() {
+		// TODO DISABLED IT
+		// const openApps = Object.values(ui.windows);
+		// const convenientEffectsApp = openApps.find((app) => app instanceof ConvenientEffectsApp);
 
-		const [docName, docId] = parts.slice(0, 2);
-		parts = parts.slice(2);
-		const collection = CONFIG[docName]?.collection.instance;
-		if (!collection) return null;
-		doc = collection.get(docId);
+		// if (convenientEffectsApp) {
+		// 	convenientEffectsApp.render();
+		// }
+		warn(`You can't use this feature...`, true);
+	}
 
-		// Embedded Documents
-		while (doc && parts.length > 1) {
-			const [embeddedName, embeddedId] = parts.slice(0, 2);
-			doc = doc.getEmbeddedDocument(embeddedName, embeddedId);
-			parts = parts.slice(2);
+	async uuidToDocument(uuid: string): Promise<foundry.abstract.Document<any, any>> {
+		const parts = <string[]>uuid.split(".");
+		let result: foundry.abstract.Document<any, any> | null = null;
+		if (parts[0] === "Compendium") {
+			const pack = game["packs"].get(parts[1] + "." + parts[2]);
+			if (pack !== undefined) {
+				result = <any>await pack.getDocument(<string>parts[3]);
+			}
+		} else {
+			result = await fromUuid(uuid);
 		}
-		return doc || null;
+		if (result === null) {
+			throw new Error(`Document not found by uuid : ${uuid}`);
+		}
+		return result;
 	}
 
 	/**

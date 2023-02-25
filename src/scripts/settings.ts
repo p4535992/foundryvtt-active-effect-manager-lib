@@ -91,6 +91,14 @@ export const registerSettings = function (): void {
 		type: Boolean,
 	});
 
+	game.settings.register(CONSTANTS.MODULE_ID, "customEffectsItemId", {
+		name: "Custom Effects Item ID",
+		scope: "world",
+		config: false,
+		default: "",
+		type: String,
+	});
+
 	// ========================================================================
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {

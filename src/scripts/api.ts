@@ -7,6 +7,8 @@ import StatusEffectsLib from "./effects/status-effects";
 import { EffectSupport } from "./effects/effect-support";
 import type { EffectChangeData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/effectChangeData";
 import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import { Constants } from "./effects-public/effect";
+import { createActiveEffect } from "./effects/effect-helpers";
 
 const API = {
 	effectInterface: EffectInterface,
@@ -991,6 +993,93 @@ const API = {
 			scale,
 			alpha
 		);
+	},
+
+	// 2023-02-25
+
+	/**
+	 * Searches through the list of available effects and returns one matching the
+	 * effect name. Prioritizes finding custom effects first.
+	 *
+	 * @param {string} effectName - the effect name to search for
+	 * @returns {ActiveEffect} the found effect
+	 */
+	async findEffectByName(effectName): Promise<ActiveEffect | undefined> {
+		const result = await (<EffectInterface>this.effectInterface).findEffectByName(effectName);
+		return result;
+	},
+
+	/**
+	 * Toggles the effect on the provided actor UUIDS as the GM via sockets
+	 *
+	 * @param {string} effectName - name of the effect to toggle
+	 * @param {string} overlay - name of the effect to toggle
+	 * @param {string[]} uuids - UUIDS of the actors to toggle the effect on
+	 * @param {string[]} withSocket - use socket library for execute as GM
+	 * @returns {Promise} a promise that resolves when the GM socket function completes
+	 */
+	async toggleEffect(
+		effectName: string,
+		overlay = false,
+		uuids = <string[]>[],
+		withSocket = true
+	): Promise<boolean | undefined> {
+		const result = await (<EffectInterface>this.effectInterface).toggleEffect(effectName, overlay, uuids);
+		return result;
+	},
+
+	/**
+	 * Creates new custom effects with the provided active effect data.
+	 *
+	 * @param {object} params - the params for adding an effect
+	 * @param {ActiveEffect[]} params.activeEffects - array of active effects to add
+	 * @returns {Promise} a promise that resolves when the active effects have finished being added
+	 */
+	async createNewCustomEffectsWith({ activeEffects }): Promise<ActiveEffect[] | undefined> {
+		const result = await (<EffectInterface>this.effectInterface).createNewCustomEffectsWith({
+			activeEffects,
+		});
+		return result;
+	},
+
+	/**
+	 * Checks if the given effect has nested effects
+	 *
+	 * @param {ActiveEffect} effect - the active effect to check the nested effets on
+	 * @returns
+	 */
+	async hasNestedEffects(effect, withSocket = true): Promise<boolean | undefined> {
+		const nestedEffects = effect.getFlag(Constants.MODULE_ID, Constants.FLAGS.NESTED_EFFECTS) ?? [];
+		return nestedEffects.length > 0;
+	},
+
+	async _getNestedEffectSelection(effect, withSocket = true): Promise<ActiveEffect | undefined> {
+		const uuids = this._foundryHelpers.getActorUuids();
+		const nestedEffectNames = effect.getFlag(Constants.MODULE_ID, Constants.FLAGS.NESTED_EFFECTS) ?? [];
+		const nestedEffects = nestedEffectNames.map((nestedEffect) =>
+			this.findEffectByNameOnToken(nestedEffect, <string>uuids[0], withSocket)
+		);
+
+		const content = await renderTemplate("modules/dfreds-convenient-effects/templates/nested-effects-dialog.hbs", {
+			parentEffect: effect,
+			nestedEffects,
+		});
+		const choice = await Dialog.prompt(
+			{
+				title: effect.label,
+				content: content,
+				label: "Select Effect",
+				callback: (html) => {
+					const htmlChoice = html.find('select[name="effect-choice"]').val();
+					return htmlChoice;
+				},
+				rejectClose: false,
+			},
+			//@ts-ignore
+			{ width: 300 }
+		);
+
+		return nestedEffects.find((nestedEffect) => nestedEffect.label == choice);
 	},
 };
 

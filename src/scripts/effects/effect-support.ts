@@ -3,6 +3,7 @@ import type { PropertiesToSource } from "@league-of-foundry-developers/foundry-v
 import { i18n } from "../lib/lib";
 import Effect, { Constants } from "../effects-public/effect";
 import { isStringEquals, is_real_number } from "./effect-utility";
+import CONSTANTS from "../constants";
 
 export class EffectSupport {
 	static buildDefault(
@@ -32,9 +33,14 @@ export class EffectSupport {
 						statusId: isPassive ? undefined : id,
 						overlay: false,
 					},
-					isConvenient: true,
-					isCustomConvenient: true,
-					convenientDescription: "Applies custom effects",
+					[Constants.MODULE_ID]: {
+						[Constants.FLAGS.DESCRIPTION]: "Applies custom effects",
+						[Constants.FLAGS.IS_CONVENIENT]: true,
+						// [Constants.FLAGS.IS_DYNAMIC]: this.isDynamic,
+						// [Constants.FLAGS.IS_VIEWABLE]: this.isViewable,
+						// [Constants.FLAGS.NESTED_EFFECTS]: this.nestedEffects,
+						// [Constants.FLAGS.SUB_EFFECTS]: this.subEffects,
+					},
 				}
 			),
 			changes: changes,
@@ -108,19 +114,6 @@ export class EffectSupport {
 				}
 			}
 		}
-		/*
-    if (effect.atlChanges.length > 0) {
-      arrChanges.push(...effect.atlChanges);
-    }
-
-    if (effect.tokenMagicChanges.length > 0) {
-      arrChanges.push(...effect.tokenMagicChanges);
-    }
-
-    if (effect.atcvChanges.length > 0) {
-      arrChanges.push(...effect.atcvChanges);
-    }
-    */
 		return arrChanges;
 	}
 
@@ -231,6 +224,14 @@ export class EffectSupport {
 		//@ts-ignore
 		const statusId = isPassive ? undefined : activeEffect._id;
 
+		const convenientDescription = hasProperty(
+			activeEffect,
+			`flags.${Constants.MODULE_ID}.${Constants.FLAGS.DESCRIPTION}`
+		)
+			? i18n(getProperty(activeEffect, `flags.${Constants.MODULE_ID}.${Constants.FLAGS.DESCRIPTION}`)) ??
+			  "Applies custom effects"
+			: "Applies custom effects";
+
 		return new Effect({
 			customId: <string>activeEffect.id,
 			//@ts-ignore
@@ -255,10 +256,14 @@ export class EffectSupport {
 						statusId: isPassive ? undefined : statusId,
 						overlay: overlay ? overlay : false,
 					},
-					isConvenient: true,
-					isCustomConvenient: true,
-					//@ts-ignore
-					convenientDescription: i18n(activeEffect.flags.convenientDescription) ?? "Applies custom effects",
+					[Constants.MODULE_ID]: {
+						[Constants.FLAGS.DESCRIPTION]: convenientDescription,
+						[Constants.FLAGS.IS_CONVENIENT]: true,
+						// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
+						// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
+						// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
+						// [Constants.FLAGS.SUB_EFFECTS]: subEffects,
+					},
 					dae: EffectSupport._isEmptyObject(currentDae)
 						? isPassive
 							? { stackable: false, specialDuration: [], transfer: true }
@@ -295,6 +300,9 @@ export class EffectSupport {
 			isTemporary = true;
 		}
 		isPassive = !isTemporary;
+
+		const convenientDescription = p.description ? i18n(p.description) : "Applies custom effects";
+
 		//@ts-ignore
 		return ActiveEffect.create({
 			id: p._id,
@@ -314,10 +322,14 @@ export class EffectSupport {
 					//@ts-ignore
 					overlay: p.overlay ? p.overlay : false, // MOD 4535992
 				},
-				isConvenient: true,
-				isCustomConvenient: true,
-				//@ts-ignore
-				convenientDescription: p.description ? i18n(p.description) : "Applies custom effects",
+				[Constants.MODULE_ID]: {
+					[Constants.FLAGS.DESCRIPTION]: convenientDescription,
+					[Constants.FLAGS.IS_CONVENIENT]: true,
+					// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
+					// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
+					// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
+					// [Constants.FLAGS.SUB_EFFECTS]: subEffects,
+				},
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? { stackable: false, specialDuration: [], transfer: true }
 					: currentDae,
@@ -366,6 +378,11 @@ export class EffectSupport {
 				: {}
 			: effect.dae;
 		const currentFlags = effect.flags ? effect.flags : {};
+
+		const convenientDescription = effect.description
+			? i18n(effect.description) ?? "Applies custom effects"
+			: "Applies custom effects";
+
 		return {
 			id: myid,
 			name: i18n(effect.name),
@@ -379,9 +396,14 @@ export class EffectSupport {
 					statusId: isPassive ? undefined : myid,
 					overlay: myoverlay,
 				},
-				isConvenient: true,
-				isCustomConvenient: true,
-				convenientDescription: i18n(effect.description) ?? "Applies custom effects",
+				[Constants.MODULE_ID]: {
+					[Constants.FLAGS.DESCRIPTION]: convenientDescription,
+					[Constants.FLAGS.IS_CONVENIENT]: true,
+					[Constants.FLAGS.IS_DYNAMIC]: effect.isDynamic,
+					[Constants.FLAGS.IS_VIEWABLE]: effect.isViewable,
+					[Constants.FLAGS.NESTED_EFFECTS]: effect.nestedEffects,
+					[Constants.FLAGS.SUB_EFFECTS]: effect.subEffects,
+				},
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? isPassive
 						? { stackable: false, specialDuration: [], transfer: true }
@@ -397,6 +419,63 @@ export class EffectSupport {
 			// isTemporary: effect.isTemporary ?? false,
 			// isSuppressed: effect.isSuppressed ?? false,
 		};
+	}
+
+	/**
+	 * Converts the effect data to an active effect data object
+	 *
+	 * @param {object} params - the params to use for conversion
+	 * @param {string} params.origin - the origin to add to the effect
+	 * @param {boolean} params.overlay - whether the effect is an overlay or not
+	 * @returns {object} The active effect data object for this effect
+	 */
+	public static convertToActiveEffect(effect: Effect): ActiveEffect {
+		const changes = effect._handleIntegrations();
+		const flags = <any>{};
+		const label = effect.name;
+		const description = effect.description;
+		const isDynamic = effect.isDynamic;
+		const isViewable = effect.isViewable;
+		const nestedEffects = effect.nestedEffects;
+		const subEffects = effect.subEffects;
+		const icon = effect.icon;
+		const rounds = effect.rounds;
+		const seconds = effect.seconds;
+		const turns = effect.turns;
+
+		if (!flags.core) {
+			flags.core = {};
+		}
+		flags.core.statusId = `Convenient Effect: ${label}`;
+
+		flags[Constants.MODULE_ID] = {};
+		flags[Constants.MODULE_ID][Constants.FLAGS.DESCRIPTION] = description;
+		flags[Constants.MODULE_ID][Constants.FLAGS.IS_CONVENIENT] = true;
+		flags[Constants.MODULE_ID][Constants.FLAGS.IS_DYNAMIC] = isDynamic;
+		flags[Constants.MODULE_ID][Constants.FLAGS.IS_VIEWABLE] = isViewable;
+		flags[Constants.MODULE_ID][Constants.FLAGS.NESTED_EFFECTS] = nestedEffects;
+		flags[Constants.MODULE_ID][Constants.FLAGS.SUB_EFFECTS] = subEffects;
+
+		let duration = {
+			rounds: rounds ?? <number>seconds / CONFIG.time.roundTime,
+			seconds: seconds,
+			startRound: game.combat?.round,
+			startTime: game.time.worldTime,
+			startTurn: game.combat?.turn,
+			turns: turns,
+		};
+		let effect2 = new CONFIG.ActiveEffect.documentClass({
+			changes,
+			disabled: false,
+			duration,
+			flags,
+			icon,
+			label,
+			origin,
+			transfer: false,
+		});
+
+		return effect2;
 	}
 
 	// static retrieveChangesOrderedByPriority(changesTmp: EffectChangeData[]) {
@@ -624,6 +703,10 @@ export class EffectSupport {
 		const statusId = "Convenient Effect: " + effectNameI18;
 		const description = "Convenient Effect: " + effectNameI18;
 
+		const convenientDescription = description
+			? i18n(description) ?? "Applies custom effects"
+			: "Applies custom effects";
+
 		const efffectAtlToApply = new Effect({
 			// // customId: id || <string>token.actor?.id,
 			// customId: undefined, //<string>token.actor?.id,
@@ -655,9 +738,14 @@ export class EffectSupport {
 						statusId: isPassive ? undefined : statusId,
 						overlay: overlay ? overlay : false,
 					},
-					isConvenient: true,
-					isCustomConvenient: true,
-					convenientDescription: i18n(description) ?? "Applies custom effects",
+					[Constants.MODULE_ID]: {
+						[Constants.FLAGS.IS_CONVENIENT]: true,
+						[Constants.FLAGS.DESCRIPTION]: convenientDescription,
+						// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
+						// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
+						// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
+						// [Constants.FLAGS.SUB_EFFECTS]: subEffects,
+					},
 					dae: EffectSupport._isEmptyObject(currentDae)
 						? isPassive
 							? { stackable: false, specialDuration: [], transfer: true }
