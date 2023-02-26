@@ -60,7 +60,11 @@ export default class FoundryHelpers {
 	getActorByUuid(uuid) {
 		//@ts-ignore
 		const actorToken = fromUuidSync(uuid);
-		const actor = actorToken?.actor ? actorToken?.actor : actorToken;
+		let actor = actorToken?.actor ? actorToken?.actor : actorToken;
+		// MOD 4535992
+		if(!actor){
+			actor = game.actors?.get(uuid);
+		}
 		return actor;
 	}
 
@@ -103,7 +107,8 @@ export default class FoundryHelpers {
 	 */
 	getTokenByUuid(uuid: string): Token {
 		const tokens = <Token[]>canvas.tokens?.placeables;
-		const token = <Token>tokens.find((token) => token.id === uuid);
+		//@ts-ignore
+		let token = <Token>tokens.find((token) => token.uuid === uuid || token.id === uuid);
 		return token;
 	}
 }

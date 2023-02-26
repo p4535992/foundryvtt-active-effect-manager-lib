@@ -1049,13 +1049,15 @@ const API = {
 	 * @returns
 	 */
 	async hasNestedEffects(effect, withSocket = true): Promise<boolean | undefined> {
-		const nestedEffects = effect.getFlag(Constants.MODULE_ID, Constants.FLAGS.NESTED_EFFECTS) ?? [];
+		const nestedEffects =
+			getProperty(effect, `flags.${Constants.MODULE_ID}.${Constants.FLAGS.NESTED_EFFECTS}`) ?? [];
 		return nestedEffects.length > 0;
 	},
 
 	async _getNestedEffectSelection(effect, withSocket = true): Promise<ActiveEffect | undefined> {
 		const uuids = this._foundryHelpers.getActorUuids();
-		const nestedEffectNames = effect.getFlag(Constants.MODULE_ID, Constants.FLAGS.NESTED_EFFECTS) ?? [];
+		const nestedEffectNames =
+			getProperty(effect, `flags.${Constants.MODULE_ID}.${Constants.FLAGS.NESTED_EFFECTS}`) ?? [];
 		const nestedEffects = nestedEffectNames.map((nestedEffect) =>
 			this.findEffectByNameOnToken(nestedEffect, <string>uuids[0], withSocket)
 		);
