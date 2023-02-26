@@ -414,49 +414,67 @@ export async function drawOverlayHandler(wrapper, ...args) {
 }
 
 export async function drawShyEffects() {
-	this.hud.effects.removeChildren().forEach((c) => c.destroy());
+	if (!this.effects) {
+		return;
+	}
+	this.effects.renderable = false;
+	this.effects.removeChildren().forEach((c) => c.destroy());
+	this.effects.bg = this.effects.addChild(new PIXI.Graphics());
+	this.effects.overlay = null;
+
+	// Categorize new effects
 	const tokenEffects = this.document.effects;
 	const actorEffects = this.actor?.temporaryEffects || [];
 	let overlay = {
 		src: this.document.overlayEffect,
 		tint: <number | null>null,
 	};
+
 	const minPerm = <CONST.DOCUMENT_PERMISSION_LEVELS>game.settings.get(CONSTANTS.MODULE_NAME, "permLevel");
 	// Draw status effects
 	if (tokenEffects.length || actorEffects.length) {
 		const promises = <any[]>[];
-		const w = <number>Math.round(<number>canvas.dimensions?.size / 2 / 5) * 2;
-		const bg = <string>(
-			this.hud.effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.4).lineStyle(1.0, 0x000000)
-		);
-		let i = 0;
+		// const w = <number>Math.round(<number>canvas.dimensions?.size / 2 / 5) * 2;
+		// const bg = <string>this.effects.addChild(new PIXI.Graphics()).beginFill(0x000000, 0.4).lineStyle(1.0, 0x000000);
+		// let i = 0;
 
 		// Draw actor effects first
 		for (const f of actorEffects) {
 			if (!f.icon) {
 				continue;
 			}
+			// MOD CHECK PERMISSIONS
 			const source = <ActiveEffect>await fromUuid(f.origin);
 			if (!source.testUserPermission(<User>game.user, minPerm, {})) {
 				continue;
 			}
-			const tint = f.tint ? foundry.utils.colorStringToHex(f.tint) : null;
+			//@ts-ignore
+			const tint = Color.from(f.tint ?? null);
 			if (f.flags.core?.overlay) {
+				// if ( f.getFlag("core", "overlay") ) {
 				overlay = { src: f.icon, tint: tint };
 				continue;
 			}
-			promises.push(this._drawEffect(f.icon, i, bg, w, tint));
-			i++;
+			promises.push(this._drawEffect(f.icon, tint));
+			// MOD
+			// promises.push(this._drawEffect(f.icon, i, bg, w, tint));
+			// i++;
 		}
 
 		// Next draw token effects
 		for (const f of tokenEffects) {
-			promises.push(this._drawEffect(f, i, bg, w, null));
-			i++;
+			promises.push(this._drawEffect(f, null));
+			// MOD
+			// promises.push(this._drawEffect(f, i, bg, w, null));
+			// i++;
 		}
 		await Promise.all(promises);
 	}
 
 	// Draw overlay effect
-	return this._drawOverlay(overlay);
+	this.effects.overlay = await this._drawOverlay(overlay.src, overlay.tint);
+	// MOD
+	// this._drawOverlay(overlay);
+	this._refreshEffects();
+	this.effects.renderable = true;
 }

@@ -62,7 +62,7 @@ export default class FoundryHelpers {
 		const actorToken = fromUuidSync(uuid);
 		let actor = actorToken?.actor ? actorToken?.actor : actorToken;
 		// MOD 4535992
-		if(!actor){
+		if (!actor) {
 			actor = game.actors?.get(uuid);
 		}
 		return actor;

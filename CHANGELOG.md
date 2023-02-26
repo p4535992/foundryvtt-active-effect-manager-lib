@@ -1,3 +1,7 @@
+### 0.2.0 [BREAKING CHANGES]
+
+- Big update of the code
+
 ### 0.1.18-19
 
 - Update ATL
