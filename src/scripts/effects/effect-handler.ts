@@ -452,12 +452,17 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the actor to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean}overlay - if the effect is an overlay or not
 	 */
-	async addActiveEffectOnActor(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnActor(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined> {
 		if (this.isPf2e) {
-			return await this.effectPf2eHandler.addActiveEffectOnActor(uuid, activeEffectData);
+			return await this.effectPf2eHandler.addActiveEffectOnActor(uuid, activeEffectData, overlay);
 		} else {
-			return await this.effectGenericHandler.addActiveEffectOnActor(uuid, activeEffectData);
+			return await this.effectGenericHandler.addActiveEffectOnActor(uuid, activeEffectData, overlay);
 		}
 	}
 
@@ -808,12 +813,17 @@ export default class EffectHandler implements EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the token to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
-	async addActiveEffectOnToken(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnToken(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined> {
 		if (this.isPf2e) {
-			return await this.effectPf2eHandler.addActiveEffectOnToken(uuid, activeEffectData);
+			return await this.effectPf2eHandler.addActiveEffectOnToken(uuid, activeEffectData, overlay);
 		} else {
-			return await this.effectGenericHandler.addActiveEffectOnToken(uuid, activeEffectData);
+			return await this.effectGenericHandler.addActiveEffectOnToken(uuid, activeEffectData, overlay);
 		}
 	}
 

@@ -370,10 +370,24 @@ const API = {
 		if (!Array.isArray(inAttributes)) {
 			throw error("addActiveEffectOnTokenArr | inAttributes must be of type array");
 		}
-		const [tokenId, activeEffectData] = inAttributes;
+		const [tokenId, activeEffectData, overlay] = inAttributes;
 		const result = (<EffectInterface>this.effectInterface)._effectHandler.addActiveEffectOnToken(
 			<string>tokenId,
-			activeEffectData
+			activeEffectData,
+			overlay
+		);
+		return result;
+	},
+
+	async addActiveEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined> {
+		if (!Array.isArray(inAttributes)) {
+			throw error("addActiveEffectOnTokenArr | inAttributes must be of type array");
+		}
+		const [actorId, activeEffectData, overlay] = inAttributes;
+		const result = (<EffectInterface>this.effectInterface)._effectHandler.addActiveEffectOnActor(
+			<string>actorId,
+			activeEffectData,
+			overlay
 		);
 		return result;
 	},
@@ -569,10 +583,15 @@ const API = {
 		return result;
 	},
 
-	async addActiveEffectOnActor(actorId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnActor(
+		actorId: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined> {
 		const result = (<EffectInterface>this.effectInterface).addActiveEffectOnActor(
 			<string>actorId,
-			activeEffectData
+			activeEffectData,
+			overlay
 		);
 		return result;
 	},
@@ -680,10 +699,15 @@ const API = {
 		return result;
 	},
 
-	async addActiveEffectOnToken(tokenId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnToken(
+		tokenId: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).addActiveEffectOnToken(
 			<string>tokenId,
-			activeEffectData
+			activeEffectData,
+			overlay
 		);
 		return result;
 	},

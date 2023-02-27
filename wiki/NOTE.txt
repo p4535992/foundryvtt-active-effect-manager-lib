@@ -1,2 +1,2 @@
 Update with [DFreds Convenient Effects](https://github.com/DFreds/dfreds-convenient-effects) 
-version 4.0.2 2023-02-25
+version 4.0.3 2023-02-27

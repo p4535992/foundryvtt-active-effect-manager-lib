@@ -796,15 +796,30 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the actor to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
-	async addActiveEffectOnActor(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnActor(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay = false
+	): Promise<ActiveEffect | undefined> {
 		if (activeEffectData) {
 			const actor = <Actor>this._foundryHelpers.getActorByUuid(uuid);
 			//@ts-ignore
 			if (!activeEffectData.origin) {
+				const origin = EffectSupport.prepareOriginFromEntity(actor);
 				//@ts-ignore
-				activeEffectData.origin = `Actor.${actor.id}`;
+				activeEffectData.origin = origin;
 			}
+			let coreFlags = {
+				core: {
+					//@ts-ignore
+					statusId: `Convenient Effect: ${activeEffectData.label}`,
+					overlay: overlay,
+				},
+			};
+			//@ts-ignore
+			activeEffectData.flags = foundry.utils.mergeObject(activeEffectData.flags, coreFlags);
 			const activeEffectsAdded = <ActiveEffect[]>(
 				await actor.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
@@ -1466,8 +1481,13 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the token to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
-	async addActiveEffectOnToken(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined> {
+	async addActiveEffectOnToken(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay = false
+	): Promise<ActiveEffect | undefined> {
 		debugM(
 			this.moduleName,
 			`START Effect Handler 'addActiveEffectOnToken' : [uuid=${uuid},activeEffectData=${activeEffectData}]`
@@ -1480,6 +1500,15 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				//@ts-ignore
 				activeEffectData.origin = origin;
 			}
+			let coreFlags = {
+				core: {
+					//@ts-ignore
+					statusId: `Convenient Effect: ${activeEffectData.label}`,
+					overlay: overlay,
+				},
+			};
+			//@ts-ignore
+			activeEffectData.flags = foundry.utils.mergeObject(activeEffectData.flags, coreFlags);
 			const activeEffetsAdded = <ActiveEffect[]>(
 				await token.actor?.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
@@ -1529,6 +1558,15 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
+		let coreFlags = {
+			core: {
+				//@ts-ignore
+				statusId: `Convenient Effect: ${effectUpdated.label}`,
+				overlay: effectUpdated.overlay,
+			},
+		};
+		//@ts-ignore
+		effectUpdated.flags = foundry.utils.mergeObject(effectUpdated.flags, coreFlags);
 		let activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
 			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);
@@ -1582,6 +1620,15 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		effectUpdated.origin = origin;
 		effectUpdated.overlay = String(overlay) === "false" || String(overlay) === "true" ? overlay : false;
+		let coreFlags = {
+			core: {
+				//@ts-ignore
+				statusId: `Convenient Effect: ${effectUpdated.label}`,
+				overlay: effectUpdated.overlay,
+			},
+		};
+		//@ts-ignore
+		effectUpdated.flags = foundry.utils.mergeObject(effectUpdated.flags, coreFlags);
 		let activeEffectDataUpdated = EffectSupport.convertToActiveEffectData(effectUpdated);
 		if (await API.hasNestedEffects(activeEffectDataUpdated)) {
 			activeEffectDataUpdated = <any>await API._getNestedEffectSelection(activeEffectDataUpdated);

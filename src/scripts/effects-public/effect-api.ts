@@ -67,6 +67,8 @@ export interface ActiveEffectManagerLibApi {
 
 	addActiveEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined>;
 
+	addActiveEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined>;
+
 	updateEffectFromIdOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined>;
 
 	updateEffectFromNameOnTokenArr(...inAttributes: any[]): Promise<boolean | undefined>;
@@ -112,7 +114,11 @@ export interface ActiveEffectManagerLibApi {
 		overlay?: boolean | undefined
 	): Promise<boolean | undefined>;
 
-	addActiveEffectOnActor(actorId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined>;
+	addActiveEffectOnActor(
+		actorId: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined>;
 
 	removeEffectOnActor(actorId: string, effectName: string): Promise<ActiveEffect | undefined>;
 
@@ -158,7 +164,11 @@ export interface ActiveEffectManagerLibApi {
 		overlay?: boolean | undefined
 	): Promise<boolean | undefined>;
 
-	addActiveEffectOnToken(tokenId: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined>;
+	addActiveEffectOnToken(
+		tokenId: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined>;
 
 	removeEffectOnToken(tokenId: string, effectName: string): Promise<ActiveEffect | undefined>;
 
@@ -412,6 +422,7 @@ interface EffectInterfaceApi {
 	addActiveEffectOnActor(
 		uuid: string,
 		activeEffectData: ActiveEffect,
+		overlay?: boolean,
 		withSocket?: boolean
 	): Promise<ActiveEffect | undefined>;
 
@@ -472,6 +483,7 @@ interface EffectInterfaceApi {
 	addActiveEffectOnToken(
 		uuid: string,
 		activeEffectData: ActiveEffect,
+		overlay?: boolean,
 		withSocket?: boolean
 	): Promise<ActiveEffect | undefined>;
 

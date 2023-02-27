@@ -350,16 +350,18 @@ export default class EffectInterface {
 	 *
 	 * @param {string} uuid - the uuid of the actor to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
 	async addActiveEffectOnActor(
 		uuid: string,
 		activeEffectData: ActiveEffect,
+		overlay = false,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addActiveEffectOnActor", uuid, activeEffectData);
+			return this._socket.executeAsGM("addActiveEffectOnActor", uuid, activeEffectData, overlay);
 		} else {
-			return this._effectHandler.addActiveEffectOnActor(uuid, activeEffectData);
+			return this._effectHandler.addActiveEffectOnActor(uuid, activeEffectData, overlay);
 		}
 	}
 
@@ -545,7 +547,6 @@ export default class EffectInterface {
 		//@ts-ignore
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const effect = <ActiveEffect>actorEffects.find(
-			//(activeEffect) => <boolean>activeEffect?.flags?.isConvenient && <string>activeEffect.id == effectId,
 			//@ts-ignore
 			(activeEffect) => <string>activeEffect?._id === effectId
 		);
@@ -621,16 +622,18 @@ export default class EffectInterface {
 	 *
 	 * @param {string} uuid - the uuid of the token to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
 	async addActiveEffectOnToken(
 		uuid: string,
 		activeEffectData: ActiveEffect,
+		overlay = false,
 		withSocket = true
 	): Promise<ActiveEffect | undefined> {
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addActiveEffectOnToken", uuid, activeEffectData);
+			return this._socket.executeAsGM("addActiveEffectOnToken", uuid, activeEffectData, overlay);
 		} else {
-			return this._effectHandler.addActiveEffectOnToken(uuid, activeEffectData);
+			return this._effectHandler.addActiveEffectOnToken(uuid, activeEffectData, overlay);
 		}
 	}
 

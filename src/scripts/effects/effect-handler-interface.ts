@@ -283,8 +283,13 @@ export interface EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the actor to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean} overlay - if the effect is an overlay or not
 	 */
-	addActiveEffectOnActor(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined>;
+	addActiveEffectOnActor(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined>;
 
 	addActiveEffectOnActorArr(...inAttributes: any[]): Promise<ActiveEffect | undefined>;
 
@@ -485,8 +490,13 @@ export interface EffectHandlerInterface {
 	 *
 	 * @param {string} uuid - the uuid of the token to add the effect to
 	 * @param {string} activeEffectData - the name of the effect to add
+	 * @param {boolean}overlay - if the effect is an overlay or not
 	 */
-	addActiveEffectOnToken(uuid: string, activeEffectData: ActiveEffect): Promise<ActiveEffect | undefined>;
+	addActiveEffectOnToken(
+		uuid: string,
+		activeEffectData: ActiveEffect,
+		overlay?: boolean
+	): Promise<ActiveEffect | undefined>;
 
 	addActiveEffectOnTokenArr(...inAttributes: any[]): Promise<ActiveEffect | undefined>;
 

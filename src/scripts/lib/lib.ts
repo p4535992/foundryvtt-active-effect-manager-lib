@@ -4,6 +4,7 @@
 
 import type { CONST } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/module.mjs";
 import CONSTANTS from "../constants";
+import { Constants } from "../effects-public/effect";
 
 // export async function getToken(documentUuid) {
 // 	const document = await fromUuid(documentUuid);
@@ -477,4 +478,19 @@ export async function drawShyEffects() {
 	// this._drawOverlay(overlay);
 	this._refreshEffects();
 	this.effects.renderable = true;
+}
+
+export function isConvenient(activeEffect) {
+	const isConvenient = activeEffect.getFlag(Constants.MODULE_ID, Constants.FLAGS.IS_CONVENIENT) ?? false;
+
+	const isOldConvenient = activeEffect.flags.isConvenient;
+	const isOldCustomConvenient = activeEffect.flags.isCustomConvenient;
+
+	return isConvenient || isOldConvenient || isOldCustomConvenient;
+}
+
+export function getDescription(activeEffect) {
+	const description = activeEffect.getFlag(Constants.MODULE_ID, Constants.FLAGS.DESCRIPTION);
+
+	return description ?? activeEffect.flags.convenientDescription;
 }
