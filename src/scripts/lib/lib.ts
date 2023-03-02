@@ -445,9 +445,12 @@ export async function drawShyEffects() {
 				continue;
 			}
 			// MOD CHECK PERMISSIONS
-			const source = <ActiveEffect>await fromUuid(f.origin);
-			if (!source.testUserPermission(<User>game.user, minPerm, {})) {
-				continue;
+			const ref = f.uuid ? f.uuid : f.origin;
+			if(ref){
+				const source = <Actor>await fromUuid(ref);
+				if (!source.testUserPermission(<User>game.user, minPerm, {})) {
+					continue;
+				}
 			}
 			//@ts-ignore
 			const tint = Color.from(f.tint ?? null);
