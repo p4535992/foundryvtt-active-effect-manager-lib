@@ -63,7 +63,7 @@ export default class CustomEffectsHandler {
 		const item = <Item>await this._findOrCreateCustomEffectsItem();
 		const newEffect = <ActiveEffect>createActiveEffect(<any>{
 			label: "New Effect",
-			origin: item.uuid,
+			origin: item.uuid
 		});
 		//@ts-ignore
 		const effects = <ActiveEffect[]>await item.createEmbeddedDocuments("ActiveEffect", [newEffect]);
@@ -84,10 +84,10 @@ export default class CustomEffectsHandler {
 				activeEffect.origin = item.uuid;
 			}
 			return <ActiveEffect>createActiveEffect({ ...activeEffect });
-            // return <ActiveEffect>createActiveEffect({
-            //     ...activeEffect,
-            //     origin,
-            // });
+			// return <ActiveEffect>createActiveEffect({
+			//     ...activeEffect,
+			//     origin,
+			// });
 		});
 		//@ts-ignore
 		return item.createEmbeddedDocuments("ActiveEffect", customEffects);
@@ -142,11 +142,11 @@ export default class CustomEffectsHandler {
 
 		const content = await renderTemplate("templates/apps/import-data.html", {
 			hint1: game.i18n.format("DOCUMENT.ImportDataHint1", {
-				document: item.documentName,
+				document: item.documentName
 			}),
 			hint2: game.i18n.format("DOCUMENT.ImportDataHint2", {
-				name: item.name,
-			}),
+				name: item.name
+			})
 		});
 
 		// NOTE: this is taken from foundry, wrapped in a promise by me
@@ -170,17 +170,17 @@ export default class CustomEffectsHandler {
 									item.importFromJSON(jsonData);
 									resolve(true);
 								});
-							},
+							}
 						},
 						no: {
 							icon: '<i class="fas fa-times"></i>',
-							label: "Cancel",
-						},
+							label: "Cancel"
+						}
 					},
-					default: "import",
+					default: "import"
 				},
 				{
-					width: 400,
+					width: 400
 				}
 			).render(true);
 		});
@@ -202,7 +202,7 @@ export default class CustomEffectsHandler {
 		const item = <Item>await CONFIG.Item.documentClass.create({
 			name: "Custom Convenient Effects",
 			img: `modules/${CONSTANTS.MODULE_ID}/assets/images/magic-palm.svg`,
-			type: "consumable",
+			type: "consumable"
 		});
 		log(`Creating custom item with ${item.id}`);
 		// await this._settings.setCustomEffectsItemId(item.id);

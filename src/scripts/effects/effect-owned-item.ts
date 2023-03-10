@@ -40,7 +40,7 @@ export class EffectOwnedItem extends ActiveEffect {
 		this.parent?.update(
 			{
 				//@ts-ignore
-				effects: [dataToCreate],
+				effects: [dataToCreate]
 			},
 			context
 		);
@@ -78,7 +78,7 @@ export class EffectOwnedItem extends ActiveEffect {
 
 		this.parent?.update(
 			{
-				effects: newParentEffectsData,
+				effects: newParentEffectsData
 			},
 			{ ...context, recursive: false }
 		);
@@ -133,7 +133,7 @@ export class EffectOwnedItem extends ActiveEffect {
 		try {
 			await embeddedItem.update({
 				//@ts-ignore
-				effects: newEffects,
+				effects: newEffects
 			});
 		} catch (e) {
 			error(e);
@@ -174,7 +174,7 @@ export class EffectOwnedItem extends ActiveEffect {
 		return ActiveEffect.create(
 			{
 				...this.toJSON(),
-				origin: <string>this.parent?.uuid,
+				origin: <string>this.parent?.uuid
 			},
 			{ parent: actor }
 		);
@@ -231,7 +231,7 @@ export class EffectOwnedItem extends ActiveEffect {
 		}
 
 		return {
-			rounds: 1,
+			rounds: 1
 		};
 	}
 

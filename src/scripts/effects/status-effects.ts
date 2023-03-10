@@ -38,7 +38,7 @@ export default class StatusEffectsLib {
 	 */
 	initialize(statusEffectNames: string[]) {
 		const modifyStatusEffects = "add"; // TODO for now is always 'add'
-        let statusEffects;
+		let statusEffects;
 		//@ts-ignore
 		if (modifyStatusEffects === "replace") {
 			statusEffects = this._fetchStatusEffects(statusEffectNames);
@@ -63,27 +63,27 @@ export default class StatusEffectsLib {
 			// 	};
 			// }
 		} else {
-            // Do nothing
-        }
+			// Do nothing
+		}
 
-        if(statusEffects) {
-            if (game.settings.get(CONSTANTS.MODULE_ID, "statusEffectsSortOrder") === 'alphabetical') {
-                statusEffects = statusEffects.sort((a, b) => {
-                    let nameA = a.label.toLowerCase();
-                    let nameB = b.label.toLowerCase();
+		if (statusEffects) {
+			if (game.settings.get(CONSTANTS.MODULE_ID, "statusEffectsSortOrder") === "alphabetical") {
+				statusEffects = statusEffects.sort((a, b) => {
+					let nameA = a.label.toLowerCase();
+					let nameB = b.label.toLowerCase();
 
-                    if (nameA < nameB) {
-                        return -1;
-                    }
-                    if (nameA > nameB) {
-                        return 1;
-                    }
-                    return 0;
-                });
-            }
+					if (nameA < nameB) {
+						return -1;
+					}
+					if (nameA > nameB) {
+						return 1;
+					}
+					return 0;
+				});
+			}
 
-            CONFIG.statusEffects = statusEffects;
-        }
+			CONFIG.statusEffects = statusEffects;
+		}
 	}
 
 	_fetchStatusEffects(statusEffectNames: string[]) {
@@ -294,7 +294,7 @@ export default class StatusEffectsLib {
 						obj[id] = {
 							id: id,
 							//@ts-ignore
-							overlay: !!e.flags.core?.overlay,
+							overlay: !!e.flags.core?.overlay
 						};
 					}
 					return obj;
@@ -362,7 +362,7 @@ export default class StatusEffectsLib {
 					icon: src,
 					isActive,
 					isOverlay,
-					cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" "),
+					cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" ")
 				};
 				return obj;
 			}, {});
@@ -431,7 +431,7 @@ export default class StatusEffectsLib {
 								icon: iconEffect,
 								isActive,
 								isOverlay,
-								cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" "),
+								cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" ")
 							};
 						}
 					}
@@ -469,7 +469,7 @@ export default class StatusEffectsLib {
 						icon: iconEffect,
 						isActive,
 						isOverlay,
-						cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" "),
+						cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" ")
 					};
 				} else {
 					const id = e.id; // NOTE: added this
@@ -507,7 +507,7 @@ export default class StatusEffectsLib {
 						icon: src,
 						isActive,
 						isOverlay,
-						cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" "),
+						cssClass: [isActive ? "active" : null, isOverlay ? "overlay" : null].filterJoin(" ")
 					};
 				}
 

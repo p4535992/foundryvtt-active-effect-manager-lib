@@ -732,9 +732,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -744,9 +744,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -757,9 +757,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		}
 
@@ -799,8 +799,8 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 				core: {
 					//@ts-ignore
 					statusId: `Convenient Effect: ${activeEffectData.label}`,
-					overlay: overlay,
-				},
+					overlay: overlay
+				}
 			};
 			//@ts-ignore
 			activeEffectData.flags = foundry.utils.mergeObject(activeEffectData.flags, coreFlags);
@@ -1303,9 +1303,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -1315,9 +1315,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -1328,9 +1328,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		}
 		debugM(
@@ -1407,9 +1407,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 			//@ts-ignore
 		} else if (String(forceDisabled) === "true" && !activeEffect.disabled) {
@@ -1419,9 +1419,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		} else {
 			// otherwise toggle its disabled status
@@ -1432,9 +1432,9 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					core: {
 						//@ts-ignore
 						statusId: activeEffect._id,
-						overlay: overlay,
-					},
-				},
+						overlay: overlay
+					}
+				}
 			});
 		}
 		debugM(
@@ -1481,8 +1481,8 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 				core: {
 					//@ts-ignore
 					statusId: `Convenient Effect: ${activeEffectData.label}`,
-					overlay: overlay,
-				},
+					overlay: overlay
+				}
 			};
 			//@ts-ignore
 			activeEffectData.flags = foundry.utils.mergeObject(activeEffectData.flags, coreFlags);
@@ -1539,8 +1539,8 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 			core: {
 				//@ts-ignore
 				statusId: `Convenient Effect: ${effectUpdated.label}`,
-				overlay: effectUpdated.overlay,
-			},
+				overlay: effectUpdated.overlay
+			}
 		};
 		//@ts-ignore
 		effectUpdated.flags = foundry.utils.mergeObject(effectUpdated.flags, coreFlags);
@@ -1594,8 +1594,8 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 			core: {
 				//@ts-ignore
 				statusId: `Convenient Effect: ${effectUpdated.label}`,
-				overlay: effectUpdated.overlay,
-			},
+				overlay: effectUpdated.overlay
+			}
 		};
 		//@ts-ignore
 		effectUpdated.flags = foundry.utils.mergeObject(effectUpdated.flags, coreFlags);
@@ -1920,7 +1920,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					const item = owner;
 					const itemUpdated = <Item>await item.update({
 						//@ts-ignore
-						effects: [activeEffect],
+						effects: [activeEffect]
 					});
 					return itemUpdated;
 				}
@@ -1946,7 +1946,7 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 					const item = owner;
 					const itemUpdated = await item.update({
 						//@ts-ignore
-						effects: [activeEffect],
+						effects: [activeEffect]
 					});
 					return itemUpdated;
 				}
@@ -1993,18 +1993,18 @@ export default class EffectPf2eHandler implements EffectHandlerInterface {
 				//@ts-ignore
 				if (String(forceEnabled) === "true" && activeEffect?.disabled) {
 					updated = await activeEffect?.update({
-						disabled: false,
+						disabled: false
 					});
 					//@ts-ignore
 				} else if (String(forceDisabled) === "true" && !activeEffect?.disabled) {
 					updated = await activeEffect?.update({
-						disabled: true,
+						disabled: true
 					});
 				} else {
 					// otherwise toggle its disabled status
 					updated = await activeEffect?.update({
 						//@ts-ignore
-						disabled: !activeEffect?.disabled,
+						disabled: !activeEffect?.disabled
 					});
 				}
 				return updated;

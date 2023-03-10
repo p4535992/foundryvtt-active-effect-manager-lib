@@ -107,7 +107,7 @@ export default class EffectInterface {
 		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("removeEffect", {
 				effectName,
-				uuid,
+				uuid
 			});
 		} else {
 			return this._effectHandler.removeEffect(effectName, uuid);
@@ -1097,7 +1097,7 @@ export default class EffectInterface {
 	 */
 	createNewCustomEffectsWith({ activeEffects }): Promise<ActiveEffect[] | undefined> {
 		return this._customEffectsHandler.createNewCustomEffectsWith({
-			activeEffects,
+			activeEffects
 		});
 	}
 
@@ -1123,7 +1123,7 @@ export default class EffectInterface {
 
 		const content = await renderTemplate("modules/dfreds-convenient-effects/templates/nested-effects-dialog.hbs", {
 			parentEffect: effect,
-			nestedEffects,
+			nestedEffects
 		});
 		const choice = await Dialog.prompt(
 			{
@@ -1134,7 +1134,7 @@ export default class EffectInterface {
 					const htmlChoice = html.find('select[name="effect-choice"]').val();
 					return htmlChoice;
 				},
-				rejectClose: false,
+				rejectClose: false
 			},
 			//@ts-ignore
 			{ width: 300 }

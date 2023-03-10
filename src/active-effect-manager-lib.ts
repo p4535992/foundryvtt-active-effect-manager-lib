@@ -20,7 +20,7 @@ import {
 	findAllStatusEffectButtons,
 	findEffectsButton,
 	findStatusEffectButtonsContainingSearchTerm,
-	isPF2E,
+	isPF2E
 } from "./scripts/effects/effect-quick-status";
 
 /* ------------------------------------ */

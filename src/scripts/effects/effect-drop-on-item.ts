@@ -21,9 +21,9 @@ export class DropEffectsOnItems {
 			permissions: {
 				dragstart: () => true,
 				//@ts-ignore
-				dragdrop: () => app.isEditable && !app.item.isOwned,
+				dragdrop: () => app.isEditable && !app.item.isOwned
 			},
-			callbacks: { dragstart: this._onDragStart(app.object), drop: this._onDrop(app.object) },
+			callbacks: { dragstart: this._onDragStart(app.object), drop: this._onDrop(app.object) }
 		});
 
 		log("binding dragdrop", dragDrop);
@@ -38,7 +38,7 @@ export class DropEffectsOnItems {
 	static _onDragStart = (effectParent) => (event) => {
 		if (!effectParent) {
 			log("DragDrop _onDragStart no parent", {
-				effectParent,
+				effectParent
 			});
 
 			return;
@@ -62,7 +62,7 @@ export class DropEffectsOnItems {
 
 		log("DragDrop dragStart:", {
 			effect,
-			dragData,
+			dragData
 		});
 
 		// Set data transfer
@@ -86,11 +86,11 @@ export class DropEffectsOnItems {
 
 			log("DragDrop drop", {
 				event,
-				dropData,
+				dropData
 			});
 		} catch (err) {
 			log("DragDrop drop", {
-				err,
+				err
 			});
 
 			return false;
@@ -109,14 +109,14 @@ export class DropEffectsOnItems {
 		log("DragDrop drop starting:", {
 			effectParent,
 			dropData,
-			effectDocument,
+			effectDocument
 		});
 
 		// create the new effect but make the 'origin' the new parent item
 		return ActiveEffect.create(
 			{
 				...effectDocument.toObject(),
-				origin: effectParent.uuid,
+				origin: effectParent.uuid
 			},
 			{ parent: effectParent }
 		);

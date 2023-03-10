@@ -36,7 +36,7 @@ export default class MacroHandler {
 				name: name,
 				type: "script",
 				img: effect.icon,
-				command: command,
+				command: command
 			});
 		}
 

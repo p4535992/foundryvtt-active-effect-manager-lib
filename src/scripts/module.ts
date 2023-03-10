@@ -13,7 +13,7 @@ import {
 	findAllStatusEffectButtons,
 	findEffectsButton,
 	findStatusEffectButtonsContainingSearchTerm,
-	isPF2E,
+	isPF2E
 } from "./effects/effect-quick-status";
 
 export const initHooks = (): void => {
@@ -25,7 +25,7 @@ export const initHooks = (): void => {
 
 	//@ts-ignore
 	window.activeEffectManager = {
-		API,
+		API
 	};
 
 	if (game.settings.get(CONSTANTS.MODULE_NAME, "enableShyEffectIcons")) {
@@ -59,7 +59,7 @@ export const setupHooks = (): void => {
 			(<StatusEffectsLib>window.activeEffectManager.API.statusEffects).onToggleEffect({
 				token: this.object,
 				wrapper,
-				args,
+				args
 			});
 		});
 

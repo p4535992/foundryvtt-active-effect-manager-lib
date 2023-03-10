@@ -19,7 +19,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "enableDropEffectsOnItems", {
@@ -28,7 +28,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "statusEffectNames", {
@@ -37,7 +37,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: false,
 		default: API._defaultStatusEffectNames,
-		type: Array,
+		type: Array
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "enableStatusEffectNames", {
@@ -46,22 +46,23 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
-    game.settings.register(CONSTANTS.MODULE_ID, "statusEffectsSortOrder", {
+	game.settings.register(CONSTANTS.MODULE_ID, "statusEffectsSortOrder", {
 		name: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.name`,
 		hint: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.hint`,
-        scope: 'world',
-        config: true,
-        default: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.none`,
-        choices: <any>{
-            "byOrderAdded": `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.byOrderAdded`,
-            "alphabetical": `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.alphabetical`,
-        },
-        type: String,
-        requiresReload: true,
-    });
+		scope: "world",
+		config: true,
+		default: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.none`,
+		choices: <any>{
+			byOrderAdded: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.byOrderAdded`,
+			alphabetical: `${CONSTANTS.MODULE_ID}.setting.statusEffectsSortOrder.options.alphabetical`
+		},
+		type: String,
+		//@ts-ignore
+		requiresReload: true
+	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "showOnlyTemporaryStatusEffectNames", {
 		name: `${CONSTANTS.MODULE_ID}.setting.showOnlyTemporaryStatusEffectNames.name`,
@@ -69,7 +70,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "enableShyEffectIcons", {
@@ -78,7 +79,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "permLevel", {
@@ -92,8 +93,8 @@ export const registerSettings = function (): void {
 			NONE: "None",
 			LIMITED: "Limited",
 			OBSERVER: "Observer",
-			OWNER: "Owner",
-		},
+			OWNER: "Owner"
+		}
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "enableQuickStatusEffect", {
@@ -102,7 +103,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
 
 	game.settings.register(CONSTANTS.MODULE_ID, "customEffectsItemId", {
@@ -110,7 +111,7 @@ export const registerSettings = function (): void {
 		scope: "world",
 		config: false,
 		default: "",
-		type: String,
+		type: String
 	});
 
 	// ========================================================================
@@ -121,9 +122,8 @@ export const registerSettings = function (): void {
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean,
+		type: Boolean
 	});
-
 };
 
 class ResetSettingsDialog extends FormApplication<FormApplicationOptions, object, any> {

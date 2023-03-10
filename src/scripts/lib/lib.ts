@@ -428,7 +428,7 @@ export async function drawShyEffects() {
 	const actorEffects = this.actor?.temporaryEffects || [];
 	let overlay = {
 		src: this.document.overlayEffect,
-		tint: <number | null>null,
+		tint: <number | null>null
 	};
 
 	const minPerm = <CONST.DOCUMENT_PERMISSION_LEVELS>game.settings.get(CONSTANTS.MODULE_NAME, "permLevel");
@@ -446,7 +446,7 @@ export async function drawShyEffects() {
 			}
 			// MOD CHECK PERMISSIONS
 			const ref = f.uuid ? f.uuid : f.origin;
-			if(ref){
+			if (ref) {
 				const source = <Actor>await fromUuid(ref);
 				if (!source.testUserPermission(<User>game.user, minPerm, {})) {
 					continue;
@@ -482,4 +482,3 @@ export async function drawShyEffects() {
 	this._refreshEffects();
 	this.effects.renderable = true;
 }
-

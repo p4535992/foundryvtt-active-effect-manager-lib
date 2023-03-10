@@ -3,7 +3,7 @@ export enum EffectActions {
 	edit = "edit",
 	delete = "delete",
 	toggle = "toggle",
-	update = "update",
+	update = "update"
 }
 
 export interface StatusEffectInternal {

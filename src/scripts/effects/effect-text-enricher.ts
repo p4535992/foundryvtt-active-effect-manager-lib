@@ -17,7 +17,7 @@ export default class TextEnrichers {
 			enricher: (match, options) => {
 				let [method, effectName, name] = match.slice(1, 4);
 				return this._createEffectLink({ method, effectName, name });
-			},
+			}
 		});
 
 		this._activateListeners();
@@ -43,9 +43,9 @@ export default class TextEnrichers {
 			cls: ["content-link", "ce-content-link"],
 			icon: "fas fa-hand-sparkles",
 			dataset: {
-				uuid: "nothing", // stops undefined error in foundry a.content-link click listener
+				uuid: "nothing" // stops undefined error in foundry a.content-link click listener
 			},
-			name: name ?? effectName,
+			name: name ?? effectName
 		};
 
 		let broken = false;

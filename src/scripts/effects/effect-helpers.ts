@@ -4,7 +4,7 @@ export function createActiveEffect({
 	label,
 	description = "",
 	icon = "icons/svg/aura.svg",
-    duration = {},
+	duration = {},
 	seconds = <number | null>null,
 	rounds = null,
 	turns = null,
@@ -16,7 +16,7 @@ export function createActiveEffect({
 	atlChanges = [],
 	tokenMagicChanges = [],
 	nestedEffects = [],
-	subEffects = [],
+	subEffects = []
 }) {
 	// const settings = new Settings();
 
@@ -40,17 +40,17 @@ export function createActiveEffect({
 	flags[Constants.MODULE_ID][Constants.FLAGS.IS_VIEWABLE] = isViewable;
 	flags[Constants.MODULE_ID][Constants.FLAGS.NESTED_EFFECTS] = nestedEffects;
 	flags[Constants.MODULE_ID][Constants.FLAGS.SUB_EFFECTS] = subEffects;
-    //@ts-ignore
-    let effectDuration = isEmpty(duration)
-      ? {
-          rounds,
-          seconds,
-          startRound: game.combat?.round,
-          startTime: game.time.worldTime,
-          startTurn: game.combat?.turn,
-          turns,
-        }
-    : duration;
+	//@ts-ignore
+	let effectDuration = isEmpty(duration)
+		? {
+				rounds,
+				seconds,
+				startRound: game.combat?.round,
+				startTime: game.time.worldTime,
+				startTurn: game.combat?.turn,
+				turns
+		  }
+		: duration;
 	let effect = new CONFIG.ActiveEffect.documentClass({
 		changes,
 		disabled: false,
@@ -59,7 +59,7 @@ export function createActiveEffect({
 		icon,
 		label,
 		origin,
-		transfer: false,
+		transfer: false
 	});
 
 	return effect;

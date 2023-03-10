@@ -1,3 +1,7 @@
+### 0.2.3
+
+- Some update
+
 ### 0.2.0 [BREAKING CHANGES]
 
 - Big update of the code

@@ -31,16 +31,16 @@ export class EffectSupport {
 				{
 					core: {
 						statusId: isPassive ? undefined : id,
-						overlay: false,
+						overlay: false
 					},
 					[Constants.MODULE_ID]: {
 						[Constants.FLAGS.DESCRIPTION]: "Applies custom effects",
-						[Constants.FLAGS.IS_CONVENIENT]: true,
+						[Constants.FLAGS.IS_CONVENIENT]: true
 						// [Constants.FLAGS.IS_DYNAMIC]: this.isDynamic,
 						// [Constants.FLAGS.IS_VIEWABLE]: this.isViewable,
 						// [Constants.FLAGS.NESTED_EFFECTS]: this.nestedEffects,
 						// [Constants.FLAGS.SUB_EFFECTS]: this.subEffects,
-					},
+					}
 				}
 			),
 			changes: changes,
@@ -49,7 +49,7 @@ export class EffectSupport {
 			atcvChanges: atcvChanges,
 			isDisabled: false,
 			isTemporary: !isPassive,
-			isSuppressed: false,
+			isSuppressed: false
 		});
 	}
 
@@ -136,13 +136,13 @@ export class EffectSupport {
 				return {
 					startTime: game.time.worldTime,
 					startRound: 0,
-					startTurn: 0,
+					startTurn: 0
 				};
 			} else {
 				return {
 					startRound: game.combat.round,
 					rounds: EffectSupport._getCombatRounds(seconds, rounds),
-					turns: !is_real_number(turns) ? undefined : turns,
+					turns: !is_real_number(turns) ? undefined : turns
 				};
 			}
 		} else {
@@ -150,12 +150,12 @@ export class EffectSupport {
 				return {
 					startTime: game.time.worldTime,
 					startRound: 0,
-					startTurn: 0,
+					startTurn: 0
 				};
 			} else {
 				return {
 					startTime: game.time.worldTime,
-					seconds: EffectSupport._getSeconds(seconds, rounds),
+					seconds: EffectSupport._getSeconds(seconds, rounds)
 				};
 			}
 		}
@@ -254,11 +254,11 @@ export class EffectSupport {
 				{
 					core: {
 						statusId: isPassive ? undefined : statusId,
-						overlay: overlay ? overlay : false,
+						overlay: overlay ? overlay : false
 					},
 					[Constants.MODULE_ID]: {
 						[Constants.FLAGS.DESCRIPTION]: convenientDescription,
-						[Constants.FLAGS.IS_CONVENIENT]: true,
+						[Constants.FLAGS.IS_CONVENIENT]: true
 						// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
 						// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
 						// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
@@ -268,7 +268,7 @@ export class EffectSupport {
 						? isPassive
 							? { stackable: false, specialDuration: [], transfer: true }
 							: {}
-						: currentDae,
+						: currentDae
 				},
 				//@ts-ignore
 				activeEffect.flags
@@ -279,7 +279,7 @@ export class EffectSupport {
 			atcvChanges,
 			isDisabled,
 			isTemporary,
-			isSuppressed,
+			isSuppressed
 		});
 	}
 
@@ -320,11 +320,11 @@ export class EffectSupport {
 				core: {
 					statusId: isPassive ? undefined : p._id,
 					//@ts-ignore
-					overlay: p.overlay ? p.overlay : false, // MOD 4535992
+					overlay: p.overlay ? p.overlay : false // MOD 4535992
 				},
 				[Constants.MODULE_ID]: {
 					[Constants.FLAGS.DESCRIPTION]: convenientDescription,
-					[Constants.FLAGS.IS_CONVENIENT]: true,
+					[Constants.FLAGS.IS_CONVENIENT]: true
 					// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
 					// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
 					// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
@@ -332,12 +332,12 @@ export class EffectSupport {
 				},
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? { stackable: false, specialDuration: [], transfer: true }
-					: currentDae,
+					: currentDae
 			}),
 			origin: origin ? origin : p.origin ? p.origin : "", // MOD 4535992
 			transfer: p.transfer ?? false,
 			//changes: p.changes, // MOD 4535992
-			changes: p.changes,
+			changes: p.changes
 		});
 	}
 
@@ -394,7 +394,7 @@ export class EffectSupport {
 			flags: foundry.utils.mergeObject(currentFlags, {
 				core: {
 					statusId: isPassive ? undefined : myid,
-					overlay: myoverlay,
+					overlay: myoverlay
 				},
 				[Constants.MODULE_ID]: {
 					[Constants.FLAGS.DESCRIPTION]: convenientDescription,
@@ -402,18 +402,18 @@ export class EffectSupport {
 					[Constants.FLAGS.IS_DYNAMIC]: effect.isDynamic,
 					[Constants.FLAGS.IS_VIEWABLE]: effect.isViewable,
 					[Constants.FLAGS.NESTED_EFFECTS]: effect.nestedEffects,
-					[Constants.FLAGS.SUB_EFFECTS]: effect.subEffects,
+					[Constants.FLAGS.SUB_EFFECTS]: effect.subEffects
 				},
 				dae: EffectSupport._isEmptyObject(currentDae)
 					? isPassive
 						? { stackable: false, specialDuration: [], transfer: true }
 						: {}
-					: currentDae,
+					: currentDae
 			}),
 			origin: effect.origin ? effect.origin : "None", // MOD 4535992
 			transfer: isPassive ? false : effect.transfer,
 			//changes: effect.changes, // MOD 4535992
-			changes: EffectSupport._handleIntegrations(effect),
+			changes: EffectSupport._handleIntegrations(effect)
 			// 4535992 these are not under data
 			// isDisabled: effect.isDisabled ?? false,
 			// isTemporary: effect.isTemporary ?? false,
@@ -462,7 +462,7 @@ export class EffectSupport {
 			startRound: game.combat?.round,
 			startTime: game.time.worldTime,
 			startTurn: game.combat?.turn,
-			turns: turns,
+			turns: turns
 		};
 		let effect2 = new CONFIG.ActiveEffect.documentClass({
 			changes,
@@ -472,7 +472,7 @@ export class EffectSupport {
 			icon,
 			label,
 			origin,
-			transfer: false,
+			transfer: false
 		});
 
 		return effect2;
@@ -598,28 +598,28 @@ export class EffectSupport {
 			atlChanges.push({
 				key: "ATL.alpha",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: alpha,
+				value: alpha
 			});
 		}
 		if (height && height > 0) {
 			atlChanges.push({
 				key: "ATL.height",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: height,
+				value: height
 			});
 		}
 		if (width && width > 0) {
 			atlChanges.push({
 				key: "ATL.width",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: width,
+				value: width
 			});
 		}
 		if (scale && scale > 0) {
 			atlChanges.push({
 				key: "ATL.scale",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: scale,
+				value: scale
 			});
 		}
 		// THEY ARE REPPLACED WITH VISION MODE
@@ -628,7 +628,7 @@ export class EffectSupport {
 				// key: "ATL.dimSight",
 				key: "ATL.sight.range",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: dimSight,
+				value: dimSight
 			});
 		}
 		// THEY ARE REPPLACED WITH VISION MODE
@@ -637,62 +637,62 @@ export class EffectSupport {
 				// key: "ATL.sight.bright",
 				key: "ATL.sight.brightness",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: brightSight,
+				value: brightSight
 			});
 		}
 		if (sightVisionMode) {
 			atlChanges.push({
 				key: "ATL.sight.visionMode",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: sightVisionMode,
+				value: sightVisionMode
 			});
 		}
 		if (dimLight && dimLight > 0) {
 			atlChanges.push({
 				key: "ATL.light.dim",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: dimLight,
+				value: dimLight
 			});
 		}
 		if (brightLight && brightLight > 0) {
 			atlChanges.push({
 				key: "ATL.light.bright",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: brightLight,
+				value: brightLight
 			});
 		}
 		if (lightAngle) {
 			atlChanges.push({
 				key: "ATL.light.angle",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: lightAngle,
+				value: lightAngle
 			});
 		}
 		if (lightColor) {
 			atlChanges.push({
 				key: "ATL.light.color",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: lightColor,
+				value: lightColor
 			});
 		}
 		if (lightAlpha) {
 			atlChanges.push({
 				key: "ATL.light.alpha",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: lightAlpha,
+				value: lightAlpha
 			});
 		}
 		if (lightAnimationType && lightAnimationSpeed && lightAnimationIntensity && lightAnimationReverse) {
 			atlChanges.push({
 				key: "ATL.light.animation",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}, "reverse":${lightAnimationReverse}}`,
+				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}, "reverse":${lightAnimationReverse}}`
 			});
 		} else if (lightAnimationType && lightAnimationSpeed && lightAnimationIntensity) {
 			atlChanges.push({
 				key: "ATL.light.animation",
 				mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE,
-				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}}`,
+				value: `{"type": "${lightAnimationType}","speed": ${lightAnimationSpeed},"intensity": ${lightAnimationIntensity}}`
 			});
 		}
 		const effectNameI18 = i18n(<string>effectName);
@@ -736,11 +736,11 @@ export class EffectSupport {
 				{
 					core: {
 						statusId: isPassive ? undefined : statusId,
-						overlay: overlay ? overlay : false,
+						overlay: overlay ? overlay : false
 					},
 					[Constants.MODULE_ID]: {
 						[Constants.FLAGS.IS_CONVENIENT]: true,
-						[Constants.FLAGS.DESCRIPTION]: convenientDescription,
+						[Constants.FLAGS.DESCRIPTION]: convenientDescription
 						// [Constants.FLAGS.IS_DYNAMIC]: isDynamic,
 						// [Constants.FLAGS.IS_VIEWABLE]: isViewable,
 						// [Constants.FLAGS.NESTED_EFFECTS]: nestedEffects,
@@ -750,7 +750,7 @@ export class EffectSupport {
 						? isPassive
 							? { stackable: false, specialDuration: [], transfer: true }
 							: {}
-						: currentDae,
+						: currentDae
 				}
 			),
 			changes: [],
@@ -760,7 +760,7 @@ export class EffectSupport {
 			transfer: true,
 			atcvChanges: [],
 			dae: {},
-			overlay: false,
+			overlay: false
 		});
 		return efffectAtlToApply;
 	}

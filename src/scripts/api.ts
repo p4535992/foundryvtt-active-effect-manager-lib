@@ -1061,7 +1061,7 @@ const API = {
 	 */
 	async createNewCustomEffectsWith({ activeEffects }): Promise<ActiveEffect[] | undefined> {
 		const result = await (<EffectInterface>this.effectInterface).createNewCustomEffectsWith({
-			activeEffects,
+			activeEffects
 		});
 		return result;
 	},
@@ -1088,7 +1088,7 @@ const API = {
 
 		const content = await renderTemplate("modules/dfreds-convenient-effects/templates/nested-effects-dialog.hbs", {
 			parentEffect: effect,
-			nestedEffects,
+			nestedEffects
 		});
 		const choice = await Dialog.prompt(
 			{
@@ -1099,14 +1099,14 @@ const API = {
 					const htmlChoice = html.find('select[name="effect-choice"]').val();
 					return htmlChoice;
 				},
-				rejectClose: false,
+				rejectClose: false
 			},
 			//@ts-ignore
 			{ width: 300 }
 		);
 
 		return nestedEffects.find((nestedEffect) => nestedEffect.label == choice);
-	},
+	}
 };
 
 export default API;
