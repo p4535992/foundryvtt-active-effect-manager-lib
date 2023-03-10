@@ -4,6 +4,7 @@ export function createActiveEffect({
 	label,
 	description = "",
 	icon = "icons/svg/aura.svg",
+    duration = {},
 	seconds = <number | null>null,
 	rounds = null,
 	turns = null,
@@ -17,7 +18,7 @@ export function createActiveEffect({
 	nestedEffects = [],
 	subEffects = [],
 }) {
-	const settings = new Settings();
+	// const settings = new Settings();
 
 	// if (settings.integrateWithAte) {
 	changes.push(...atlChanges);
@@ -39,19 +40,21 @@ export function createActiveEffect({
 	flags[Constants.MODULE_ID][Constants.FLAGS.IS_VIEWABLE] = isViewable;
 	flags[Constants.MODULE_ID][Constants.FLAGS.NESTED_EFFECTS] = nestedEffects;
 	flags[Constants.MODULE_ID][Constants.FLAGS.SUB_EFFECTS] = subEffects;
-
-	let duration = {
-		rounds: rounds ?? <number>seconds / CONFIG.time.roundTime,
-		seconds: seconds,
-		startRound: game.combat?.round,
-		startTime: game.time.worldTime,
-		startTurn: game.combat?.turn,
-		turns: turns,
-	};
+    //@ts-ignore
+    let effectDuration = isEmpty(duration)
+      ? {
+          rounds,
+          seconds,
+          startRound: game.combat?.round,
+          startTime: game.time.worldTime,
+          startTurn: game.combat?.turn,
+          turns,
+        }
+    : duration;
 	let effect = new CONFIG.ActiveEffect.documentClass({
 		changes,
 		disabled: false,
-		duration,
+		duration: effectDuration,
 		flags,
 		icon,
 		label,
@@ -69,4 +72,31 @@ export function addOverlayAndOriginToEffect(effect, origin, overlay) {
 		newEffect.origin = origin;
 	}
 	return newEffect;
+}
+
+/**
+ * Gets the `isConvenient` flag on the active effect if it exists
+ *
+ * @param {ActiveEffect} activeEffect - the active effect
+ * @returns {boolean} true if it is a convenient effect and false otherweise
+ */
+export function isConvenient(activeEffect) {
+	const isConvenient = activeEffect.getFlag(Constants.MODULE_ID, Constants.FLAGS.IS_CONVENIENT) ?? false;
+
+	const isOldConvenient = activeEffect.flags.isConvenient;
+	const isOldCustomConvenient = activeEffect.flags.isCustomConvenient;
+
+	return isConvenient || isOldConvenient || isOldCustomConvenient;
+}
+
+/**
+ * Gets the description attached to the active effect
+ *
+ * @param {ActiveEffect} activeEffect - the active effect
+ * @returns {string} The description for the effect
+ */
+export function getDescription(activeEffect) {
+	const description = activeEffect.getFlag(Constants.MODULE_ID, Constants.FLAGS.DESCRIPTION);
+
+	return description ?? activeEffect.flags.convenientDescription;
 }

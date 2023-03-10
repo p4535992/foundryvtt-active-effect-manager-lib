@@ -38,9 +38,10 @@ export default class StatusEffectsLib {
 	 */
 	initialize(statusEffectNames: string[]) {
 		const modifyStatusEffects = "add"; // TODO for now is always 'add'
+        let statusEffects;
 		//@ts-ignore
 		if (modifyStatusEffects === "replace") {
-			CONFIG.statusEffects = this._fetchStatusEffects(statusEffectNames);
+			statusEffects = this._fetchStatusEffects(statusEffectNames);
 			// //@ts-ignore
 			// if (CONFIG.specialStatusEffects) {
 			// 	//@ts-ignore
@@ -51,7 +52,7 @@ export default class StatusEffectsLib {
 			// 	};
 			// }
 		} else if (modifyStatusEffects === "add") {
-			CONFIG.statusEffects = CONFIG.statusEffects.concat(this._fetchStatusEffects(statusEffectNames));
+			statusEffects = CONFIG.statusEffects.concat(this._fetchStatusEffects(statusEffectNames));
 			// //@ts-ignore
 			// if (CONFIG.specialStatusEffects) {
 			// 	//@ts-ignore
@@ -61,7 +62,28 @@ export default class StatusEffectsLib {
 			// 		BLIND: "Convenient Effect: Blinded",
 			// 	};
 			// }
-		}
+		} else {
+            // Do nothing
+        }
+
+        if(statusEffects) {
+            if (game.settings.get(CONSTANTS.MODULE_ID, "statusEffectsSortOrder") === 'alphabetical') {
+                statusEffects = statusEffects.sort((a, b) => {
+                    let nameA = a.label.toLowerCase();
+                    let nameB = b.label.toLowerCase();
+
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            }
+
+            CONFIG.statusEffects = statusEffects;
+        }
 	}
 
 	_fetchStatusEffects(statusEffectNames: string[]) {
@@ -508,7 +530,7 @@ export default class StatusEffectsLib {
 		return this._getStatusEffectChoicesInternal(token);
 		/*
 		// const token = args[0]; //<Token>(<unknown>this);
-		
+
 		const doc = token.document;
 
 		// Get statuses which are active for the token actor

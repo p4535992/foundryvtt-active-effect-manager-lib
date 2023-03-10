@@ -1,17 +1,27 @@
 {
 	"active-effect-manager-lib.setting.statusEffectNames.name": "Status Effect Names",
-	"active-effect-manager-lib.setting.statusEffectNames.hint": " ",
-	"active-effect-manager-lib.setting.enableStatusEffectNames.name": "Feature: Enable the extended status effect name hud interaction",
+	"active-effect-manager-lib.setting.statusEffectNames.hint": "Hidden Setting",
+
+    "active-effect-manager-lib.setting.enableStatusEffectNames.name": "Feature: Enable the extended status effect name hud interaction",
 	"active-effect-manager-lib.setting.enableStatusEffectNames.hint": "This will extend the functionality of the standard status effect name",
 	"active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.name": "Show only temporary effect on the status effects panel",
 	"active-effect-manager-lib.setting.showOnlyTemporaryStatusEffectNames.hint": "If this module setting is enabled, it will show only temporary effect on the status effects panel, if disabled you will see all the active effect temporary and passive.",
-	"active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",
+    "active-effect-manager-lib.setting.statusEffectsSortOrder.name": "Status Effects Sort Order",
+    "active-effect-manager-lib.setting.statusEffectsSortOrder.hint": "This is how status effects are sorted in the token HUD. Requires a Foundry reload on change.",
+    "active-effect-manager-lib.setting.statusEffectsSortOrder.options.none": "none",
+    "active-effect-manager-lib.setting.statusEffectsSortOrder.options.byOrderAdded": "By Order Added",
+    "active-effect-manager-lib.setting.statusEffectsSortOrder.options.alphabetical": "Alphabetical",
+
+    "active-effect-manager-lib.setting.enableShyEffectIcons.name": "Feature: Shy Effects",
 	"active-effect-manager-lib.setting.enableShyEffectIcons.hint": "Hide active effect icons from unknown sources",
-	"active-effect-manager-lib.setting.enableDropEffectsOnItems.name": "Feature: Drop Effects on Items",
+
+    "active-effect-manager-lib.setting.enableDropEffectsOnItems.name": "Feature: Drop Effects on Items",
 	"active-effect-manager-lib.setting.enableDropEffectsOnItems.hint": "With it enabled, creating duplicate effects between different items (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next. It also allows the application of item effects onto actors from the item sheet directly.",
-	"active-effect-manager-lib.setting.enableDropEffectsOnActors.name": "Feature: Drop Effects on Actors",
+
+    "active-effect-manager-lib.setting.enableDropEffectsOnActors.name": "Feature: Drop Effects on Actors",
 	"active-effect-manager-lib.setting.enableDropEffectsOnActors.hint": "With it enabled, creating duplicate effects between different actors (e.g. \"Poisoned\" for various weapons or spells which inflict that condition) is as simple as dragging and dropping from one to the next.",
-	"active-effect-manager-lib.setting.enableQuickStatusEffect.name": "Quick status effect",
+
+    "active-effect-manager-lib.setting.enableQuickStatusEffect.name": "Feature: Quick status effect",
 	"active-effect-manager-lib.setting.enableQuickStatusEffect.hint": "Quickly select effects for a token or tokens by replacing the built-in status effect selector with an auto-complete-esque search box and filtered list.",
 
 	"active-effect-manager-lib.setting.permLevel.name": "[Only with 'Shy Effects' enabled] Permission Level",

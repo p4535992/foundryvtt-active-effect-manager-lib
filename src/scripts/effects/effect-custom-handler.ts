@@ -61,7 +61,7 @@ export default class CustomEffectsHandler {
 	 */
 	async createNewCustomEffect() {
 		const item = <Item>await this._findOrCreateCustomEffectsItem();
-		const newEffect = <ActiveEffect>createActiveEffect({
+		const newEffect = <ActiveEffect>createActiveEffect(<any>{
 			label: "New Effect",
 			origin: item.uuid,
 		});
@@ -84,6 +84,10 @@ export default class CustomEffectsHandler {
 				activeEffect.origin = item.uuid;
 			}
 			return <ActiveEffect>createActiveEffect({ ...activeEffect });
+            // return <ActiveEffect>createActiveEffect({
+            //     ...activeEffect,
+            //     origin,
+            // });
 		});
 		//@ts-ignore
 		return item.createEmbeddedDocuments("ActiveEffect", customEffects);
