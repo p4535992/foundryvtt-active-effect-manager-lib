@@ -969,7 +969,7 @@ const API = {
 		effectName: string | null = null,
 		effectIcon: string | null = null,
 		duration: number | null = null,
-
+        // tint: string | null = null,
 		// vision = false,
 		// id: string | null = null,
 		// name: string | null = null,
@@ -1008,7 +1008,7 @@ const API = {
 			effectName,
 			effectIcon,
 			duration,
-
+            // tint,
 			// visio,
 			// id,
 			// name,

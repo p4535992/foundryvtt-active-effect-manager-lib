@@ -5,6 +5,7 @@ export function createActiveEffect({
 	description = "",
 	icon = "icons/svg/aura.svg",
 	duration = {},
+    tint = null,
 	seconds = <number | null>null,
 	rounds = null,
 	turns = null,
@@ -59,6 +60,7 @@ export function createActiveEffect({
 		icon,
 		label,
 		origin,
+        tint,
 		transfer: false
 	});
 
