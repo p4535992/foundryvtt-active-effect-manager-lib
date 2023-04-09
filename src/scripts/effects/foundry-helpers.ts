@@ -43,11 +43,19 @@ export default class FoundryHelpers {
 		}
 
 		if (prioritizeTargets && game.user?.targets.size !== 0) {
+			// Start with targets if prioritized
 			return <string[]>Array.from(<UserTargets>game.user?.targets).map((token) => token.actor?.uuid);
 		} else if (canvas.tokens?.controlled.length !== 0) {
+			// Use controlled tokens if targets aren't prioritized
 			return <string[]>canvas.tokens?.controlled.map((token) => token.actor?.uuid);
+		} else if (game.user?.targets.size !== 0) {
+			// Use targets if not prioritized and no controlled tokens
+			return Array.from(<UserTargets>game.user?.targets).map((token: any) => token.actor?.uuid);
+		} else if (game.user?.character) {
+			// Use the default character for the user
+			return [game.user.character?.uuid];
 		} else {
-			return <string[]>[game.user?.character?.uuid];
+			return [];
 		}
 	}
 

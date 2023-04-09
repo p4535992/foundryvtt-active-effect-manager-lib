@@ -1082,9 +1082,10 @@ const API = {
 		const uuids = this._foundryHelpers.getActorUuids();
 		const nestedEffectNames =
 			getProperty(effect, `flags.${Constants.MODULE_ID}.${Constants.FLAGS.NESTED_EFFECTS}`) ?? [];
-		const nestedEffects = nestedEffectNames.map((nestedEffect) =>
-			this.findEffectByNameOnToken(nestedEffect, <string>uuids[0], withSocket)
-		);
+
+		const nestedEffects = nestedEffectNames
+			.map((nestedEffect) => this.findEffectByNameOnToken(nestedEffect, <string>uuids[0], withSocket))
+			.filter((effect) => effect !== undefined);
 
 		const content = await renderTemplate("modules/dfreds-convenient-effects/templates/nested-effects-dialog.hbs", {
 			parentEffect: effect,

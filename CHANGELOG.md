@@ -1,3 +1,7 @@
+### 0.2.4
+
+- Some update
+
 ### 0.2.3
 
 - Some update
