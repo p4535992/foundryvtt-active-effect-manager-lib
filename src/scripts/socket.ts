@@ -1,7 +1,7 @@
 import CONSTANTS from "./constants";
 import API from "./api";
 import { debug } from "./lib/lib";
-import { setSocket } from "../active-effect-manager-lib";
+import { setSocket } from "../module";
 
 export let activeEffectManagerSocket;
 

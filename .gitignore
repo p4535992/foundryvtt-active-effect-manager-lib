@@ -119,3 +119,4 @@ foundry.js
 /.vscode
 /dist
 /package
+/package-lock.json

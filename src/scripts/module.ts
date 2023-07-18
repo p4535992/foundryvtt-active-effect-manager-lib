@@ -6,7 +6,7 @@ import API from "./api";
 import EffectInterface from "./effects/effect-interface";
 import StatusEffects from "./effects/status-effects";
 import type StatusEffectsLib from "./effects/status-effects";
-import { setApi } from "../active-effect-manager-lib";
+import { setApi } from "../module";
 import { DropEffectsOnItems } from "./effects/effect-drop-on-item";
 import {
 	filterStatusButtons,

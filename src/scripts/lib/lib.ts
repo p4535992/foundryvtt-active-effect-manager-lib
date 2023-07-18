@@ -2,9 +2,13 @@
 // Module Generic function
 // =============================
 
-import type { CONST } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/module.mjs";
+// import type { CONST } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/module.mjs";
 import CONSTANTS from "../constants";
 import { Constants } from "../effects-public/effect";
+
+export function capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // export async function getToken(documentUuid) {
 // 	const document = await fromUuid(documentUuid);

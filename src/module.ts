@@ -12,7 +12,7 @@
 // Import TypeScript modules
 import { registerSettings } from "./scripts/settings";
 import CONSTANTS from "./scripts/constants";
-import { debug, dialogWarning, error, log } from "./scripts/lib/lib";
+import { debug, dialogWarning, error, log, capitalizeFirstLetter } from './scripts/lib/lib';
 import { initHooks, readyHooks, setupHooks } from "./scripts/module";
 import API from "./scripts/api";
 import {
@@ -22,6 +22,21 @@ import {
 	findStatusEffectButtonsContainingSearchTerm,
 	isPF2E
 } from "./scripts/effects/effect-quick-status";
+
+declare global {
+  var Hooks: {
+    on: any;
+    once: any;
+  };
+  var Application: any;
+  var foundry: any;
+  var canvas: any;
+  var game: any;
+  var CONFIG: any;
+  var CONST: any;
+  var ActiveEffect: any;
+  var ui: any;
+}
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -95,7 +110,8 @@ Hooks.once("canvasReady", async () => {
 			qssQuickInput.on("keypress", (e) => {
 				debug(`got keypress: ${e.key}, ${API.statusSearchTerm}`);
 				if (e.key === "Enter" && !!API.statusSearchTerm) {
-					const searchTermTransformed = API.statusSearchTerm.trim().toLowerCase().capitalize();
+					// const searchTermTransformed = API.statusSearchTerm.trim().toLowerCase().capitalize();
+                    const searchTermTransformed = capitalizeFirstLetter(API.statusSearchTerm.trim().toLowerCase());
 					const allButtons = findAllStatusEffectButtons();
 					const buttonsToShow = findStatusEffectButtonsContainingSearchTerm(
 						allButtons,
