@@ -35,7 +35,7 @@ export class EffectOwnedItem extends ActiveEffect {
 			error(error);
 		}
 		//@ts-ignore
-		log(`Updating Parent ${dataToCreate.label}`);
+		log(`Updating Parent ${dataToCreate.name}`);
 
 		this.parent?.update(
 			{
@@ -247,7 +247,7 @@ export class EffectOwnedItem extends ActiveEffect {
 	//   const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
 
 	//   const initialEffectFromItem = {
-	//     label: owner.name,
+	//     name: owner.name,
 	//     icon: owner.img,
 	//     origin: owner.uuid,
 	//     duration: this.getDurationFromItem(owner, li.dataset.effectType === "passive"),

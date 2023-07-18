@@ -23,7 +23,7 @@ export default class CustomEffectsHandler {
 	isCustomEffect(effectName) {
 		const item = <Item>this._findCustomEffectsItem();
 		//@ts-ignore
-		return item && item.effects.find((effect) => effect.label == effectName);
+		return item && item.effects.find((effect) => effect.name == effectName);
 	}
 
 	/**
@@ -39,13 +39,13 @@ export default class CustomEffectsHandler {
 		let customEffects = <ActiveEffect[]>Array(...item.effects);
 		customEffects.sort((a, b) => {
 			//@ts-ignore
-			let labelA = a.label.toUpperCase(); // ignore upper and lowercase
+			let nameA = a.name.toUpperCase(); // ignore upper and lowercase
 			//@ts-ignore
-			let labelB = b.label.toUpperCase(); // ignore upper and lowercase
-			if (labelA < labelB) {
+			let nameB = b.name.toUpperCase(); // ignore upper and lowercase
+			if (nameA < nameB) {
 				return -1;
 			}
-			if (labelA > labelB) {
+			if (nameA > nameB) {
 				return 1;
 			}
 
@@ -62,7 +62,7 @@ export default class CustomEffectsHandler {
 	async createNewCustomEffect() {
 		const item = <Item>await this._findOrCreateCustomEffectsItem();
 		const newEffect = <ActiveEffect>createActiveEffect(<any>{
-			label: "New Effect",
+			name: "New Effect",
 			origin: item.uuid
 		});
 		//@ts-ignore

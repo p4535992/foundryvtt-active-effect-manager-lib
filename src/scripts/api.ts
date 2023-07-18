@@ -1093,7 +1093,7 @@ const API = {
 		});
 		const choice = await Dialog.prompt(
 			{
-				title: effect.label,
+				title: effect.name,
 				content: content,
 				label: "Select Effect",
 				callback: (html) => {
@@ -1106,7 +1106,7 @@ const API = {
 			{ width: 300 }
 		);
 
-		return nestedEffects.find((nestedEffect) => nestedEffect.label == choice);
+		return nestedEffects.find((nestedEffect) => nestedEffect.name == choice);
 	}
 };
 

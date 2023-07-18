@@ -95,7 +95,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		//@ts-ignore
 		const isApplied = actorEffects?.some((activeEffect) => {
 			//@ts-ignore
-			if (isStringEquals(activeEffect?.label, effectName) && !activeEffect?.disabled) {
+			if (isStringEquals(activeEffect?.name, effectName) && !activeEffect?.disabled) {
 				return true;
 			} else {
 				return false;
@@ -139,7 +139,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		//@ts-ignore
 		const effectToRemove = actorEffects.find(
 			//@ts-ignore
-			(activeEffect) => activeEffect?.label === effectName
+			(activeEffect) => activeEffect?.name === effectName
 		);
 
 		if (!effectToRemove) {
@@ -229,7 +229,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const activeEffectsAdded = <ActiveEffect[]>(
 			await actor.createEmbeddedDocuments("ActiveEffect", [activeEffectData])
 		);
-		logM(this.moduleName, `Added effect ${effect.label} to ${actor.name} - ${actor.id}`);
+		logM(this.moduleName, `Added effect ${effect.name} to ${actor.name} - ${actor.id}`);
 		return activeEffectsAdded[0];
 	}
 
@@ -276,7 +276,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
-			const effectNameToSet = effectEntity.label;
+			const effectNameToSet = effectEntity.name;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -297,7 +297,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 
 	//   return new Effect({
 	//     customId: <string>effect.id,
-	//     name: effect.label,
+	//     name: effect.name,
 	//     description: <string>effect.flags.customEffectDescription,
 	//     icon: <string>effect.icon,
 	//     tint: <string>effect.tint,
@@ -338,7 +338,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
-			const effectNameToSet = effectEntity.label;
+			const effectNameToSet = effectEntity.name;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -430,14 +430,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
-				if (isStringEquals(activeEffect?.label, effectName)) {
+				if (isStringEquals(activeEffect?.name, effectName)) {
 					return true;
 				} else {
 					return false;
 				}
 			} else {
 				//@ts-ignore
-				if (isStringEquals(activeEffect?.label, effectName) && !activeEffect?.disabled) {
+				if (isStringEquals(activeEffect?.name, effectName) && !activeEffect?.disabled) {
 					return true;
 				} else {
 					return false;
@@ -529,7 +529,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>actor?.effects || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
-		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
+		>actorEffects.find((activeEffect) => <string>activeEffect?.name === effectName);
 
 		if (!effectToRemove) {
 			debugM(
@@ -587,7 +587,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				await actor.deleteEmbeddedDocuments("ActiveEffect", [<string>effectToRemove.id])
 			);
 			//@ts-ignore
-			logM(this.moduleName, `Removed effect ${effectToRemove?.label} from ${actor.name} - ${actor.id}`);
+			logM(this.moduleName, `Removed effect ${effectToRemove?.name} from ${actor.name} - ${actor.id}`);
 			return activeEffectsRemoved[0];
 		} else {
 			debugM(this.moduleName, `Can't removed effect without id from ${actor.name} - ${actor.id}`);
@@ -667,7 +667,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			);
 			logM(
 				this.moduleName,
-				`Added effect ${effect.label ? effect.label : effectName} to ${actor.name} - ${actor.id}`
+				`Added effect ${effect.name ? effect.name : effectName} to ${actor.name} - ${actor.id}`
 			);
 			return activeEffectsAdded[0];
 		}
@@ -814,7 +814,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			let coreFlags = {
 				core: {
 					//@ts-ignore
-					statusId: `Convenient Effect: ${activeEffectData.label}`,
+					statusId: `Convenient Effect: ${activeEffectData.name}`,
 					overlay: overlay
 				}
 			};
@@ -824,7 +824,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				await actor.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
 			//@ts-ignore
-			logM(this.moduleName, `Added effect ${activeEffectData.label} to ${actor.name} - ${actor.id}`);
+			logM(this.moduleName, `Added effect ${activeEffectData.name} to ${actor.name} - ${actor.id}`);
 			return activeEffectsAdded[0];
 		} else {
 			return undefined;
@@ -863,7 +863,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		}
 		for (const effectEntity of actorEffects) {
 			//@ts-ignore
-			const effectNameToSet = effectEntity.label;
+			const effectNameToSet = effectEntity.name;
 			if (!effectNameToSet) {
 				continue;
 			}
@@ -956,14 +956,14 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const isApplied = actorEffects.some((activeEffect) => {
 			if (includeDisabled) {
 				//@ts-ignore
-				if (isStringEquals(activeEffect?.label, effectName)) {
+				if (isStringEquals(activeEffect?.name, effectName)) {
 					return true;
 				} else {
 					return false;
 				}
 			} else {
 				//@ts-ignore
-				if (isStringEquals(activeEffect?.label, effectName) && !activeEffect.disabled) {
+				if (isStringEquals(activeEffect?.name, effectName) && !activeEffect.disabled) {
 					return true;
 				} else {
 					return false;
@@ -1056,7 +1056,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const effectToRemove = <
 			ActiveEffect //@ts-ignore
-		>actorEffects.find((activeEffect) => <string>activeEffect?.label === effectName);
+		>actorEffects.find((activeEffect) => <string>activeEffect?.name === effectName);
 
 		if (!effectToRemove) {
 			debugM(
@@ -1113,7 +1113,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 					await token.actor?.deleteEmbeddedDocuments("ActiveEffect", [<string>effectToRemove.id])
 				);
 				//@ts-ignore
-				logM(this.moduleName, `Removed effect ${effectToRemove?.label} from ${token.name} - ${token.id}`);
+				logM(this.moduleName, `Removed effect ${effectToRemove?.name} from ${token.name} - ${token.id}`);
 				return activeEffectsRemoved[0];
 			}
 		}
@@ -1240,7 +1240,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			);
 			logM(
 				this.moduleName,
-				`Added effect ${effect.label ? effect.label : effectName} to ${token.name} - ${token.id}`
+				`Added effect ${effect.name ? effect.name : effectName} to ${token.name} - ${token.id}`
 			);
 			return activeEffectsAdded[0];
 		}
@@ -1386,7 +1386,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				//@ts-ignore
 				isStringEquals(<string>activeEffect?._id, effect.customId) ||
 				//@ts-ignore
-				isStringEquals(<string>activeEffect?.label, effect.name)
+				isStringEquals(<string>activeEffect?.name, effect.name)
 			);
 		});
 
@@ -1503,7 +1503,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			let coreFlags = {
 				core: {
 					//@ts-ignore
-					statusId: `Convenient Effect: ${activeEffectData.label}`,
+					statusId: `Convenient Effect: ${activeEffectData.name}`,
 					overlay: overlay
 				}
 			};
@@ -1513,7 +1513,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 				await token.actor?.createEmbeddedDocuments("ActiveEffect", [<Record<string, any>>activeEffectData])
 			);
 			//@ts-ignore
-			logM(this.moduleName, `Added effect ${activeEffectData.label} to ${token.name} - ${token.id}`);
+			logM(this.moduleName, `Added effect ${activeEffectData.name} to ${token.name} - ${token.id}`);
 			debugM(
 				this.moduleName,
 				`END Effect Handler 'addActiveEffectOnToken' : [uuid=${uuid},activeEffectData=${activeEffectData}]`
@@ -1561,7 +1561,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		let coreFlags = {
 			core: {
 				//@ts-ignore
-				statusId: `Convenient Effect: ${effectUpdated.label}`,
+				statusId: `Convenient Effect: ${effectUpdated.name}`,
 				overlay: effectUpdated.overlay
 			}
 		};
@@ -1578,7 +1578,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
-		logM(this.moduleName, `Updated effect ${activeEffect.label} to ${token.name} - ${token.id}`);
+		logM(this.moduleName, `Updated effect ${activeEffect.name} to ${token.name} - ${token.id}`);
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'updateEffectFromIdOnToken' : [effectId=${effectId}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`
@@ -1610,7 +1610,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
-		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
+		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.name, effectName));
 
 		if (!activeEffect) {
 			return undefined;
@@ -1623,7 +1623,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		let coreFlags = {
 			core: {
 				//@ts-ignore
-				statusId: `Convenient Effect: ${effectUpdated.label}`,
+				statusId: `Convenient Effect: ${effectUpdated.name}`,
 				overlay: effectUpdated.overlay
 			}
 		};
@@ -1640,7 +1640,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		activeEffectDataUpdated._id = activeEffect.id;
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
-		logM(this.moduleName, `Updated effect ${activeEffect.label} to ${token.name} - ${token.id}`);
+		logM(this.moduleName, `Updated effect ${activeEffect.name} to ${token.name} - ${token.id}`);
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'updateEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`
@@ -1712,7 +1712,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
-		logM(this.moduleName, `Updated effect ${activeEffect.label} to ${token.name} - ${token.id}`);
+		logM(this.moduleName, `Updated effect ${activeEffect.name} to ${token.name} - ${token.id}`);
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'updateActiveEffectFromIdOnToken' : [effectId=${effectId}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`
@@ -1744,7 +1744,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		const actorEffects = <EmbeddedCollection<typeof ActiveEffect, Actor>>token.actor?.effects?.contents || [];
 		const activeEffect = <
 			ActiveEffect //@ts-ignore
-		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.label, effectName));
+		>actorEffects.find((activeEffect) => isStringEquals(<string>activeEffect?.name, effectName));
 
 		if (!activeEffect) {
 			return undefined;
@@ -1784,7 +1784,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 		//@ts-ignore
 		const updated = await token.actor?.updateEmbeddedDocuments("ActiveEffect", [activeEffectDataUpdated]);
 		//@ts-ignore
-		logM(this.moduleName, `Updated effect ${activeEffect.label} to ${token.name} - ${token.id}`);
+		logM(this.moduleName, `Updated effect ${activeEffect.name} to ${token.name} - ${token.id}`);
 		debugM(
 			this.moduleName,
 			`END Effect Handler 'updateActiveEffectFromNameOnToken' : [effectName=${effectName}, uuid=${uuid}, origin=${origin}, overlay=${overlay}, effectUpdated=${effectUpdated}]`
@@ -1888,7 +1888,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
         alwaysDelete=${alwaysDelete}, forceEnabled=${forceEnabled}, forceDisabled=${forceDisabled}, isTemporary=${isTemporary},
         isDisabled=${isDisabled}]`
 		);
-		const activeEffect = effect.label ? owner.effects.getName(i18n(effect.label)) : null;
+		const activeEffect = effect.name ? owner.effects.getName(i18n(effect.name)) : null;
 		const response = await this.onManageActiveEffectFromActiveEffect(
 			effectActions,
 			owner,
@@ -2006,7 +2006,7 @@ export default class EffectGenericHandler implements EffectHandlerInterface {
 			// case 'create': {
 			//   return owner.createEmbeddedDocuments('ActiveEffect', [
 			//     {
-			//       label: game.i18n.localize('DND5E.EffectNew'),
+			//       name: game.i18n.localize('DND5E.EffectNew'),
 			//       icon: 'icons/svg/aura.svg',
 			//       origin: owner.uuid,
 			//       'duration.rounds': isTemporary ? 1 : undefined,

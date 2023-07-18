@@ -290,11 +290,11 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
-		const label = effect.label ? effect.label : effect.name;
+		const name = effect.name ? effect.name : effect.name;
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addEffectOnActor", label, uuid, undefined, false, effect);
+			return this._socket.executeAsGM("addEffectOnActor", name, uuid, undefined, false, effect);
 		} else {
-			return this._effectHandler.addEffectOnActor(label, uuid, "", false, effect);
+			return this._effectHandler.addEffectOnActor(name, uuid, "", false, effect);
 		}
 	}
 
@@ -521,11 +521,11 @@ export default class EffectInterface {
 		// if (effect.nestedEffects.length > 0) {
 		//   effect = await this.getNestedEffectSelection(effect);
 		// }
-		const label = effect.label ? effect.label : effect.name;
+		const name = effect.name ? effect.name : effect.name;
 		if (withSocket && isGMConnected()) {
-			return this._socket.executeAsGM("addEffectOnToken", label, uuid, undefined, false, effect);
+			return this._socket.executeAsGM("addEffectOnToken", name, uuid, undefined, false, effect);
 		} else {
-			return this._effectHandler.addEffectOnToken(label, uuid, "", false, effect);
+			return this._effectHandler.addEffectOnToken(name, uuid, "", false, effect);
 		}
 	}
 
@@ -903,7 +903,7 @@ export default class EffectInterface {
 		// const effect = this.findCustomEffectByName(effectName);
 		// if (effect) return effect;
 
-		// return API.effects.all.find((effect) => effect.label == effectName);
+		// return API.effects.all.find((effect) => effect.name == effectName);
 		const uuids = this._foundryHelpers.getActorUuids();
 		if (withSocket && isGMConnected()) {
 			return this._socket.executeAsGM("findEffectByNameOnToken", effectName, uuids[0]);
@@ -920,7 +920,7 @@ export default class EffectInterface {
 	//  * @returns {ActiveEffect} the found effect
 	//  */
 	// findCustomEffectByName(effectName) {
-	// 	const effect = this._customEffectsHandler.getCustomEffects().find((effect) => effect.label == effectName);
+	// 	const effect = this._customEffectsHandler.getCustomEffects().find((effect) => effect.name == effectName);
 
 	// 	return effect;
 	// }
@@ -961,7 +961,7 @@ export default class EffectInterface {
 	// 		if (!effect) return; // dialog closed without selecting one
 	// 	}
 
-	// 	return this._socket.executeAsGM("toggleEffect", effect.label, {
+	// 	return this._socket.executeAsGM("toggleEffect", effect.name, {
 	// 		overlay,
 	// 		uuids,
 	// 	});
@@ -1011,7 +1011,7 @@ export default class EffectInterface {
 	// 	}
 
 	// 	return this._socket.executeAsGM("removeEffect", {
-	// 		effectName: effect.label,
+	// 		effectName: effect.name,
 	// 		uuid,
 	// 		origin,
 	// 	});
@@ -1127,7 +1127,7 @@ export default class EffectInterface {
 		});
 		const choice = await Dialog.prompt(
 			{
-				title: effect.label,
+				title: effect.name,
 				content: content,
 				label: "Select Effect",
 				callback: (html) => {
@@ -1140,7 +1140,7 @@ export default class EffectInterface {
 			{ width: 300 }
 		);
 
-		return nestedEffects.find((nestedEffect) => nestedEffect.label == choice);
+		return nestedEffects.find((nestedEffect) => nestedEffect.name == choice);
 	}
 
 	// /**

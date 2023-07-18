@@ -235,7 +235,7 @@ export class EffectSupport {
 		return new Effect({
 			customId: <string>activeEffect.id,
 			//@ts-ignore
-			name: i18n(activeEffect.label),
+			name: i18n(activeEffect.name),
 			//@ts-ignore
 			description: i18n(<string>activeEffect.flags.customEffectDescription),
 			//@ts-ignore
@@ -306,8 +306,7 @@ export class EffectSupport {
 		//@ts-ignore
 		return ActiveEffect.create({
 			id: p._id,
-			name: i18n(p.label),
-			label: i18n(p.label),
+			name: i18n(p.name),
 			icon: p.icon,
 			tint: p.tint,
 			duration: EffectSupport._getDurationData(
@@ -385,8 +384,7 @@ export class EffectSupport {
 
 		return {
 			id: myid,
-			// name: i18n(effect.name),
-			label: effect.label ? i18n(effect.label) : i18n(effect.name),
+			name: effect.name ? i18n(effect.name) : "UNDEFINED",
 			description: i18n(effect.description), // 4535992 this not make sense, but it doesn't hurt either
 			icon: effect.icon,
 			tint: effect.tint,
@@ -432,7 +430,7 @@ export class EffectSupport {
 	public static convertToActiveEffect(effect: Effect): ActiveEffect {
 		const changes = effect._handleIntegrations();
 		const flags = <any>{};
-		const label = effect.label ? effect.label : effect.name;
+		const name = effect.name ? effect.name : effect.name;
 		const description = effect.description;
 		const isDynamic = effect.isDynamic;
 		const isViewable = effect.isViewable;
@@ -445,7 +443,7 @@ export class EffectSupport {
 
 		let ceFlags = {
 			core: {
-				statusId: `Convenient Effect: ${label}`
+				statusId: `Convenient Effect: ${name}`
 			}
 		};
 
@@ -471,7 +469,7 @@ export class EffectSupport {
 			duration,
 			flags: foundry.utils.mergeObject(ceFlags, flags),
 			icon,
-			label,
+			name,
 			origin,
 			transfer: false
 		});

@@ -82,7 +82,6 @@
     "build": "^0.1.4",
     "csv-parse": "^4.16.3",
     "gulp-jest": "^4.0.4",
-    "node-sass": "^7.0.1",
     "prettier": "^2.7.1",
     "prettier-format": "^3.1.0",
     "tsify": "^5.0.4",

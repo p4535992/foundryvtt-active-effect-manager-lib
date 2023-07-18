@@ -20,14 +20,14 @@ export default class MacroHandler {
 		}
 
 		//@ts-ignore
-		const effect = API.effects.all.find((effect) => effect.label === data.effectName);
+		const effect = API.effects.all.find((effect) => effect.name === data.effectName);
 
 		if (!effect) {
 			warn(`No effect found with name '${data.effectName}'`, true);
 			return;
 		}
-		const name = `Toggle Convenient Effect - ${effect.label}`;
-		const command = `game.modules.get("${CONSTANTS.MODULE_ID}").api.effectInterface.toggleEffect("${effect.label}")`;
+		const name = `Toggle Convenient Effect - ${effect.name}`;
+		const command = `game.modules.get("${CONSTANTS.MODULE_ID}").api.effectInterface.toggleEffect("${effect.name}")`;
 		//@ts-ignore
 		let macro = <any>game.macros?.find((macro) => macro.name === name && macro.command === command);
 

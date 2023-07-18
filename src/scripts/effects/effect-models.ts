@@ -9,7 +9,7 @@ export enum EffectActions {
 export interface StatusEffectInternal {
 	id: string;
 	title: string;
-	label: string;
+	name: string;
 	src: string;
 	icon: string;
 	isActive: boolean;

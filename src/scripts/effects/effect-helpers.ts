@@ -1,7 +1,7 @@
 import { Constants } from "../effects-public/effect";
 
 export function createActiveEffect({
-	label,
+	name,
 	description = "",
 	icon = "icons/svg/aura.svg",
 	duration = {},
@@ -31,7 +31,7 @@ export function createActiveEffect({
 
 	let ceFlags = {
 		core: {
-			statusId: `Convenient Effect: ${label}`
+			statusId: `Convenient Effect: ${name}`
 		}
 	};
 
@@ -59,7 +59,7 @@ export function createActiveEffect({
 		duration: effectDuration,
 		flags: foundry.utils.mergeObject(ceFlags, flags),
 		icon,
-		label,
+		name,
 		origin,
 		tint,
 		transfer: false
